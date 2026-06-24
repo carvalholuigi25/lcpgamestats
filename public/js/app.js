@@ -367,7 +367,7 @@
   }
 
   function getGameId(game) {
-    return game.provider === "retroachievements" ? game.appid : (game.GameID || game.gameId || game.GameId || game.id);
+    return game.appid || game.GameID || game.gameId || game.GameId || game.id;
   }
 
   /** Open the game detail modal */
@@ -424,7 +424,7 @@
     const fragment = document.createDocumentFragment();
     achievements.forEach((achievement) => {
       const item = document.createElement('div');
-      item.className = 'list-group-item list-group-item-dark d-flex justify-content-between align-items-start';
+      item.className = 'machievementlist list-group-item list-group-item-dark d-flex justify-content-between align-items-start';
       item.innerHTML = `
       <div class="w-100">
         <div class="row justify-content-center align-items-center text-start">

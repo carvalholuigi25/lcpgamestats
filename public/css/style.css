@@ -345,6 +345,16 @@ body.theme-light #error-state {
   max-height: 600px;
 }
 
+.machievementlist {
+  text-align: left;
+}
+.machievementlist .row {
+  justify-content: space-around !important;
+  align-items: flex-start !important;
+  text-align: left !important;
+  padding: 15px;
+}
+
 #error-state {
   background-color: rgba(220, 53, 69, 0.15);
   border-color: rgba(220, 53, 69, 0.4);
@@ -388,6 +398,16 @@ body.theme-light #error-state {
   .player-card {
     width: 100%;
     justify-content: center;
+  }
+}
+@media all and (max-width: 768px) {
+  .machievementlist {
+    text-align: center;
+  }
+  .machievementlist .row {
+    justify-content: center !important;
+    align-items: center !important;
+    text-align: center !important;
   }
 }
 

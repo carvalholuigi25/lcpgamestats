@@ -399,6 +399,17 @@ body.theme-light #error-state {
   max-height: 600px;
 }
 
+.machievementlist {
+  text-align: left;
+
+  .row {
+    justify-content: space-around !important;
+    align-items: flex-start !important;
+    text-align: left !important;
+    padding: 15px;
+  }
+}
+
 // ==========================================================================
 // Loading / Empty / Error states
 // ==========================================================================
@@ -457,5 +468,17 @@ body.theme-light #error-state {
   .player-card {
     width: 100%;
     justify-content: center;
+  }
+}
+
+@media all and (max-width: 768px) {
+  .machievementlist {
+    text-align: center;
+
+    .row {
+      justify-content: center !important;
+      align-items: center !important;
+      text-align: center !important;
+    }
   }
 }
