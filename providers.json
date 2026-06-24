@@ -1,0 +1,47 @@
+{
+    "steam": {
+        "id": "steam",
+        "label": "Steam",
+        "playerSupported": true,
+        "storeBase": "https://store.steampowered.com/app/",
+        "sampleImageBase": "https://cdn.cloudflare.steamstatic.com/steam/apps",
+        "sampleImageBase2": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps",
+        "sampleImageBase3": "https://media.steampowered.com/steamcommunity/public/images/apps"
+    },
+    "epic": {
+        "id": "epic",
+        "label": "Epic Games",
+        "playerSupported": false,
+        "storeBase": "https://www.epicgames.com/store/en-US/p/",
+        "sampleImageBase": "https://via.placeholder.com/460x215?text=Epic+Games",
+        "sampleImageBase2": "https://via.placeholder.com/460x215?text=Epic+Games",
+        "sampleImageBase3": "https://via.placeholder.com/460x215?text=Epic+Games"
+    },
+    "gog": {
+        "id": "gog",
+        "label": "GOG",
+        "playerSupported": false,
+        "storeBase": "https://www.gog.com/game/",
+        "sampleImageBase": "https://via.placeholder.com/460x215?text=GOG",
+        "sampleImageBase2": "https://via.placeholder.com/460x215?text=GOG",
+        "sampleImageBase3": "https://via.placeholder.com/460x215?text=GOG"
+    },
+    "uplay": {
+        "id": "uplay",
+        "label": "Uplay",
+        "playerSupported": false,
+        "storeBase": "https://store.ubi.com/",
+        "sampleImageBase": "https://via.placeholder.com/460x215?text=Uplay",
+        "sampleImageBase2": "https://via.placeholder.com/460x215?text=Uplay",
+        "sampleImageBase3": "https://via.placeholder.com/460x215?text=Uplay"
+    },
+    "retroachievements": {
+        "id": "retroachievements",
+        "label": "RetroAchievements",
+        "playerSupported": true,
+        "storeBase": "https://retroachievements.org/game/",
+        "sampleImageBase": "https://via.placeholder.com/460x215?text=RetroAchievements",
+        "sampleImageBase2": "https://via.placeholder.com/460x215?text=RetroAchievements",
+        "sampleImageBase3": "https://via.placeholder.com/460x215?text=RetroAchievements"
+    }
+}

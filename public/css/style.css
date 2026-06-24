@@ -1,0 +1,394 @@
+body {
+  background: linear-gradient(180deg, #171a21 0%, #0e1116 100%);
+  color: #e9eef2;
+  font-family: "Segoe UI", Roboto, system-ui, sans-serif;
+  min-height: 100vh;
+}
+
+body.theme-light {
+  background: linear-gradient(180deg, #f7f8fb 0%, #e2e6ed 100%);
+  color: #1f2937;
+}
+
+body.theme-light .app-header {
+  background: linear-gradient(135deg, #ced7e8 0%, #9ab8d9 100%);
+  border-bottom-color: rgba(34, 92, 148, 0.2);
+  box-shadow: 0 4px 18px rgba(79, 110, 152, 0.15);
+}
+
+body.theme-light .app-footer {
+  background: linear-gradient(135deg, #ced7e8 0%, #9ab8d9 100%);
+  border-bottom-color: rgba(34, 92, 148, 0.2);
+  box-shadow: 0 4px 18px rgba(79, 110, 152, 0.15);
+}
+
+body.theme-light .player-card,
+body.theme-light .stat-box,
+body.theme-light .game-card,
+body.theme-light .modal-content {
+  background: rgba(255, 255, 255, 0.88);
+  border-color: rgba(34, 92, 148, 0.16);
+  color: #1f2937;
+}
+
+body.theme-light #player-profile-link,
+body.theme-light .game-card__title,
+body.theme-light .stat-value,
+body.theme-light .stat-label,
+body.theme-light .game-card__meta {
+  color: #1f2937;
+}
+
+body.theme-light .game-card__image {
+  background-color: #d8e4f2;
+}
+
+body.theme-light #loading-state .spinner-border {
+  color: #4f83c7;
+}
+
+body.theme-light #error-state {
+  background-color: rgba(220, 53, 69, 0.12);
+  border-color: rgba(220, 53, 69, 0.28);
+  color: #842029;
+}
+
+.hidden, .hide {
+  display: none !important;
+}
+
+.mchartstats {
+  background: rgba(42, 71, 94, 0.35);
+  border: 1px solid rgba(102, 192, 244, 0.15);
+  border-radius: 0.75rem;
+  transition: transform 0.2s ease, border-color 0.2s ease;
+  margin-top: 15px;
+}
+
+.loadingblk {
+  width: 3rem;
+  height: 3rem;
+}
+
+.app-header {
+  background: linear-gradient(135deg, #1b2838 0%, #2a475e 100%);
+  border-bottom: 1px solid rgba(102, 192, 244, 0.2);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.35);
+}
+
+.steam-icon {
+  color: #66c0f4;
+  filter: drop-shadow(0 0 8px rgba(102, 192, 244, 0.4));
+}
+
+.player-card {
+  background: rgba(0, 0, 0, 0.25);
+  border-radius: 0.75rem;
+  padding: 0.5rem 1rem;
+  border: 1px solid rgba(102, 192, 244, 0.15);
+}
+
+.player-avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: 8px;
+  border: 2px solid #66c0f4;
+}
+
+#player-profile-link {
+  color: #66c0f4;
+}
+#player-profile-link:hover {
+  text-decoration: underline !important;
+}
+
+.app-footer {
+  background: linear-gradient(135deg, #1b2838 0%, #2a475e 100%);
+  border-bottom: 1px solid rgba(102, 192, 244, 0.2);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.35);
+}
+
+.stat-box {
+  background: rgba(42, 71, 94, 0.35);
+  border: 1px solid rgba(102, 192, 244, 0.15);
+  border-radius: 0.75rem;
+  transition: transform 0.2s ease, border-color 0.2s ease;
+}
+.stat-box:hover {
+  transform: translateY(-2px);
+  border-color: rgba(102, 192, 244, 0.4);
+}
+
+.stat-value {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #66c0f4;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.stat-label {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #9fb1c1;
+  margin-top: 0.25rem;
+}
+
+#search-input,
+#sort-select {
+  background-color: rgba(42, 71, 94, 0.35);
+  border-color: rgba(102, 192, 244, 0.2);
+  color: #e9eef2;
+}
+#search-input:focus,
+#sort-select:focus {
+  background-color: rgba(42, 71, 94, 0.5);
+  border-color: #66c0f4;
+  box-shadow: 0 0 0 0.2rem rgba(102, 192, 244, 0.15);
+  color: #fff;
+}
+#search-input::placeholder,
+#sort-select::placeholder {
+  color: #7c8e9e;
+}
+
+.input-group-text {
+  background-color: rgba(42, 71, 94, 0.35);
+  border-color: rgba(102, 192, 244, 0.2);
+  color: #66c0f4;
+}
+
+#view-grid.active,
+#view-list.active {
+  background-color: #66c0f4;
+  border-color: #66c0f4;
+  color: #171a21;
+}
+
+.game-card {
+  background: rgba(42, 71, 94, 0.3);
+  border: 1px solid rgba(102, 192, 244, 0.1);
+  border-radius: 0.75rem;
+  overflow: hidden;
+  cursor: pointer;
+  transition: transform 0.35s ease, box-shadow 0.35s ease, border-color 0.2s ease;
+  height: 100%;
+}
+.game-card:hover {
+  transform: translateY(-6px) scale(1.02);
+  box-shadow: 0 12px 30px rgba(102, 192, 244, 0.2);
+  border-color: rgba(102, 192, 244, 0.5);
+}
+.game-card:hover .game-card__image img {
+  transform: scale(1.08);
+}
+.game-card:hover .game-card__title {
+  color: #66c0f4;
+}
+
+.game-card__image {
+  position: relative;
+  width: 100%;
+  padding-top: 46.7%;
+  overflow: hidden;
+  background-color: #171a21;
+}
+.game-card__image img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.35s ease;
+}
+
+.game-card__recent-badge {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  background: rgba(164, 208, 7, 0.95);
+  color: #171a21;
+  font-size: 0.7rem;
+  font-weight: 700;
+  padding: 0.2rem 0.5rem;
+  border-radius: 0.4rem;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.game-card__body {
+  padding: 0.85rem 1rem;
+}
+
+.game-card__title {
+  font-size: 0.95rem;
+  font-weight: 600;
+  margin-bottom: 0.35rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  transition: color 0.2s ease;
+}
+
+.game-card__meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.8rem;
+  color: #9fb1c1;
+}
+
+.game-card__playtime {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+.game-card__playtime i {
+  color: #66c0f4;
+}
+
+#stats-chart {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.stats-chart__row {
+  display: grid;
+  gap: 0.65rem;
+  align-items: center;
+}
+
+.stats-chart__meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.stats-chart__label {
+  color: #e9eef2;
+  font-size: 0.9rem;
+  font-weight: 600;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.stats-chart__value {
+  color: #9fb1c1;
+  font-size: 0.85rem;
+  white-space: nowrap;
+}
+
+.stats-chart__bar-wrap {
+  background: rgba(42, 71, 94, 0.18);
+  border: 1px solid rgba(102, 192, 244, 0.14);
+  border-radius: 999px;
+  overflow: hidden;
+  height: 0.9rem;
+}
+
+.stats-chart__bar {
+  width: 0;
+  height: 100%;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #66c0f4, rgb(173.368902439, 221.387195122, 249.131097561));
+  transition: width 0.35s ease;
+}
+
+#games-container.list-view {
+  display: block;
+}
+#games-container.list-view .game-card-col {
+  width: 100%;
+  margin-bottom: 0.75rem;
+}
+#games-container.list-view .game-card {
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+  height: auto;
+}
+#games-container.list-view .game-card:hover {
+  transform: translateX(4px);
+}
+#games-container.list-view .game-card__image {
+  width: 184px;
+  min-width: 184px;
+  padding-top: 0;
+  height: 86px;
+}
+#games-container.list-view .game-card__body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+#games-container.list-view .game-card__title {
+  font-size: 1rem;
+}
+
+.modal-content {
+  background: #1b2838;
+  border: 1px solid rgba(102, 192, 244, 0.2);
+  color: #e9eef2;
+}
+
+#modalGameImage {
+  border: 1px solid rgba(102, 192, 244, 0.2);
+}
+
+#modalAchievements {
+  overflow: auto;
+  max-height: 600px;
+}
+
+#error-state {
+  background-color: rgba(220, 53, 69, 0.15);
+  border-color: rgba(220, 53, 69, 0.4);
+  color: #ff8b97;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.game-card-col {
+  animation: fadeInUp 0.4s ease both;
+}
+
+@media (max-width: 767.98px) {
+  .stat-value {
+    font-size: 1.15rem;
+  }
+  .stat-label {
+    font-size: 0.65rem;
+  }
+  #games-container.list-view .game-card__image {
+    width: 110px;
+    min-width: 110px;
+    height: 60px;
+  }
+  #games-container.list-view .game-card__title {
+    font-size: 0.85rem;
+  }
+  #games-container.list-view .game-card__meta {
+    font-size: 0.7rem;
+  }
+}
+@media (max-width: 575.98px) {
+  .player-card {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+/*# sourceMappingURL=style.css.map */

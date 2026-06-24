@@ -1,0 +1,121 @@
+{
+    "epic": [
+        {
+            "id": "fortnite",
+            "name": "Fortnite",
+            "playtime_forever": 1240,
+            "playtime_2weeks": 300,
+            "image": "https://via.placeholder.com/460x215?text=Fortnite",
+            "store_path": "fortnite"
+        },
+        {
+            "id": "rocket-league",
+            "name": "Rocket League",
+            "playtime_forever": 780,
+            "playtime_2weeks": 25,
+            "image": "https://via.placeholder.com/460x215?text=Rocket+League",
+            "store_path": "rocket-league"
+        },
+        {
+            "id": "hades",
+            "name": "Hades",
+            "playtime_forever": 220,
+            "playtime_2weeks": 0,
+            "image": "https://via.placeholder.com/460x215?text=Hades",
+            "store_path": "hades"
+        }
+    ],
+    "gog": [
+        {
+            "id": "the-witcher-3-wild-hunt",
+            "name": "The Witcher 3: Wild Hunt",
+            "playtime_forever": 1450,
+            "playtime_2weeks": 0,
+            "image": "https://via.placeholder.com/460x215?text=Witcher+3",
+            "store_path": "the_witcher_3_wild_hunt"
+        },
+        {
+            "id": "cyberpunk-2077",
+            "name": "Cyberpunk 2077",
+            "playtime_forever": 630,
+            "playtime_2weeks": 45,
+            "image": "https://via.placeholder.com/460x215?text=Cyberpunk+2077",
+            "store_path": "cyberpunk_2077"
+        },
+        {
+            "id": "baldurs-gate-3",
+            "name": "Baldur's Gate 3",
+            "playtime_forever": 920,
+            "playtime_2weeks": 20,
+            "image": "https://via.placeholder.com/460x215?text=Baldurs+Gate+3",
+            "store_path": "baldurs_gate_3"
+        }
+    ],
+    "uplay": [
+        {
+            "id": "assassins-creed-valhalla",
+            "name": "Assassin's Creed Valhalla",
+            "playtime_forever": 800,
+            "playtime_2weeks": 15,
+            "image": "https://via.placeholder.com/460x215?text=AC+Valhalla",
+            "store_path": "assassins_creed_valhalla"
+        },
+        {
+            "id": "watch-dogs-legion",
+            "name": "Watch Dogs: Legion",
+            "playtime_forever": 365,
+            "playtime_2weeks": 0,
+            "image": "https://via.placeholder.com/460x215?text=Watch+Dogs+Legion",
+            "store_path": "watch_dogs_legion"
+        },
+        {
+            "id": "far-cry-6",
+            "name": "Far Cry 6",
+            "playtime_forever": 540,
+            "playtime_2weeks": 8,
+            "image": "https://via.placeholder.com/460x215?text=Far+Cry+6",
+            "store_path": "far_cry_6"
+        }
+    ],
+    "retroachievements": [
+        {
+            "id": "secret-of-mana",
+            "name": "Secret of Mana",
+            "playtime_forever": 320,
+            "playtime_2weeks": 15,
+            "image": "https://via.placeholder.com/460x215?text=Secret+of+Mana",
+            "store_path": "secret-of-mana",
+            "achievements": [
+                { "apiname": "first_battle", "name": "First Battle", "description": "Win your first fight", "achieved": true },
+                { "apiname": "treasure_hunter", "name": "Treasure Hunter", "description": "Open 25 chests", "achieved": false },
+                { "apiname": "mana_master", "name": "Mana Master", "description": "Unlock all spells", "achieved": false }
+            ]
+        },
+        {
+            "id": "super-mario-world",
+            "name": "Super Mario World",
+            "playtime_forever": 185,
+            "playtime_2weeks": 8,
+            "image": "https://via.placeholder.com/460x215?text=Super+Mario+World",
+            "store_path": "super-mario-world",
+            "achievements": [
+                { "apiname": "first_star", "name": "First Star", "description": "Collect your first star", "achieved": true },
+                { "apiname": "speed_runner", "name": "Speed Runner", "description": "Finish a level in under 60 seconds", "achieved": false },
+                { "apiname": "ghost_buster", "name": "Ghost Buster", "description": "Defeat 10 ghosts", "achieved": false }
+            ]
+        },
+        {
+            "id": "castlevania-symphony-of-the-night",
+            "name": "Castlevania: Symphony of the Night",
+            "playtime_forever": 410,
+            "playtime_2weeks": 4,
+            "image": "https://via.placeholder.com/460x215?text=Castlevania",
+            "store_path": "castlevania-symphony-of-the-night",
+            "achievements": [
+                { "apiname": "first_soul", "name": "First Soul", "description": "Defeat your first boss", "achieved": true },
+                { "apiname": "library_lurker", "name": "Library Lurker", "description": "Find the hidden library", "achieved": false },
+                { "apiname": "holy_water", "name": "Holy Water", "description": "Use holy water 20 times", "achieved": false }
+            ]
+        }
+    ]
+}
