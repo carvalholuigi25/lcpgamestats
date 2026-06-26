@@ -9,6 +9,7 @@
 - [ ] Add JSON/XML export support for test coverage data and improve coverage report layout
 - [ ] Add review score ratings and metadata enrichment in game details
 - [ ] Build administration dashboard with user roles and subpages
+- [ ] Add a group by for achievement status and date unlocked in modal of game details
 
 ### Maintenence
 
@@ -41,6 +42,7 @@
 - [x] Loading, error, and empty states
 - [x] Frontend export buttons for JSON and XML
 - [x] Top 5 playtime chart for current library data
+- [x] LocalStorage persistence for user settings (theme, language, provider, sort, search, page size, pagination)
 
 ## Future roadmap
 

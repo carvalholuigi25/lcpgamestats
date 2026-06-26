@@ -106,10 +106,49 @@
     modalGameImage: document.getElementById('modalGameImage'),
     modalPlaytime: document.getElementById('modalPlaytime'),
     modalRecent: document.getElementById('modalRecent'),
-    modalStoreLink: document.getElementById('modalStoreLink')
+    modalStoreLink: document.getElementById('modalStoreLink'),
+    clearfilter: document.querySelectorAll('.clearfilter')[0]
   };
 
   let gameModal;
+
+  // ============ LocalStorage Helper Functions ============
+  /**
+   * Save current settings to localStorage under "settings" object
+   */
+  function saveSettings() {
+    const settings = {
+      theme: state.theme,
+      lang: state.lang,
+      provider: state.provider,
+      pageSize: state.pageSize,
+      sortBy: state.sortBy,
+      search: state.search,
+      page: state.page
+    };
+    localStorage.setItem('settings', JSON.stringify(settings));
+  }
+
+  /**
+   * Load settings from localStorage and apply to state
+   */
+  function loadSettings() {
+    try {
+      const saved = localStorage.getItem('settings');
+      if (saved) {
+        const settings = JSON.parse(saved);
+        state.theme = settings.theme || state.theme;
+        state.lang = settings.lang || state.lang;
+        state.provider = settings.provider || state.provider;
+        state.pageSize = settings.pageSize || state.pageSize;
+        state.sortBy = settings.sortBy || state.sortBy;
+        state.search = settings.search || state.search;
+        state.page = settings.page || state.page;
+      }
+    } catch (err) {
+      console.warn('Failed to load settings from localStorage:', err.message);
+    }
+  }
 
   /** Convert minutes to a human-readable "Xh Ym" or "Xh" string */
   function formatPlaytime(minutes) {
@@ -288,12 +327,14 @@
     state.search = els.searchInput.value.trim();
     state.sortBy = els.sortSelect.value;
     state.page = 1;
+    saveSettings();
     loadGames();
   }
 
   function changePage(newPage) {
     if (newPage < 1 || newPage > state.totalPages || newPage === state.page) return;
     state.page = newPage;
+    saveSettings();
     loadGames();
   }
 
@@ -454,12 +495,14 @@
     state.theme = theme;
     document.body.classList.toggle('theme-light', theme === 'light');
     document.documentElement.dataset.bsTheme = theme;
+    saveSettings();
   }
 
   function setLanguage(lang) {
     state.lang = lang;
     updateInterfaceLanguage();
     renderGames();
+    saveSettings();
   }
 
   function setProvider(provider) {
@@ -467,6 +510,7 @@
     state.page = 1;
     loadPlayer();
     loadGames();
+    saveSettings();
   }
 
   function buildExportUrl(format) {
@@ -534,15 +578,41 @@
     };
   }
 
+  /** Normalize and validate page size value */
+  function normalizePageSizeValue(value) {
+    const pageSize = Number(value);
+    if (!Number.isInteger(pageSize) || pageSize < 1) return 24;
+    return Math.min(Math.max(pageSize, 1), 100);
+  }
+
+  function clearFilter() {
+    if(els.clearfilter) {
+      els.clearfilter.onclick = (e) => {
+        e.preventDefault();
+        state.search = "";
+        state.sortBy = els.sortSelect.value;
+        state.page = 1;
+
+        els.searchInput.value = state.search;
+        saveSettings();
+        loadGames();
+      }
+    }
+  }
+
   function init() {
     gameModal = new bootstrap.Modal(document.getElementById('gameModal'));
+
+    // Load saved settings from localStorage
+    loadSettings();
 
     els.searchInput.addEventListener('input', debounce(applyFiltersAndSort, 200));
     els.sortSelect.addEventListener('change', applyFiltersAndSort);
     els.providerSelect.addEventListener('change', (event) => setProvider(event.target.value));
     els.pageSizeSelect.addEventListener('change', (event) => {
-      state.pageSize = Number(event.target.value);
+      state.pageSize = normalizePageSizeValue(Number(event.target.value));
       state.page = 1;
+      saveSettings();
       loadGames();
     });
     els.themeSelect.addEventListener('change', (event) => setTheme(event.target.value));
@@ -558,10 +628,13 @@
     els.pageSizeSelect.value = String(state.pageSize);
     els.themeSelect.value = state.theme;
     els.langSelect.value = state.lang;
+    els.searchInput.value = state.search;
+    els.sortSelect.value = state.sortBy;
 
     loadPlayer();
     loadGames();
     showStats();
+    clearFilter();
   }
 
   document.addEventListener('DOMContentLoaded', init);

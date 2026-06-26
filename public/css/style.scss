@@ -343,6 +343,10 @@ body.theme-light #error-state {
 // ==========================================================================
 // List view
 // ==========================================================================
+#games-container {
+  justify-content: center;
+}
+
 #games-container.list-view {
   display: block;
 

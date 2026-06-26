@@ -24,7 +24,6 @@
     <div class="container">
       <div class="d-flex flex-column flex-md-row align-items-center justify-content-between gap-3">
         <div class="d-flex align-items-center gap-3">
-          <i class="fa-brands fa-steam fa-2x steam-icon"></i>
           <div>
             <h1 id="app-title" class="h3 mb-0 fw-bold">LCPGameStats</h1>
             <p class="mb-0 text-muted small hidden" id="player-name">Loading profile...</p>
@@ -102,6 +101,11 @@
             class="form-control"
             placeholder="Search your library..."
           />
+          <div class="bg-body-tertiary border-secondary-subtle">
+            <button class="btn btn-outline-primary w-auto clearfilter" id="clearfilter" type="button" title="Clear filter">
+              <i class="fa-solid fa-filter-circle-xmark"></i>
+            </button>
+          </div>
         </div>
       </div>
       <div class="col-6 col-md-2">

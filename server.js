@@ -21,6 +21,8 @@ const STEAM_USER_ID = process.env.STEAM_USER_ID;
 const RETROACHIEVEMENTS_API_BASE = process.env.RETROACHIEVEMENTS_API_BASE || 'https://retroachievements.org/API';
 const RETROACHIEVEMENTS_USER = process.env.RETROACHIEVEMENTS_USER || '';
 const RETROACHIEVEMENTS_API_KEY = process.env.RETROACHIEVEMENTS_API_KEY || '';
+const EPIC_API_BASE = process.env.EPIC_API_BASE || '';
+const EPIC_API_KEY = process.env.EPIC_API_KEY || '';
 const API_AUTH_TOKEN = process.env.API_AUTH_TOKEN || 'changeme';
 const RATE_LIMIT_WINDOW_MS = Number(process.env.RATE_LIMIT_WINDOW_MS || 60000);
 const RATE_LIMIT_MAX_REQUESTS = Number(process.env.RATE_LIMIT_MAX_REQUESTS || 30);
@@ -226,6 +228,52 @@ function convertGamesResponseToXml(response) {
     <games>${gamesXml}
     </games>
   </gamesResponse>`;
+}
+
+function normalizeEpicAchievement(achievement) {
+  return {
+    apiname: achievement?.apiname || achievement?.id || achievement?.name || '',
+    name: achievement?.name || achievement?.title || achievement?.apiname || '',
+    description: achievement?.description || achievement?.desc || achievement?.descriptionText || '',
+    achieved: Boolean(achievement?.achieved || achievement?.unlocked),
+    unlocktime: achievement?.unlocktime || achievement?.dateUnlocked || 0,
+    badgeimage: achievement?.badgeimage || achievement?.image || ''
+  };
+}
+
+async function fetchEpicAchievements(appid) {
+  const sampleGames = SAMPLE_GAME_DATA.epic || [];
+  const sampleGame = sampleGames.find((item) => [item.id, item.appid].some((field) => field !== undefined && String(field) === String(appid)));
+
+  if (EPIC_API_BASE && EPIC_API_KEY) {
+    try {
+      const endpoint = `${EPIC_API_BASE.replace(/\/+$/, '')}/games/${encodeURIComponent(appid)}/achievements`;
+      const { data } = await axios.get(endpoint, {
+        headers: {
+          Authorization: `Bearer ${EPIC_API_KEY}`,
+          Accept: 'application/json'
+        }
+      });
+
+      const rawAchievements = Array.isArray(data)
+        ? data
+        : data?.achievements || data;
+
+      if (Array.isArray(rawAchievements) && rawAchievements.length > 0) {
+        return rawAchievements.map(normalizeEpicAchievement);
+      }
+    } catch (err) {
+      console.error('Error fetching Epic Games achievements from configured API:', err.message);
+    }
+  }
+
+  const fallbackAchievements = sampleGame?.achievements || [
+    { apiname: 'first_play', name: 'First Play', description: 'Start the game on Epic Games', achieved: false },
+    { apiname: 'collector', name: 'Collector', description: 'Collect a few items', achieved: false },
+    { apiname: 'completionist', name: 'Completionist', description: 'Complete all available objectives', achieved: false }
+  ];
+
+  return fallbackAchievements.map(normalizeEpicAchievement);
 }
 
 async function getApiPlayer(req, res) {
@@ -513,6 +561,17 @@ async function getApiAchievements(req, res) {
     }
   }
 
+  if (provider.id === 'epic') {
+    try {
+      const achievements = await fetchEpicAchievements(appid);
+      const unlocked = achievements.filter((a) => a.achieved).length;
+      return res.json({ provider: provider.id, appid, total: achievements.length, unlocked, achievements });
+    } catch (err) {
+      console.error('Error fetching Epic Games achievements:', err.message);
+      return res.status(500).json({ error: 'Failed to fetch Epic Games achievements' });
+    }
+  }
+
   if (provider.id !== 'steam') {
     const sample = SAMPLE_GAME_DATA[provider.id] || [];
     const game = sample.find((item) => String(item.id) === String(appid) || String(item.appid) === String(appid));
@@ -625,6 +684,7 @@ export {
   filterGames,
   createGamesResponse,
   convertGamesResponseToXml,
+  fetchEpicAchievements,
   requireApiAuth,
   apiRateLimiter
 };

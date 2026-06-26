@@ -1,7 +1,7 @@
 {
   "name": "lcp-games-stats",
   "version": "1.0.0",
-  "description": "Display my user's games libraries",
+  "description": "Display and tracks my games stats",
   "main": "server.js",
   "type": "module",
   "scripts": {

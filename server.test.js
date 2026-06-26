@@ -6,7 +6,8 @@ import {
   sortGames,
   filterGames,
   createGamesResponse,
-  convertGamesResponseToXml
+  convertGamesResponseToXml,
+  fetchEpicAchievements
 } from './server.js';
 
 describe('server helper functions', () => {
@@ -82,5 +83,13 @@ describe('server helper functions', () => {
     assert.ok(xml.includes('<provider>test</provider>'));
     assert.ok(xml.includes('&lt;1&gt;'));
     assert.ok(xml.includes('Game &amp; One'));
+  });
+
+  it('returns fallback Epic achievements when no external Epic API is configured', async () => {
+    const achievements = await fetchEpicAchievements('fortnite');
+    assert.ok(Array.isArray(achievements));
+    assert.ok(achievements.length > 0);
+    assert.strictEqual(achievements[0].apiname, 'first_play');
+    assert.strictEqual(typeof achievements[0].achieved, 'boolean');
   });
 });

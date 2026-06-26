@@ -298,6 +298,10 @@ body.theme-light #error-state {
   transition: width 0.35s ease;
 }
 
+#games-container {
+  justify-content: center;
+}
+
 #games-container.list-view {
   display: block;
 }
