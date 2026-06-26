@@ -592,6 +592,7 @@
         state.search = "";
         state.sortBy = els.sortSelect.value;
         state.page = 1;
+        state.pageSize = 8;
 
         els.searchInput.value = state.search;
         saveSettings();

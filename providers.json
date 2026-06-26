@@ -40,8 +40,8 @@
         "label": "RetroAchievements",
         "playerSupported": true,
         "storeBase": "https://retroachievements.org/game/",
-        "sampleImageBase": "https://via.placeholder.com/460x215?text=RetroAchievements",
-        "sampleImageBase2": "https://via.placeholder.com/460x215?text=RetroAchievements",
-        "sampleImageBase3": "https://via.placeholder.com/460x215?text=RetroAchievements"
+        "sampleImageBase": "https://media.retroachievements.org",
+        "sampleImageBase2": "https://media.retroachievements.org",
+        "sampleImageBase3": "https://media.retroachievements.org"
     }
 }

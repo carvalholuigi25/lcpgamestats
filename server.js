@@ -68,19 +68,22 @@ function getProvider(providerId) {
 }
 
 function getHeaderImage(provider, game) {
-  const glogo = game.img_logo_url ? `${provider.sampleImageBase3}/${game.appid}/${game.img_logo_url}.jpg` : `${provider.sampleImageBase2}/${game.appid}/header.jpg`;
-  return game.header_image || game.image || glogo || `${provider.sampleImageBase}/${game.appid}/header.jpg`;
+  return provider.id == "steam" ? (game.header_image || `${provider.sampleImageBase2}/${game.appid}/${game.img_logo_url || "header"}.jpg`) : (game.header_image || `${provider.sampleImageBase}/${game.ImageIcon}`);
+}
+
+function getStoreGameLink(provider, game) {
+  return game.store_link || `${provider.storeBase}${game.store_path || game.appid || game.id || game.GameId || game.gameId}`;
 }
 
 function normalizeProviderGame(provider, game) {
-  const normalized = provider === 'retroachievements' ? {
+  const normalized = provider.id === 'retroachievements' ? {
     gameId: game.gameId || game.GameId || game.ID || game.id,
     appid: game.gameId || game.GameId || game.ID || game.id,
     title: game.title || game.Title,
     name: game.title || game.Title,
     img_icon_url: game.imageIcon || game.ImageIcon,
     img_logo_url: game.imageIcon || game.ImageIcon,
-    header_image: `https://media.retroachievements.org/${game.ImageIcon}`,
+    header_image: getHeaderImage(provider, game),
     consoleID: game.consoleId || game.ConsoleID,
     consoleName: game.consoleName || game.ConsoleName,
     maxPossible: game.maxPossible || game.MaxPossible,
@@ -94,7 +97,7 @@ function normalizeProviderGame(provider, game) {
     playtime_forever: Number(game.playtime_forever || 0),
     playtime_2weeks: Number(game.playtime_2weeks || 0),
     header_image: getHeaderImage(provider, game),
-    store_link: game.store_link || `${provider.storeBase}${game.store_path || game.id || game.GameId || game.gameId}`,
+    store_link: getStoreGameLink(provider, game),
     rtime_last_played: game.rtime_last_played || 0,
     provider: provider.id
   };
@@ -241,6 +244,24 @@ function normalizeEpicAchievement(achievement) {
   };
 }
 
+async function getActualHeaderFromSteamAPI(req, res) {
+   try {
+      const endpoint = `https://store.steampowered.com/api/appdetails?appids=${req.query.appid}`;
+      const resp = await axios.get(endpoint, {
+        headers: {
+          Accept: 'application/json'
+        }
+      });
+
+      const rawData = resp.data[req.query.appid].data.header_image;
+      return res.json(rawData);
+    } catch (err) {
+      console.error('Error fetching Steam games:', err.message);
+      return res.status(500).json({ error: 'Failed to fetch Steam game library' });
+    }
+}
+
+
 async function fetchEpicAchievements(appid) {
   const sampleGames = SAMPLE_GAME_DATA.epic || [];
   const sampleGame = sampleGames.find((item) => [item.id, item.appid].some((field) => field !== undefined && String(field) === String(appid)));
@@ -360,7 +381,7 @@ async function getApiGames(req, res) {
         name: game.title || game.Title,
         img_icon_url: game.imageIcon || game.ImageIcon,
         img_logo_url: game.imageIcon || game.ImageIcon,
-        header_image: `https://media.retroachievements.org/${game.ImageIcon}`,
+        header_image: getHeaderImage(provider, game),
         consoleID: game.consoleId || game.ConsoleID,
         consoleName: game.consoleName || game.ConsoleName,
         maxPossible: game.maxPossible || game.MaxPossible,
@@ -392,7 +413,7 @@ async function getApiGames(req, res) {
     }
 
     try {
-      const { data } = await axios.get(`${STEAM_API_BASE}/IPlayerService/GetOwnedGames/v1/`, {
+      const { data } = await axios.get(`${STEAM_API_BASE}/IPlayerService/GetOwnedGames/v0001/`, {
         params: {
           key: STEAM_API_KEY,
           steamid: STEAM_USER_ID,
@@ -664,6 +685,11 @@ app.get('/api/player', async (req, res) => {
 app.get('/api/games', async (req, res) => {
   await getApiGames(req, res);
 });
+
+app.get('/api/gametestheader', async (req, res) => {
+  await getActualHeaderFromSteamAPI(req, res);
+});
+
 
 app.get('/api/achievements', async (req, res) => {
   await getApiAchievements(req, res);
