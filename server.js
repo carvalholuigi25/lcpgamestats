@@ -90,15 +90,17 @@ function normalizeProviderGame(provider, game) {
     numAwarded: game.numAwarded || game.NumAwarded,
     pctWon: game.pctWon || game.PctWon,
     hardcoreMode: game.hardcoreMode || game.HardcoreMode,
+    playtime_forever: Number(game.playtime_forever || 0),
+    playtime_2weeks: Number(game.playtime_2weeks || 0),
     provider: provider.id
   } : {
     appid: game.appid || game.gameId || game.GameId,
     name: game.name,
     playtime_forever: Number(game.playtime_forever || 0),
     playtime_2weeks: Number(game.playtime_2weeks || 0),
+    rtime_last_played: Number(game.rtime_last_played || 0),
     header_image: getHeaderImage(provider, game),
     store_link: getStoreGameLink(provider, game),
-    rtime_last_played: game.rtime_last_played || 0,
     provider: provider.id
   };
 
@@ -245,20 +247,32 @@ function normalizeEpicAchievement(achievement) {
 }
 
 async function getActualHeaderFromSteamAPI(req, res) {
-   try {
-      const endpoint = `https://store.steampowered.com/api/appdetails?appids=${req.query.appid}`;
-      const resp = await axios.get(endpoint, {
-        headers: {
-          Accept: 'application/json'
-        }
-      });
-
-      const rawData = resp.data[req.query.appid].data.header_image;
-      return res.json(rawData);
-    } catch (err) {
-      console.error('Error fetching Steam games:', err.message);
-      return res.status(500).json({ error: 'Failed to fetch Steam game library' });
+  try {
+    const appid = req.query.appid;
+    
+    if(!appid) {
+      return res.status(400).json({ error: 'Please provide the app id from steam' });
     }
+
+    const endpoint = `https://store.steampowered.com/api/appdetails?appids=${appid}`;
+    const resp = await axios.get(endpoint, {
+      headers: {
+        Accept: 'application/json'
+      }
+    });
+
+    const rawData = resp.data[appid].data.header_image;
+    return res.json({
+      data_images: {
+        header_image: rawData,
+        header_hash_image: rawData.replace("https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/"+appid+"/", "").split("/")[0],
+        timestamp: rawData.split("?t=")[1]
+      }
+    });
+  } catch (err) {
+    console.error('Error fetching Steam games:', err.message);
+    return res.status(500).json({ error: 'Failed to fetch Steam game library' });
+  }
 }
 
 
@@ -429,18 +443,17 @@ async function getApiGames(req, res) {
         return res.status(404).json({ error: 'No games found. The profile may be private.' });
       }
 
-      let games = response.games
-        .map((game) => normalizeProviderGame(provider, {
-          appid: game.appid,
-          name: game.name,
-          img_icon_url: game.img_icon_url,
-          img_logo_url: game.img_logo_url,
-          playtime_forever: game.playtime_forever,
-          playtime_2weeks: game.playtime_2weeks || 0,
-          header_image: getHeaderImage(provider, game),
-          rtime_last_played: game.rtime_last_played || 0,
-          store_path: String(game.appid)
-        }));
+      let games = response.games.map((game) => normalizeProviderGame(provider, {
+        appid: game.appid,
+        name: game.name,
+        img_icon_url: game.img_icon_url,
+        img_logo_url: game.img_logo_url,
+        header_image: getHeaderImage(provider, game),
+        playtime_forever: Number(game.playtime_forever || 0),
+        playtime_2weeks: Number(game.playtime_2weeks || 0),
+        rtime_last_played: Number(game.rtime_last_played || 0),
+        store_path: String(game.appid)
+      }));
 
       games = filterGames(games, search);
       games = sortGames(games, sortBy);
@@ -459,8 +472,7 @@ async function getApiGames(req, res) {
   }
 
   const sampleGames = SAMPLE_GAME_DATA[provider.id] || [];
-  let games = sampleGames
-    .map((game) => normalizeProviderGame(provider, game));
+  let games = sampleGames.map((game) => normalizeProviderGame(provider, game));
 
   games = filterGames(games, search);
   games = sortGames(games, sortBy);
@@ -689,7 +701,6 @@ app.get('/api/games', async (req, res) => {
 app.get('/api/gametestheader', async (req, res) => {
   await getActualHeaderFromSteamAPI(req, res);
 });
-
 
 app.get('/api/achievements', async (req, res) => {
   await getApiAchievements(req, res);

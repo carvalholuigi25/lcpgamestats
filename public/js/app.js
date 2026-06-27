@@ -36,7 +36,7 @@
       mostPlayed: 'Most Played',
       totalPlaytime: 'Total Playtime',
       last2Weeks: 'Last 2 Weeks',
-      viewOnStore: 'View on Store',
+      viewMore: 'View more',
       achievements: 'Achievements',
       noAchievements: 'No achievements are available for this game.',
       loadingAchievements: 'Loading achievements...',
@@ -54,7 +54,7 @@
       mostPlayed: 'Más Jugado',
       totalPlaytime: 'Tiempo Total',
       last2Weeks: 'Últimas 2 Semanas',
-      viewOnStore: 'Ver en la Tienda',
+      viewMore: 'Ver más',
       achievements: 'Logros',
       noAchievements: 'No hay logros disponibles para este juego.',
       loadingAchievements: 'Cargando logros...',
@@ -124,7 +124,8 @@
       pageSize: state.pageSize,
       sortBy: state.sortBy,
       search: state.search,
-      page: state.page
+      page: state.page,
+      view: state.view
     };
     localStorage.setItem('settings', JSON.stringify(settings));
   }
@@ -144,6 +145,7 @@
         state.sortBy = settings.sortBy || state.sortBy;
         state.search = settings.search || state.search;
         state.page = settings.page || state.page;
+        state.view = settings.view || state.view;
       }
     } catch (err) {
       console.warn('Failed to load settings from localStorage:', err.message);
@@ -255,7 +257,7 @@
     }, null);
 
     els.statTotalGames.textContent = totalGames.toLocaleString();
-    els.statTotalHours.textContent = formatHoursShort(totalMinutes);
+    els.statTotalHours.textContent = formatHoursShort(parseInt(totalMinutes, 0));
     els.statRecentGames.textContent = recentlyPlayed.toLocaleString();
     els.statTopGame.textContent = topGame ? topGame.name : '--';
     els.statTopGame.title = topGame ? topGame.name : '';
@@ -277,7 +279,7 @@
         <div class="stats-chart__row">
           <div class="stats-chart__meta">
             <span class="stats-chart__label" title="${escapeHtml(game.name)}">${escapeHtml(game.name)}</span>
-            <span class="stats-chart__value">${formatHoursShort(game.playtime_forever)}h</span>
+            <span class="stats-chart__value">${formatHoursShort(parseInt(game.playtime_forever, 0))}h</span>
           </div>
           <div class="stats-chart__bar-wrap">
             <div class="stats-chart__bar" style="width: ${width}%"></div>
@@ -423,7 +425,7 @@
     els.modalStoreLink.href = game.store_link || (state.provider === 'retroachievements'
       ? `https://retroachievements.org/game/${encodeURIComponent(achievementId)}`
       : `https://store.steampowered.com/app/${encodeURIComponent(game.appid)}`);
-    els.modalStoreLink.textContent = translations[state.lang].viewOnStore;
+    els.modalStoreLink.textContent = translations[state.lang].viewMore;
 
     els.modalAchievementsTitle.textContent = translations[state.lang].achievements;
     els.modalAchievementsStatus.textContent = translations[state.lang].loadingAchievements;
@@ -544,7 +546,7 @@
     els.labelTotalHours.textContent = t.totalHours;
     els.labelRecentGames.textContent = t.playedRecently;
     els.labelTopGame.textContent = t.mostPlayed;
-    els.modalStoreLink.textContent = t.viewOnStore;
+    els.modalStoreLink.textContent = t.viewMore;
 
     if (els.empty.classList.contains('d-none') === false) {
       const message = els.searchInput.value.trim()
@@ -556,10 +558,11 @@
 
   function setView(view) {
     state.view = view;
-    els.container.classList.toggle('list-view', view === 'list');
-    els.viewGridBtn.classList.toggle('active', view === 'grid');
-    els.viewListBtn.classList.toggle('active', view === 'list');
+    els.container.classList.toggle('list-view', state.view === 'list');
+    els.viewGridBtn.classList.toggle('active', state.view === 'grid');
+    els.viewListBtn.classList.toggle('active', state.view === 'list');
     renderGames();
+    saveSettings();
   }
 
   /** Basic HTML escaping for game titles */
@@ -601,6 +604,29 @@
     }
   }
 
+  function setActiveViewType() {
+    if(state.view === "grid") {
+      if(els.viewListBtn.classList.contains("active")) {
+        els.viewListBtn.classList.remove("active");
+      }
+
+      els.viewGridBtn.classList.add("active");
+    } else {
+      if(els.viewGridBtn.classList.contains("active")) {
+        els.viewGridBtn.classList.remove("active");
+      }
+      
+      els.viewListBtn.classList.add("active");
+    }
+  }
+
+  function setPageSizeChange(event) {
+    state.pageSize = normalizePageSizeValue(Number(event.target.value));
+    state.page = 1;
+    saveSettings();
+    loadGames();
+  }
+
   function init() {
     gameModal = new bootstrap.Modal(document.getElementById('gameModal'));
 
@@ -610,12 +636,7 @@
     els.searchInput.addEventListener('input', debounce(applyFiltersAndSort, 200));
     els.sortSelect.addEventListener('change', applyFiltersAndSort);
     els.providerSelect.addEventListener('change', (event) => setProvider(event.target.value));
-    els.pageSizeSelect.addEventListener('change', (event) => {
-      state.pageSize = normalizePageSizeValue(Number(event.target.value));
-      state.page = 1;
-      saveSettings();
-      loadGames();
-    });
+    els.pageSizeSelect.addEventListener('change', (event) => setPageSizeChange(event));
     els.themeSelect.addEventListener('change', (event) => setTheme(event.target.value));
     els.langSelect.addEventListener('change', (event) => setLanguage(event.target.value));
     els.exportJsonBtn.addEventListener('click', () => downloadExport('json'));
@@ -623,8 +644,6 @@
     els.viewGridBtn.addEventListener('click', () => setView('grid'));
     els.viewListBtn.addEventListener('click', () => setView('list'));
 
-    setTheme(state.theme);
-    setLanguage(state.lang);
     els.providerSelect.value = state.provider;
     els.pageSizeSelect.value = String(state.pageSize);
     els.themeSelect.value = state.theme;
@@ -632,6 +651,10 @@
     els.searchInput.value = state.search;
     els.sortSelect.value = state.sortBy;
 
+    setTheme(state.theme);
+    setLanguage(state.lang);
+    setView(state.view || "grid");
+    setActiveViewType();
     loadPlayer();
     loadGames();
     showStats();
