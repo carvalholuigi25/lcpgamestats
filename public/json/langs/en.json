@@ -1,0 +1,33 @@
+{
+    "en": {
+        "appTitle": "LCG Game Stats",
+        "appDescription": "A web application to track your game stats and progress.",
+        "language": "Language",
+        "theme": "Theme",
+        "glassmorphism": "Glassmorphism",
+        "liquid": "Liquid",
+        "dark": "Dark",
+        "light": "Light",
+        "settings": "Settings",
+        "save": "Save",
+        "cancel": "Cancel",
+        "applyBackground": "Apply Background",
+        "clearBackground": "Clear Background",
+        "uploadBackground": "Upload Background",
+        "loadingLibrary": "Fetching your game library from Steam...",
+        "emptySearch": "No games match your search.",
+        "emptyLibrary": "No games found in this library.",
+        "providerInfo": "Use provider switcher to preview non-Steam sample libraries.",
+        "totalGames": "Total Games",
+        "totalHours": "Total Hours",
+        "playedRecently": "Played Recently",
+        "mostPlayed": "Most Played",
+        "totalPlaytime": "Total Playtime",
+        "last2Weeks": "Last 2 Weeks",
+        "viewMore": "View more",
+        "achievements": "Achievements",
+        "noAchievements": "No achievements are available for this game.",
+        "loadingAchievements": "Loading achievements...",
+        "achievementsStatus": "Unlocked {unlocked} of {total}"
+    }
+}

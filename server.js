@@ -731,10 +731,26 @@ app.post('/api/upload-bg', upload.single('bg'), (req, res) => {
   }
 });
 
-if (process.argv[1] === __filename) {
-  app.listen(PORT, () => {
-    console.log(`LCPGameStats running at http://localhost:${PORT}`);
+function startServer(port = PORT) {
+  const server = app.listen(port, () => {
+    console.log(`LCPGameStats running at http://localhost:${port}`);
   });
+
+  server.on('error', (err) => {
+    if (err.code === 'EADDRINUSE') {
+      const nextPort = port + 1;
+      console.warn(`Port ${port} is busy. Trying ${nextPort} instead.`);
+      server.close(() => startServer(nextPort));
+      return;
+    }
+
+    console.error(err);
+    process.exit(1);
+  });
+}
+
+if (process.argv[1] === __filename) {
+  startServer(PORT);
 }
 
 export {

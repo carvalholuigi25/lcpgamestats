@@ -1,53 +1,154 @@
 /* Liquid Glass theme */
-body.theme-liquid {
+html[data-bs-theme=liquid], body.theme-liquid, .liquid {
   background: linear-gradient(180deg, #0f1724 0%, #071021 100%);
   color: #e6f7ff;
 }
-
-body.theme-liquid .app-header,
-body.theme-liquid .app-footer {
+html[data-bs-theme=liquid] .app-header, html[data-bs-theme=liquid] .app-footer, body.theme-liquid .app-header, body.theme-liquid .app-footer, .liquid .app-header, .liquid .app-footer {
   background: linear-gradient(180deg, rgba(255, 255, 255, 0.02), rgba(255, 255, 255, 0.01));
   -webkit-backdrop-filter: blur(6px) saturate(120%);
   backdrop-filter: blur(6px) saturate(120%);
   border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  color: #e6f7ff !important;
 }
-
-body.theme-liquid .player-card,
-body.theme-liquid .stat-box,
-body.theme-liquid .game-card,
-body.theme-liquid .modal-content {
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.02));
-  border: 1px solid rgba(200, 230, 255, 0.06);
+html[data-bs-theme=liquid] .player-card, html[data-bs-theme=liquid] .stat-box, html[data-bs-theme=liquid] .game-card, html[data-bs-theme=liquid] .modal-content, body.theme-liquid .player-card, body.theme-liquid .stat-box, body.theme-liquid .game-card, body.theme-liquid .modal-content, .liquid .player-card, .liquid .stat-box, .liquid .game-card, .liquid .modal-content {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.02)) !important;
+  border: 1px solid rgba(200, 230, 255, 0.06) !important;
   box-shadow: 0 6px 24px rgba(6, 18, 48, 0.6);
+  color: #e6f7ff !important;
+}
+html[data-bs-theme=liquid] select, body.theme-liquid select, .liquid select {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.02)) !important;
+  border: 1px solid rgba(200, 230, 255, 0.06) !important;
+  box-shadow: 0 6px 24px rgba(6, 18, 48, 0.6);
+  color: #e6f7ff !important;
+}
+html[data-bs-theme=liquid] input, html[data-bs-theme=liquid] .input-group-text, html[data-bs-theme=liquid] .form-control, body.theme-liquid input, body.theme-liquid .input-group-text, body.theme-liquid .form-control, .liquid input, .liquid .input-group-text, .liquid .form-control {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.02)) !important;
+  border: 1px solid rgba(200, 230, 255, 0.06) !important;
+  box-shadow: 0 6px 24px rgba(6, 18, 48, 0.6);
+  color: #e6f7ff;
+}
+html[data-bs-theme=liquid] #pagination-controls, html[data-bs-theme=liquid] .pagination-controls,
+html[data-bs-theme=liquid] #pagination, html[data-bs-theme=liquid] .pagination, body.theme-liquid #pagination-controls, body.theme-liquid .pagination-controls,
+body.theme-liquid #pagination, body.theme-liquid .pagination, .liquid #pagination-controls, .liquid .pagination-controls,
+.liquid #pagination, .liquid .pagination {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.02)) !important;
+  border: 1px solid rgba(200, 230, 255, 0.06) !important;
+  box-shadow: 0 6px 24px rgba(6, 18, 48, 0.6);
+  color: #e6f7ff;
+}
+html[data-bs-theme=liquid] #pagination-controls .page-link, html[data-bs-theme=liquid] #pagination-controls .page-item, html[data-bs-theme=liquid] .pagination-controls .page-link, html[data-bs-theme=liquid] .pagination-controls .page-item,
+html[data-bs-theme=liquid] #pagination .page-link,
+html[data-bs-theme=liquid] #pagination .page-item, html[data-bs-theme=liquid] .pagination .page-link, html[data-bs-theme=liquid] .pagination .page-item, body.theme-liquid #pagination-controls .page-link, body.theme-liquid #pagination-controls .page-item, body.theme-liquid .pagination-controls .page-link, body.theme-liquid .pagination-controls .page-item,
+body.theme-liquid #pagination .page-link,
+body.theme-liquid #pagination .page-item, body.theme-liquid .pagination .page-link, body.theme-liquid .pagination .page-item, .liquid #pagination-controls .page-link, .liquid #pagination-controls .page-item, .liquid .pagination-controls .page-link, .liquid .pagination-controls .page-item,
+.liquid #pagination .page-link,
+.liquid #pagination .page-item, .liquid .pagination .page-link, .liquid .pagination .page-item {
+  background: inherit !important;
+  border: none !important;
+  color: inherit !important;
+}
+html[data-bs-theme=liquid] #pagination-controls .page-link.active, html[data-bs-theme=liquid] #pagination-controls .page-item.active, html[data-bs-theme=liquid] .pagination-controls .page-link.active, html[data-bs-theme=liquid] .pagination-controls .page-item.active,
+html[data-bs-theme=liquid] #pagination .page-link.active,
+html[data-bs-theme=liquid] #pagination .page-item.active, html[data-bs-theme=liquid] .pagination .page-link.active, html[data-bs-theme=liquid] .pagination .page-item.active, body.theme-liquid #pagination-controls .page-link.active, body.theme-liquid #pagination-controls .page-item.active, body.theme-liquid .pagination-controls .page-link.active, body.theme-liquid .pagination-controls .page-item.active,
+body.theme-liquid #pagination .page-link.active,
+body.theme-liquid #pagination .page-item.active, body.theme-liquid .pagination .page-link.active, body.theme-liquid .pagination .page-item.active, .liquid #pagination-controls .page-link.active, .liquid #pagination-controls .page-item.active, .liquid .pagination-controls .page-link.active, .liquid .pagination-controls .page-item.active,
+.liquid #pagination .page-link.active,
+.liquid #pagination .page-item.active, .liquid .pagination .page-link.active, .liquid .pagination .page-item.active {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.02)) !important;
+  border: 1px solid rgba(200, 230, 255, 0.06) !important;
+  box-shadow: 0 6px 24px rgba(6, 18, 48, 0.6);
+  color: #e6f7ff;
+}
+html[data-bs-theme=liquid] .bg-body, html[data-bs-theme=liquid] .bg-body-secondary, html[data-bs-theme=liquid] .bg-body-tertiary, body.theme-liquid .bg-body, body.theme-liquid .bg-body-secondary, body.theme-liquid .bg-body-tertiary, .liquid .bg-body, .liquid .bg-body-secondary, .liquid .bg-body-tertiary {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.02)) !important;
+}
+html[data-bs-theme=liquid] .btn, body.theme-liquid .btn, .liquid .btn {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.02)) !important;
+  border: 1px solid rgba(200, 230, 255, 0.06) !important;
+  box-shadow: 0 6px 24px rgba(6, 18, 48, 0.6);
+  color: #e6f7ff;
 }
 
 /* Glassmorphism theme */
-body.theme-glassmorphism {
+html[data-bs-theme=glassmorphism], body.theme-glassmorphism, .glassmorphism {
   background: linear-gradient(180deg, rgba(255, 255, 255, 0.02), rgba(255, 255, 255, 0.01));
-  color: #0f1724;
+  color: white;
 }
-
-body.theme-glassmorphism .app-header,
-body.theme-glassmorphism .app-footer {
+html[data-bs-theme=glassmorphism] .app-header, html[data-bs-theme=glassmorphism] .app-footer, body.theme-glassmorphism .app-header, body.theme-glassmorphism .app-footer, .glassmorphism .app-header, .glassmorphism .app-footer {
   background: rgba(255, 255, 255, 0.06);
   -webkit-backdrop-filter: blur(6px) saturate(120%);
   backdrop-filter: blur(6px) saturate(120%);
   border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  color: white !important;
 }
-
-body.theme-glassmorphism .player-card,
-body.theme-glassmorphism .stat-box,
-body.theme-glassmorphism .game-card,
-body.theme-glassmorphism .modal-content {
-  background: rgba(255, 255, 255, 0.06);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+html[data-bs-theme=glassmorphism] .player-card, html[data-bs-theme=glassmorphism] .stat-box, html[data-bs-theme=glassmorphism] .game-card, html[data-bs-theme=glassmorphism] .modal-content, body.theme-glassmorphism .player-card, body.theme-glassmorphism .stat-box, body.theme-glassmorphism .game-card, body.theme-glassmorphism .modal-content, .glassmorphism .player-card, .glassmorphism .stat-box, .glassmorphism .game-card, .glassmorphism .modal-content {
+  background: rgba(255, 255, 255, 0.06) !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+  color: white !important;
+}
+html[data-bs-theme=glassmorphism] .game-card__image, body.theme-glassmorphism .game-card__image, .glassmorphism .game-card__image {
+  background-color: rgba(255, 255, 255, 0.03);
+}
+html[data-bs-theme=glassmorphism] select, body.theme-glassmorphism select, .glassmorphism select {
+  background: rgba(255, 255, 255, 0.06) !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
   -webkit-backdrop-filter: blur(8px);
   backdrop-filter: blur(8px);
   color: #0f1724;
 }
-
-body.theme-glassmorphism .game-card__image {
-  background-color: rgba(255, 255, 255, 0.03);
+html[data-bs-theme=glassmorphism] .input, html[data-bs-theme=glassmorphism] .input-group-text, html[data-bs-theme=glassmorphism] .form-control, body.theme-glassmorphism .input, body.theme-glassmorphism .input-group-text, body.theme-glassmorphism .form-control, .glassmorphism .input, .glassmorphism .input-group-text, .glassmorphism .form-control {
+  background: rgba(255, 255, 255, 0.06) !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+  color: #0f1724;
+}
+html[data-bs-theme=glassmorphism] #pagination-controls, html[data-bs-theme=glassmorphism] .pagination-controls,
+html[data-bs-theme=glassmorphism] #pagination, html[data-bs-theme=glassmorphism] .pagination, body.theme-glassmorphism #pagination-controls, body.theme-glassmorphism .pagination-controls,
+body.theme-glassmorphism #pagination, body.theme-glassmorphism .pagination, .glassmorphism #pagination-controls, .glassmorphism .pagination-controls,
+.glassmorphism #pagination, .glassmorphism .pagination {
+  background: rgba(255, 255, 255, 0.06) !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+  color: #0f1724;
+}
+html[data-bs-theme=glassmorphism] #pagination-controls .page-link, html[data-bs-theme=glassmorphism] #pagination-controls .page-item, html[data-bs-theme=glassmorphism] .pagination-controls .page-link, html[data-bs-theme=glassmorphism] .pagination-controls .page-item,
+html[data-bs-theme=glassmorphism] #pagination .page-link,
+html[data-bs-theme=glassmorphism] #pagination .page-item, html[data-bs-theme=glassmorphism] .pagination .page-link, html[data-bs-theme=glassmorphism] .pagination .page-item, body.theme-glassmorphism #pagination-controls .page-link, body.theme-glassmorphism #pagination-controls .page-item, body.theme-glassmorphism .pagination-controls .page-link, body.theme-glassmorphism .pagination-controls .page-item,
+body.theme-glassmorphism #pagination .page-link,
+body.theme-glassmorphism #pagination .page-item, body.theme-glassmorphism .pagination .page-link, body.theme-glassmorphism .pagination .page-item, .glassmorphism #pagination-controls .page-link, .glassmorphism #pagination-controls .page-item, .glassmorphism .pagination-controls .page-link, .glassmorphism .pagination-controls .page-item,
+.glassmorphism #pagination .page-link,
+.glassmorphism #pagination .page-item, .glassmorphism .pagination .page-link, .glassmorphism .pagination .page-item {
+  background: inherit !important;
+  border: none !important;
+  color: inherit !important;
+}
+html[data-bs-theme=glassmorphism] #pagination-controls .page-link.active, html[data-bs-theme=glassmorphism] #pagination-controls .page-item.active, html[data-bs-theme=glassmorphism] .pagination-controls .page-link.active, html[data-bs-theme=glassmorphism] .pagination-controls .page-item.active,
+html[data-bs-theme=glassmorphism] #pagination .page-link.active,
+html[data-bs-theme=glassmorphism] #pagination .page-item.active, html[data-bs-theme=glassmorphism] .pagination .page-link.active, html[data-bs-theme=glassmorphism] .pagination .page-item.active, body.theme-glassmorphism #pagination-controls .page-link.active, body.theme-glassmorphism #pagination-controls .page-item.active, body.theme-glassmorphism .pagination-controls .page-link.active, body.theme-glassmorphism .pagination-controls .page-item.active,
+body.theme-glassmorphism #pagination .page-link.active,
+body.theme-glassmorphism #pagination .page-item.active, body.theme-glassmorphism .pagination .page-link.active, body.theme-glassmorphism .pagination .page-item.active, .glassmorphism #pagination-controls .page-link.active, .glassmorphism #pagination-controls .page-item.active, .glassmorphism .pagination-controls .page-link.active, .glassmorphism .pagination-controls .page-item.active,
+.glassmorphism #pagination .page-link.active,
+.glassmorphism #pagination .page-item.active, .glassmorphism .pagination .page-link.active, .glassmorphism .pagination .page-item.active {
+  background: rgba(255, 255, 255, 0.06) !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+  color: #0f1724;
+}
+html[data-bs-theme=glassmorphism] .bg-body, html[data-bs-theme=glassmorphism] .bg-body-secondary, html[data-bs-theme=glassmorphism] .bg-body-tertiary, body.theme-glassmorphism .bg-body, body.theme-glassmorphism .bg-body-secondary, body.theme-glassmorphism .bg-body-tertiary, .glassmorphism .bg-body, .glassmorphism .bg-body-secondary, .glassmorphism .bg-body-tertiary {
+  background-color: rgba(255, 255, 255, 0.03) !important;
+}
+html[data-bs-theme=glassmorphism] .btn, body.theme-glassmorphism .btn, .glassmorphism .btn {
+  background: rgba(255, 255, 255, 0.06) !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+  color: #0f1724;
 }
 
 body {
@@ -400,6 +501,7 @@ body.has-custom-bg {
   background-size: cover !important;
   background-position: center center !important;
   background-repeat: no-repeat !important;
+  background-attachment: fixed !important;
 }
 
 body.has-custom-bg::before {

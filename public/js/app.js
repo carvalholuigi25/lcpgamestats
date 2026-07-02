@@ -4,6 +4,8 @@
  * and renders an interactive, searchable, sortable game library.
  */
 
+import { fetchTranslations } from './functions.js';
+
 (() => {
   const state = {
     games: [],
@@ -23,44 +25,7 @@
     topGames: []
   };
 
-  const translations = {
-    en: {
-      appTitle: 'LCPGameStats',
-      loadingLibrary: 'Fetching your game library from Steam...',
-      emptySearch: 'No games match your search.',
-      emptyLibrary: 'No games found in this library.',
-      providerInfo: 'Use provider switcher to preview non-Steam sample libraries.',
-      totalGames: 'Total Games',
-      totalHours: 'Total Hours',
-      playedRecently: 'Played Recently',
-      mostPlayed: 'Most Played',
-      totalPlaytime: 'Total Playtime',
-      last2Weeks: 'Last 2 Weeks',
-      viewMore: 'View more',
-      achievements: 'Achievements',
-      noAchievements: 'No achievements are available for this game.',
-      loadingAchievements: 'Loading achievements...',
-      achievementsStatus: 'Unlocked {unlocked} of {total}'
-    },
-    es: {
-      appTitle: 'LCPGameStats',
-      loadingLibrary: 'Obteniendo tu biblioteca de juegos...',
-      emptySearch: 'Ningún juego coincide con tu búsqueda.',
-      emptyLibrary: 'No se encontraron juegos en esta biblioteca.',
-      providerInfo: 'Usa el selector de plataforma para ver bibliotecas de muestra.',
-      totalGames: 'Juegos Totales',
-      totalHours: 'Horas Totales',
-      playedRecently: 'Jugados Recientemente',
-      mostPlayed: 'Más Jugado',
-      totalPlaytime: 'Tiempo Total',
-      last2Weeks: 'Últimas 2 Semanas',
-      viewMore: 'Ver más',
-      achievements: 'Logros',
-      noAchievements: 'No hay logros disponibles para este juego.',
-      loadingAchievements: 'Cargando logros...',
-      achievementsStatus: 'Desbloqueados {unlocked} de {total}'
-    }
-  };
+  let translations = {};
 
   const els = {
     loading: document.getElementById('loading-state'),
@@ -110,10 +75,10 @@
     clearfilter: document.querySelectorAll('.clearfilter')[0],
     bgImageInput: document.getElementById('bg-image-input'),
     applyBgBtn: document.getElementById('apply-bg-btn'),
-    clearBgBtn: document.getElementById('clear-bg-btn')
-    ,
+    clearBgBtn: document.getElementById('clear-bg-btn'),
     bgFileInput: document.getElementById('bg-file-input'),
-    uploadBgBtn: document.getElementById('upload-bg-btn')
+    uploadBgBtn: document.getElementById('upload-bg-btn'),
+    bkgControls: document.getElementById('background-controls')
   };
 
   let gameModal;
@@ -432,8 +397,8 @@
       els.empty.classList.remove('d-none');
       els.error.classList.add('d-none');
       const text = message || (els.searchInput.value.trim()
-        ? translations[state.lang].emptySearch
-        : translations[state.lang].emptyLibrary);
+        ? (translations.emptySearch || 'No games match your search.')
+        : (translations.emptyLibrary || 'No games found in this library.'));
       els.emptyText.textContent = text;
     } else {
       els.empty.classList.add('d-none');
@@ -456,11 +421,11 @@
     els.modalStoreLink.href = game.store_link || (state.provider === 'retroachievements'
       ? `https://retroachievements.org/game/${encodeURIComponent(achievementId)}`
       : `https://store.steampowered.com/app/${encodeURIComponent(game.appid)}`);
-    els.modalStoreLink.textContent = translations[state.lang].viewMore;
+    els.modalStoreLink.textContent = translations.viewMore || 'View more';
 
-    els.modalAchievementsTitle.textContent = translations[state.lang].achievements;
-    els.modalAchievementsStatus.textContent = translations[state.lang].loadingAchievements;
-    els.modalAchievements.innerHTML = `<div class="text-center text-muted small">${translations[state.lang].loadingAchievements}</div>`;
+    els.modalAchievementsTitle.textContent = translations.achievements || 'Achievements';
+    els.modalAchievementsStatus.textContent = translations.loadingAchievements || 'Loading achievements...';
+    els.modalAchievements.innerHTML = `<div class="text-center text-muted small">${translations.loadingAchievements || 'Loading achievements...'}</div>`;
 
     gameModal.show();
     // Reset modal scroll position and move focus to close button for accessibility
@@ -488,21 +453,22 @@
 
       renderAchievements(data.achievements || data["achievements"] || [], data);
     } catch (err) {
-      els.modalAchievements.innerHTML = `<div class="text-danger small">${escapeHtml(err.message || translations[state.lang].noAchievements)}</div>`;
-      els.modalAchievementsStatus.textContent = translations[state.lang].noAchievements;
+      els.modalAchievements.innerHTML = `<div class="text-danger small">${escapeHtml(err.message || (translations.noAchievements || 'No achievements are available for this game.'))}</div>`;
+      els.modalAchievementsStatus.textContent = translations.noAchievements || 'No achievements are available for this game.';
     }
   }
 
   function renderAchievements(achievements = [], summary = {}) {
-    els.modalAchievementsTitle.textContent = translations[state.lang].achievements;
+    els.modalAchievementsTitle.textContent = translations.achievements || 'Achievements';
     const total = summary.total || achievements.length;
     const unlocked = summary.unlocked || achievements.filter((a) => a.achieved).length;
-    els.modalAchievementsStatus.textContent = translations[state.lang].achievementsStatus
+    const achievementsStatus = translations.achievementsStatus || 'Unlocked {unlocked} of {total}';
+    els.modalAchievementsStatus.textContent = achievementsStatus
       .replace('{unlocked}', unlocked)
       .replace('{total}', total);
 
     if (achievements.length === 0) {
-      els.modalAchievements.innerHTML = `<div class="text-center text-muted small">${translations[state.lang].noAchievements}</div>`;
+      els.modalAchievements.innerHTML = `<div class="text-center text-muted small">${translations.noAchievements || 'No achievements are available for this game.'}</div>`;
       return;
     }
 
@@ -541,16 +507,17 @@
     document.documentElement.dataset.bsTheme = theme;
 
     if(state.theme == 'glassmorphism' || state.theme == 'liquid') {
-      document.querySelector('#background-controls').classList.remove('hidden');
+      els.bkgControls.classList.remove('hidden');
     } else {
-      document.querySelector('#background-controls').classList.add('hidden');
+      els.bkgControls.classList.add('hidden');
     }
     
     saveSettings();
   }
 
-  function setLanguage(lang) {
+  async function setLanguage(lang) {
     state.lang = lang;
+    translations = await fetchTranslations(state.lang);
     updateInterfaceLanguage();
     renderGames();
     saveSettings();
@@ -586,21 +553,22 @@
   }
 
   function updateInterfaceLanguage() {
-    const t = translations[state.lang];
-    document.title = t.appTitle;
-    document.getElementById('app-title').textContent = t.appTitle;
-    els.loadingText.textContent = t.loadingLibrary;
-    els.providerInfoText.textContent = t.providerInfo;
-    els.labelTotalGames.textContent = t.totalGames;
-    els.labelTotalHours.textContent = t.totalHours;
-    els.labelRecentGames.textContent = t.playedRecently;
-    els.labelTopGame.textContent = t.mostPlayed;
-    els.modalStoreLink.textContent = t.viewMore;
+    const t = translations;
+
+    document.title = t.appTitle || 'LCPGameStats';
+    document.getElementById('app-title').textContent = t.appTitle || 'LCPGameStats';
+    els.loadingText.textContent = t.loadingLibrary || 'Fetching your game library...';
+    els.providerInfoText.textContent = t.providerInfo || 'Use provider switcher to preview non-Steam sample libraries.';
+    els.labelTotalGames.textContent = t.totalGames || 'Total Games';
+    els.labelTotalHours.textContent = t.totalHours || 'Total Hours';
+    els.labelRecentGames.textContent = t.playedRecently || 'Played Recently';
+    els.labelTopGame.textContent = t.mostPlayed || 'Most Played';
+    els.modalStoreLink.textContent = t.viewMore || 'View more';
 
     if (els.empty.classList.contains('d-none') === false) {
       const message = els.searchInput.value.trim()
-        ? t.emptySearch
-        : translations[state.lang].emptyLibrary;
+        ? (t.emptySearch || 'No games match your search.')
+        : (t.emptyLibrary || 'No games found in this library.');
       els.emptyText.textContent = message;
     }
   }
@@ -655,7 +623,7 @@
     loadGames();
   }
 
-  function init() {
+  async function init() {
     gameModal = new bootstrap.Modal(document.getElementById('gameModal'));
 
     // Load saved settings from localStorage
@@ -672,8 +640,8 @@
     }
     if (els.clearBgBtn) {
       els.clearBgBtn.addEventListener('click', () => {
-        if (els.bgImageInput) els.bgImageInput.value = '';
-        setBackgroundImage('');
+        if (els.bgImageInput) els.bgImageInput.value = 'images/cool_gaming_bkg.png';
+        setBackgroundImage(els.bgImageInput.value);
       });
     }
     if (els.uploadBgBtn && els.bgFileInput) {
@@ -710,17 +678,19 @@
     els.viewGridBtn.addEventListener('click', () => setView('grid'));
     els.viewListBtn.addEventListener('click', () => setView('list'));
 
+    const bkgimg = state.backgroundImage || 'images/cool_gaming_bkg.png';
+    if (els.bgImageInput) els.bgImageInput.value = bkgimg;
+
     els.providerSelect.value = state.provider;
     els.pageSizeSelect.value = String(state.pageSize);
     els.themeSelect.value = state.theme;
     els.langSelect.value = state.lang;
-    if (els.bgImageInput) els.bgImageInput.value = state.backgroundImage || '';
     els.searchInput.value = state.search;
     els.sortSelect.value = state.sortBy;
 
     setTheme(state.theme);
-    setBackgroundImage(state.backgroundImage || '');
-    setLanguage(state.lang);
+    setBackgroundImage(bkgimg);
+    await setLanguage(state.lang);
     setView(state.view || "grid");
     setActiveViewType();
     loadPlayer();
@@ -729,5 +699,9 @@
     clearFilter();
   }
 
-  document.addEventListener('DOMContentLoaded', init);
+  document.addEventListener('DOMContentLoaded', () => {
+    init().catch((err) => {
+      console.error('Failed to initialize app:', err);
+    });
+  });
 })();

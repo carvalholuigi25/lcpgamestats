@@ -405,6 +405,7 @@ body.has-custom-bg {
   background-size: cover !important;
   background-position: center center !important;
   background-repeat: no-repeat !important;
+  background-attachment: fixed !important;
 }
 
 // Dim overlay to keep UI readable when a custom background is applied

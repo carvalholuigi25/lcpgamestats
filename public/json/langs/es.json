@@ -1,0 +1,33 @@
+{
+    "es": {
+        "appTitle": "LCG Game Stats",
+        "appDescription": "Una aplicación web para rastrear tus estadísticas y progreso en el juego.",
+        "language": "Idioma",
+        "theme": "Tema",
+        "glassmorphism": "Glassmorfismo",
+        "liquid": "Líquido",
+        "dark": "Oscuro",
+        "light": "Claro",
+        "settings": "Configuración",
+        "save": "Guardar",
+        "cancel": "Cancelar",
+        "applyBackground": "Aplicar Fondo",
+        "clearBackground": "Borrar Fondo",
+        "uploadBackground": "Subir Fondo",
+        "loadingLibrary": "Obteniendo tu biblioteca de juegos...",
+        "emptySearch": "Ningún juego coincide con tu búsqueda.",
+        "emptyLibrary": "No se encontraron juegos en esta biblioteca.",
+        "providerInfo": "Usa el selector de plataforma para ver bibliotecas de muestra.",
+        "totalGames": "Juegos Totales",
+        "totalHours": "Horas Totales",
+        "playedRecently": "Jugados Recientemente",
+        "mostPlayed": "Más Jugado",
+        "totalPlaytime": "Tiempo Total",
+        "last2Weeks": "Últimas 2 Semanas",
+        "viewMore": "Ver más",
+        "achievements": "Logros",
+        "noAchievements": "No hay logros disponibles para este juego.",
+        "loadingAchievements": "Cargando logros...",
+        "achievementsStatus": "Desbloqueados {unlocked} de {total}"
+    }
+}
