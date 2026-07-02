@@ -4,12 +4,18 @@
 
 ### General
 
-- [ ] Add integration of retroachievements.org into backend and expose achievements in frontend
+- [x] Add integration of retroachievements.org into backend and expose achievements in frontend
+- [ ] Analyze and fix the all headers and achievements images urls again
+- [ ] Add a couple of cool themes (like liquid glass, glassmorphism) to frontend
 - [ ] Refactor server and frontend logic into separate modules for maintainability
+- [ ] Enhance the accessibility in frontend
 - [ ] Add JSON/XML export support for test coverage data and improve coverage report layout
 - [ ] Add review score ratings and metadata enrichment in game details
 - [ ] Build administration dashboard with user roles and subpages
 - [ ] Add a group by for achievement status and date unlocked in modal of game details
+- [ ] Add a counter of views and reactions (like, dislike) for game details
+- [ ] Check and fix if there's any unresponsive elements in frontend
+- [ ] Improve & fix the readme
 
 ### Maintenence
 

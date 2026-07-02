@@ -5,6 +5,8 @@ import path from 'path';
 import cors from 'cors';
 import fs from 'fs';
 import { fileURLToPath } from 'url';
+import { getHeaderImage, getStoreGameLink, normalizeEpicAchievement } from './lib/utils.js';
+import multer from 'multer';
 dotenv.config();
 
 const app = express();
@@ -27,6 +29,33 @@ const API_AUTH_TOKEN = process.env.API_AUTH_TOKEN || 'changeme';
 const RATE_LIMIT_WINDOW_MS = Number(process.env.RATE_LIMIT_WINDOW_MS || 60000);
 const RATE_LIMIT_MAX_REQUESTS = Number(process.env.RATE_LIMIT_MAX_REQUESTS || 30);
 const requestCounts = new Map();
+
+// Ensure public/images exists
+const IMAGES_DIR = path.join(__dirname, 'public', 'images');
+try {
+  fs.mkdirSync(IMAGES_DIR, { recursive: true });
+} catch (e) {
+  // ignore
+}
+
+// Configure multer for background image uploads
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => cb(null, IMAGES_DIR),
+  filename: (req, file, cb) => {
+    const safeName = String(Date.now()) + '-' + file.originalname.replace(/[^a-z0-9.\-\_]/gi, '_');
+    cb(null, safeName);
+  }
+});
+
+const upload = multer({
+  storage,
+  limits: { fileSize: 3 * 1024 * 1024 }, // 3MB
+  fileFilter: (req, file, cb) => {
+    const allowed = ['image/png', 'image/jpeg', 'image/webp'];
+    if (allowed.includes(file.mimetype)) return cb(null, true);
+    return cb(new Error('Invalid file type'));
+  }
+});
 
 function apiRateLimiter(req, res, next) {
   const key = req.ip || req.headers['x-forwarded-for'] || req.connection.remoteAddress || 'unknown';
@@ -67,13 +96,6 @@ function getProvider(providerId) {
   return PROVIDERS[providerId] || PROVIDERS.steam;
 }
 
-function getHeaderImage(provider, game) {
-  return provider.id == "steam" ? (game.header_image || `${provider.sampleImageBase2}/${game.appid}/${game.img_logo_url || "header"}.jpg`) : (game.header_image || `${provider.sampleImageBase}/${game.ImageIcon}`);
-}
-
-function getStoreGameLink(provider, game) {
-  return game.store_link || `${provider.storeBase}${game.store_path || game.appid || game.id || game.GameId || game.gameId}`;
-}
 
 function normalizeProviderGame(provider, game) {
   const normalized = provider.id === 'retroachievements' ? {
@@ -235,16 +257,7 @@ function convertGamesResponseToXml(response) {
   </gamesResponse>`;
 }
 
-function normalizeEpicAchievement(achievement) {
-  return {
-    apiname: achievement?.apiname || achievement?.id || achievement?.name || '',
-    name: achievement?.name || achievement?.title || achievement?.apiname || '',
-    description: achievement?.description || achievement?.desc || achievement?.descriptionText || '',
-    achieved: Boolean(achievement?.achieved || achievement?.unlocked),
-    unlocktime: achievement?.unlocktime || achievement?.dateUnlocked || 0,
-    badgeimage: achievement?.badgeimage || achievement?.image || ''
-  };
-}
+
 
 async function getActualHeaderFromSteamAPI(req, res) {
   try {
@@ -647,6 +660,7 @@ async function getApiAchievements(req, res) {
       name: achievement.name || achievement.apiname,
       description: achievement.description || '',
       achieved: Boolean(achievement.achieved),
+      badgeimage: achievement.badgeimage || '/images/notfound.jpg',
       unlocktime: achievement.unlocktime || 0
     }));
 
@@ -704,6 +718,17 @@ app.get('/api/gametestheader', async (req, res) => {
 
 app.get('/api/achievements', async (req, res) => {
   await getApiAchievements(req, res);
+});
+
+app.post('/api/upload-bg', upload.single('bg'), (req, res) => {
+  try {
+    if (!req.file) return res.status(400).json({ error: 'No file uploaded' });
+    const url = `/images/${req.file.filename}`;
+    return res.json({ url });
+  } catch (err) {
+    console.error('Upload error:', err.message);
+    return res.status(500).json({ error: 'Failed to save uploaded image' });
+  }
 });
 
 if (process.argv[1] === __filename) {

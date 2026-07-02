@@ -1,4 +1,6 @@
 @use "sass:color";
+@use 'liquid';
+@use 'glassmorphism';
 // ==========================================================================
 // Variables
 // ==========================================================================
@@ -397,6 +399,48 @@ body.theme-light #error-state {
 #modalGameImage {
   border: 1px solid rgba($steam-accent, 0.2);
 }
+
+// Custom background support (used by JS to apply user-selected background)
+body.has-custom-bg {
+  background-size: cover !important;
+  background-position: center center !important;
+  background-repeat: no-repeat !important;
+}
+
+// Dim overlay to keep UI readable when a custom background is applied
+// Default: dark overlay for readability (works well with 'liquid' theme)
+body.has-custom-bg::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.28);
+  pointer-events: none;
+  z-index: 0;
+}
+
+// For glassmorphism we prefer a light translucent overlay so backdrop-filter
+// on translucent panels blurs the background image (not the dark overlay)
+body.theme-glassmorphism.has-custom-bg::before {
+  background: rgba(255,255,255,0.06);
+}
+
+// For liquid theme keep a slightly stronger dark overlay
+body.theme-liquid.has-custom-bg::before {
+  background: rgba(0,0,0,0.36);
+}
+
+// Ensure main content sits above the overlay
+main, .app-header, .app-footer {
+  position: relative;
+  z-index: 1;
+}
+
+.modal {
+  position: fixed;
+  z-index: 99999;
+}
+
+// Theme partials are loaded at the top of this file via @use
 
 #modalAchievements {
   overflow: auto;

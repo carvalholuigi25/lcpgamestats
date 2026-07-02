@@ -1,3 +1,55 @@
+/* Liquid Glass theme */
+body.theme-liquid {
+  background: linear-gradient(180deg, #0f1724 0%, #071021 100%);
+  color: #e6f7ff;
+}
+
+body.theme-liquid .app-header,
+body.theme-liquid .app-footer {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.02), rgba(255, 255, 255, 0.01));
+  -webkit-backdrop-filter: blur(6px) saturate(120%);
+  backdrop-filter: blur(6px) saturate(120%);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+body.theme-liquid .player-card,
+body.theme-liquid .stat-box,
+body.theme-liquid .game-card,
+body.theme-liquid .modal-content {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.02));
+  border: 1px solid rgba(200, 230, 255, 0.06);
+  box-shadow: 0 6px 24px rgba(6, 18, 48, 0.6);
+}
+
+/* Glassmorphism theme */
+body.theme-glassmorphism {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.02), rgba(255, 255, 255, 0.01));
+  color: #0f1724;
+}
+
+body.theme-glassmorphism .app-header,
+body.theme-glassmorphism .app-footer {
+  background: rgba(255, 255, 255, 0.06);
+  -webkit-backdrop-filter: blur(6px) saturate(120%);
+  backdrop-filter: blur(6px) saturate(120%);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+body.theme-glassmorphism .player-card,
+body.theme-glassmorphism .stat-box,
+body.theme-glassmorphism .game-card,
+body.theme-glassmorphism .modal-content {
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+  color: #0f1724;
+}
+
+body.theme-glassmorphism .game-card__image {
+  background-color: rgba(255, 255, 255, 0.03);
+}
+
 body {
   background: linear-gradient(180deg, #171a21 0%, #0e1116 100%);
   color: #e9eef2;
@@ -342,6 +394,39 @@ body.theme-light #error-state {
 
 #modalGameImage {
   border: 1px solid rgba(102, 192, 244, 0.2);
+}
+
+body.has-custom-bg {
+  background-size: cover !important;
+  background-position: center center !important;
+  background-repeat: no-repeat !important;
+}
+
+body.has-custom-bg::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.28);
+  pointer-events: none;
+  z-index: 0;
+}
+
+body.theme-glassmorphism.has-custom-bg::before {
+  background: rgba(255, 255, 255, 0.06);
+}
+
+body.theme-liquid.has-custom-bg::before {
+  background: rgba(0, 0, 0, 0.36);
+}
+
+main, .app-header, .app-footer {
+  position: relative;
+  z-index: 1;
+}
+
+.modal {
+  position: fixed;
+  z-index: 99999;
 }
 
 #modalAchievements {

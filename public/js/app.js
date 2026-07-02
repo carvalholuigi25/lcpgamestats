@@ -107,10 +107,40 @@
     modalPlaytime: document.getElementById('modalPlaytime'),
     modalRecent: document.getElementById('modalRecent'),
     modalStoreLink: document.getElementById('modalStoreLink'),
-    clearfilter: document.querySelectorAll('.clearfilter')[0]
+    clearfilter: document.querySelectorAll('.clearfilter')[0],
+    bgImageInput: document.getElementById('bg-image-input'),
+    applyBgBtn: document.getElementById('apply-bg-btn'),
+    clearBgBtn: document.getElementById('clear-bg-btn')
+    ,
+    bgFileInput: document.getElementById('bg-file-input'),
+    uploadBgBtn: document.getElementById('upload-bg-btn')
   };
 
   let gameModal;
+
+  // Shared frontend helpers (extracted to public/js/utils.js)
+  const {
+    formatPlaytime,
+    formatHoursShort,
+    escapeHtml,
+    debounce,
+    normalizePageSizeValue
+  } = window.AppUtils || {};
+
+  // Background image state handling
+  function setBackgroundImage(url) {
+    if (url && typeof url === 'string' && url.trim() !== '') {
+      const safeUrl = url.trim();
+      document.body.style.backgroundImage = `url('${safeUrl}')`;
+      document.body.classList.add('has-custom-bg');
+      state.backgroundImage = safeUrl;
+    } else {
+      document.body.style.backgroundImage = '';
+      document.body.classList.remove('has-custom-bg');
+      state.backgroundImage = '';
+    }
+    saveSettings();
+  }
 
   // ============ LocalStorage Helper Functions ============
   /**
@@ -126,6 +156,8 @@
       search: state.search,
       page: state.page,
       view: state.view
+      ,
+      backgroundImage: state.backgroundImage || ''
     };
     localStorage.setItem('settings', JSON.stringify(settings));
   }
@@ -146,25 +178,14 @@
         state.search = settings.search || state.search;
         state.page = settings.page || state.page;
         state.view = settings.view || state.view;
+        state.backgroundImage = settings.backgroundImage || '';
       }
     } catch (err) {
       console.warn('Failed to load settings from localStorage:', err.message);
     }
   }
 
-  /** Convert minutes to a human-readable "Xh Ym" or "Xh" string */
-  function formatPlaytime(minutes) {
-    if (!minutes || minutes <= 0) return 'Never played';
-    const hours = Math.floor(minutes / 60);
-    const mins = minutes % 60;
-    if (hours === 0) return `${mins}m`;
-    if (mins === 0) return `${hours}h`;
-    return `${hours}h ${mins}m`;
-  }
-
-  function formatHoursShort(minutes) {
-    return (minutes / 60).toFixed(1);
-  }
+  
 
   function showStats() {
     if(els.showChartBtn) {
@@ -388,7 +409,17 @@
         </div>
       `;
 
-      col.querySelector('.game-card').addEventListener('click', () => openModal(game));
+      const cardEl = col.querySelector('.game-card');
+      if (cardEl) {
+        cardEl.setAttribute('tabindex', '0');
+        cardEl.addEventListener('click', () => openModal(game));
+        cardEl.addEventListener('keydown', (e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            openModal(game);
+          }
+        });
+      }
       fragment.appendChild(col);
     });
 
@@ -432,6 +463,17 @@
     els.modalAchievements.innerHTML = `<div class="text-center text-muted small">${translations[state.lang].loadingAchievements}</div>`;
 
     gameModal.show();
+    // Reset modal scroll position and move focus to close button for accessibility
+    try {
+      const modalEl = document.getElementById('gameModal');
+      const modalBody = modalEl.querySelector('.modal-body');
+      if (modalBody) modalBody.scrollTop = 0;
+      const closeBtn = modalEl.querySelector('.btn-close');
+      if (closeBtn && typeof closeBtn.focus === 'function') closeBtn.focus();
+    } catch (err) {
+      // ignore
+    }
+
     loadGameAchievements(achievementId);
   }
 
@@ -497,6 +539,13 @@
     state.theme = theme;
     document.body.classList.toggle('theme-light', theme === 'light');
     document.documentElement.dataset.bsTheme = theme;
+
+    if(state.theme == 'glassmorphism' || state.theme == 'liquid') {
+      document.querySelector('#background-controls').classList.remove('hidden');
+    } else {
+      document.querySelector('#background-controls').classList.add('hidden');
+    }
+    
     saveSettings();
   }
 
@@ -565,28 +614,7 @@
     saveSettings();
   }
 
-  /** Basic HTML escaping for game titles */
-  function escapeHtml(str) {
-    const div = document.createElement('div');
-    div.textContent = str;
-    return div.innerHTML;
-  }
-
-  /** Debounce helper for the search input */
-  function debounce(fn, delay) {
-    let timer;
-    return (...args) => {
-      clearTimeout(timer);
-      timer = setTimeout(() => fn(...args), delay);
-    };
-  }
-
-  /** Normalize and validate page size value */
-  function normalizePageSizeValue(value) {
-    const pageSize = Number(value);
-    if (!Number.isInteger(pageSize) || pageSize < 1) return 24;
-    return Math.min(Math.max(pageSize, 1), 100);
-  }
+  
 
   function clearFilter() {
     if(els.clearfilter) {
@@ -639,6 +667,44 @@
     els.pageSizeSelect.addEventListener('change', (event) => setPageSizeChange(event));
     els.themeSelect.addEventListener('change', (event) => setTheme(event.target.value));
     els.langSelect.addEventListener('change', (event) => setLanguage(event.target.value));
+    if (els.applyBgBtn && els.bgImageInput) {
+      els.applyBgBtn.addEventListener('click', () => setBackgroundImage(els.bgImageInput.value));
+    }
+    if (els.clearBgBtn) {
+      els.clearBgBtn.addEventListener('click', () => {
+        if (els.bgImageInput) els.bgImageInput.value = '';
+        setBackgroundImage('');
+      });
+    }
+    if (els.uploadBgBtn && els.bgFileInput) {
+      els.uploadBgBtn.addEventListener('click', () => {
+        const file = els.bgFileInput.files && els.bgFileInput.files[0];
+        if (!file) return alert('Select an image file to upload');
+        const reader = new FileReader();
+        reader.onload = async () => {
+          try {
+            const dataUrl = reader.result;
+            const payload = { filename: file.name, data: dataUrl };
+            const res = await fetch('/api/upload-bg', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify(payload)
+            });
+            const data = await res.json();
+            if (!res.ok) throw new Error(data.error || 'Upload failed');
+            if (data.url) {
+              if (els.bgImageInput) els.bgImageInput.value = data.url;
+              setBackgroundImage(data.url);
+              els.bgFileInput.value = '';
+            }
+          } catch (err) {
+            console.error('Upload error:', err.message);
+            alert('Upload failed: ' + err.message);
+          }
+        };
+        reader.readAsDataURL(file);
+      });
+    }
     els.exportJsonBtn.addEventListener('click', () => downloadExport('json'));
     els.exportXmlBtn.addEventListener('click', () => downloadExport('xml'));
     els.viewGridBtn.addEventListener('click', () => setView('grid'));
@@ -648,10 +714,12 @@
     els.pageSizeSelect.value = String(state.pageSize);
     els.themeSelect.value = state.theme;
     els.langSelect.value = state.lang;
+    if (els.bgImageInput) els.bgImageInput.value = state.backgroundImage || '';
     els.searchInput.value = state.search;
     els.sortSelect.value = state.sortBy;
 
     setTheme(state.theme);
+    setBackgroundImage(state.backgroundImage || '');
     setLanguage(state.lang);
     setView(state.view || "grid");
     setActiveViewType();

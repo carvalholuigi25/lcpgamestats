@@ -1,0 +1,28 @@
+/* Glassmorphism theme */
+body.theme-glassmorphism {
+  background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+  color: #0f1724;
+}
+
+body.theme-glassmorphism .app-header,
+body.theme-glassmorphism .app-footer {
+  background: rgba(255,255,255,0.06);
+  -webkit-backdrop-filter: blur(6px) saturate(120%);
+  backdrop-filter: blur(6px) saturate(120%);
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+
+body.theme-glassmorphism .player-card,
+body.theme-glassmorphism .stat-box,
+body.theme-glassmorphism .game-card,
+body.theme-glassmorphism .modal-content {
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.08);
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+  color: #0f1724;
+}
+
+body.theme-glassmorphism .game-card__image {
+  background-color: rgba(255,255,255,0.03);
+}

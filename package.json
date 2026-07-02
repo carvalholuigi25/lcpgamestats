@@ -22,12 +22,17 @@
     "express": "^4.21.0"
   },
   "devDependencies": {
+    "c8": "^8.0.0",
+    "concurrently": "^10.0.3",
+    "multer": "^2.2.0",
     "nodemon": "^3.1.14",
-    "sass": "^1.79.0",
-    "c8": "^8.0.0"
+    "sass": "^1.79.0"
   },
   "nodemonConfig": {
-    "ignore": ["**/test/**", "**/docs/**"],
+    "ignore": [
+      "**/test/**",
+      "**/docs/**"
+    ],
     "delay": 2500
   }
 }

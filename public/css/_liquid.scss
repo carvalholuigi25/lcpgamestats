@@ -1,0 +1,22 @@
+/* Liquid Glass theme */
+body.theme-liquid {
+  background: linear-gradient(180deg, #0f1724 0%, #071021 100%);
+  color: #e6f7ff;
+}
+
+body.theme-liquid .app-header,
+body.theme-liquid .app-footer {
+    background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+    -webkit-backdrop-filter: blur(6px) saturate(120%);
+    backdrop-filter: blur(6px) saturate(120%);
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+
+body.theme-liquid .player-card,
+body.theme-liquid .stat-box,
+body.theme-liquid .game-card,
+body.theme-liquid .modal-content {
+  background: linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.02));
+  border: 1px solid rgba(200,230,255,0.06);
+  box-shadow: 0 6px 24px rgba(6,18,48,0.6);
+}
