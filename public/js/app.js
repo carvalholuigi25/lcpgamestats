@@ -4,7 +4,7 @@
  * and renders an interactive, searchable, sortable game library.
  */
 
-import { fetchTranslations } from './functions.js';
+import { fetchTranslations, getVideoStuff } from './functions.js';
 
 (() => {
   const state = {
@@ -78,7 +78,8 @@ import { fetchTranslations } from './functions.js';
     clearBgBtn: document.getElementById('clear-bg-btn'),
     bgFileInput: document.getElementById('bg-file-input'),
     uploadBgBtn: document.getElementById('upload-bg-btn'),
-    bkgControls: document.getElementById('background-controls')
+    bkgControls: document.getElementById('background-controls'),
+    videoContainer: document.getElementById('video-container')
   };
 
   let gameModal;
@@ -623,6 +624,12 @@ import { fetchTranslations } from './functions.js';
     loadGames();
   }
 
+  function loadVideoContent() {
+    if(!els.videoContainer) return;
+
+    els.videoContainer.innerHTML = getVideoStuff(true, "https://stream.mux.com/BV3YZtogl89mg9VcNBhhnHm02Y34zI1nlMuMQfAbl3dM/highest.mp4", "https://image.mux.com/BV3YZtogl89mg9VcNBhhnHm02Y34zI1nlMuMQfAbl3dM/thumbnail.webp");
+  }
+
   async function init() {
     gameModal = new bootstrap.Modal(document.getElementById('gameModal'));
 
@@ -697,6 +704,7 @@ import { fetchTranslations } from './functions.js';
     loadGames();
     showStats();
     clearFilter();
+    loadVideoContent();
   }
 
   document.addEventListener('DOMContentLoaded', () => {

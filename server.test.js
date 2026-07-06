@@ -7,7 +7,8 @@ import {
   filterGames,
   createGamesResponse,
   convertGamesResponseToXml,
-  fetchEpicAchievements
+  fetchEpicAchievements,
+  getMixedDataGameHeader
 } from './server.js';
 
 describe('server helper functions', () => {
@@ -91,5 +92,56 @@ describe('server helper functions', () => {
     assert.ok(achievements.length > 0);
     assert.strictEqual(achievements[0].apiname, 'first_play');
     assert.strictEqual(typeof achievements[0].achieved, 'boolean');
+  });
+
+  it('combines game library data with a Steam header image response', async () => {
+    const axios = (await import('axios')).default;
+    const originalGet = axios.get;
+
+    axios.get = async (url) => {
+      if (url.includes('store.steampowered.com/api/appdetails')) {
+        const appid = url.split('appids=')[1];
+        return {
+          data: {
+            [appid]: {
+              data: {
+                header_image: 'https://example.com/header.jpg?t=1'
+              }
+            }
+          }
+        };
+      }
+
+      throw new Error(`Unexpected URL: ${url}`);
+    };
+
+    const req = {
+      query: {
+        provider: 'epic',
+        appid: 'fortnite'
+      }
+    };
+
+    const res = {
+      statusCode: 200,
+      body: null,
+      status(code) {
+        this.statusCode = code;
+        return this;
+      },
+      json(payload) {
+        this.body = payload;
+        return this;
+      }
+    };
+
+    await getMixedDataGameHeader(req, res);
+
+    assert.strictEqual(res.statusCode, 200);
+    assert.ok(res.body);
+    assert.strictEqual(res.body.game.appid, 'fortnite');
+    assert.strictEqual(res.body.headerImage.header_image, 'https://example.com/header.jpg?t=1');
+
+    axios.get = originalGet;
   });
 });

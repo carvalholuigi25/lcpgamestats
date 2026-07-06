@@ -116,8 +116,8 @@ function normalizeProviderGame(provider, game) {
     playtime_2weeks: Number(game.playtime_2weeks || 0),
     provider: provider.id
   } : {
-    appid: game.appid || game.gameId || game.GameId,
-    name: game.name,
+    appid: game.appid || game.gameId || game.GameId || game.id || game.ID,
+    name: game.name || game.title || game.Title,
     playtime_forever: Number(game.playtime_forever || 0),
     playtime_2weeks: Number(game.playtime_2weeks || 0),
     rtime_last_played: Number(game.rtime_last_played || 0),
@@ -256,8 +256,6 @@ function convertGamesResponseToXml(response) {
     </games>
   </gamesResponse>`;
 }
-
-
 
 async function getActualHeaderFromSteamAPI(req, res) {
   try {
@@ -499,6 +497,70 @@ async function getApiGames(req, res) {
   res.json(responseData);
 }
 
+// Fetch game list details and the Steam header image for the requested appid.
+async function getMixedDataGameHeader(req, res) {
+  try {
+    const providerId = (req.query.provider || 'steam').toLowerCase();
+    const appid = getQueryParamValue(req, 'appid', '');
+
+    if (!appid) {
+      return res.status(400).json({ error: 'Missing required appid parameter' });
+    }
+
+    const captureResponse = () => ({
+      statusCode: 200,
+      body: null,
+      status(code) {
+        this.statusCode = code;
+        return this;
+      },
+      json(payload) {
+        this.body = payload;
+        return this;
+      },
+      type() {
+        return this;
+      },
+      send(payload) {
+        this.body = payload;
+        return this;
+      }
+    });
+
+    const gamesResponse = captureResponse();
+    const headerResponse = captureResponse();
+
+    await Promise.all([
+      getApiGames(req, gamesResponse),
+      getActualHeaderFromSteamAPI(req, headerResponse)
+    ]);
+
+    const gamesPayload = gamesResponse.body;
+    const headerPayload = headerResponse.body;
+
+    if (!gamesPayload || !headerPayload) {
+      return res.status(500).json({ error: 'Failed to fetch game data or header image' });
+    }
+
+    const games = Array.isArray(gamesPayload?.games)
+      ? gamesPayload.games
+      : gamesPayload?.data?.games || [];
+
+    const game = games.find((g) => String(g.appid) === String(appid));
+    if (!game) {
+      return res.status(404).json({ error: 'Game not found' });
+    }
+
+    return res.json({
+      game,
+      headerImage: headerPayload.data_images || headerPayload
+    });
+  } catch (err) {
+    console.error('Error fetching mixed game header:', err.message);
+    return res.status(500).json({ error: 'Failed to fetch mixed game header' });
+  }
+}
+
 async function getApiAchievements(req, res) {
   const providerId = (req.query.provider || 'steam').toLowerCase();
   const provider = getProvider(providerId);
@@ -716,6 +778,10 @@ app.get('/api/gametestheader', async (req, res) => {
   await getActualHeaderFromSteamAPI(req, res);
 });
 
+app.get('/api/gamesmixedheader', async (req, res) => {
+  await getMixedDataGameHeader(req, res);
+});
+
 app.get('/api/achievements', async (req, res) => {
   await getApiAchievements(req, res);
 });
@@ -763,6 +829,7 @@ export {
   createGamesResponse,
   convertGamesResponseToXml,
   fetchEpicAchievements,
+  getMixedDataGameHeader,
   requireApiAuth,
   apiRateLimiter
 };
