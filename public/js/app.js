@@ -23,6 +23,7 @@ import { fetchTranslations, getVideoStuff } from './functions.js';
     totalMinutes: 0,
     recentlyPlayed: 0,
     topGames: []
+    ,showVideo: true
   };
 
   let translations = {};
@@ -82,7 +83,64 @@ import { fetchTranslations, getVideoStuff } from './functions.js';
     videoContainer: document.getElementById('video-container')
   };
 
+  // Auth-related elements
+  els.btnLogin = document.getElementById('btn-login');
+  els.btnRegister = document.getElementById('btn-register');
+  els.btnLogout = document.getElementById('btn-logout');
+  els.headerUsername = document.getElementById('header-username');
+  els.loginModalEl = document.getElementById('loginModal');
+  els.registerModalEl = document.getElementById('registerModal');
+  els.loginForm = document.getElementById('login-form');
+  els.registerForm = document.getElementById('register-form');
+  els.loginError = document.getElementById('login-error');
+  els.registerError = document.getElementById('register-error');
+
   let gameModal;
+  let loginModal, registerModal;
+  let currentUser = null;
+
+  function getDefaultFetchOptions(overrides = {}) {
+    return {
+      credentials: 'include',
+      headers: { 'Accept': 'application/json', ...(overrides.headers || {}) },
+      ...overrides
+    };
+  }
+
+  function updateAuthUI() {
+    if (currentUser) {
+      els.headerUsername.textContent = currentUser.displayName || currentUser.username || '';
+      els.headerUsername.classList.remove('d-none');
+      els.btnLogin.classList.add('d-none');
+      els.btnRegister.classList.add('d-none');
+      els.btnLogout.classList.remove('d-none');
+    } else {
+      els.headerUsername.classList.add('d-none');
+      els.btnLogin.classList.remove('d-none');
+      els.btnRegister.classList.remove('d-none');
+      els.btnLogout.classList.add('d-none');
+    }
+  }
+
+  async function fetchCurrentUser() {
+    try {
+      const res = await fetch('/api/auth/me', getDefaultFetchOptions());
+      if (!res.ok) {
+        currentUser = null;
+        updateAuthUI();
+        return null;
+      }
+      const data = await res.json();
+      currentUser = data.user || null;
+      updateAuthUI();
+      return currentUser;
+    } catch (err) {
+      console.warn('Failed to fetch current user:', err.message);
+      currentUser = null;
+      updateAuthUI();
+      return null;
+    }
+  }
 
   // Shared frontend helpers (extracted to public/js/utils.js)
   const {
@@ -123,7 +181,8 @@ import { fetchTranslations, getVideoStuff } from './functions.js';
       page: state.page,
       view: state.view
       ,
-      backgroundImage: state.backgroundImage || ''
+      backgroundImage: state.backgroundImage || '',
+      showVideo: state.showVideo === undefined ? true : Boolean(state.showVideo)
     };
     localStorage.setItem('settings', JSON.stringify(settings));
   }
@@ -145,6 +204,7 @@ import { fetchTranslations, getVideoStuff } from './functions.js';
         state.page = settings.page || state.page;
         state.view = settings.view || state.view;
         state.backgroundImage = settings.backgroundImage || '';
+        state.showVideo = settings.showVideo === undefined ? true : Boolean(settings.showVideo);
       }
     } catch (err) {
       console.warn('Failed to load settings from localStorage:', err.message);
@@ -166,7 +226,7 @@ import { fetchTranslations, getVideoStuff } from './functions.js';
   /** Fetch player profile and populate header */
   async function loadPlayer() {
     try {
-      const res = await fetch(`/api/player?provider=${encodeURIComponent(state.provider)}`);
+      const res = await fetch(`/api/player?provider=${encodeURIComponent(state.provider)}`, getDefaultFetchOptions());
       if (!res.ok) throw new Error('Failed to load profile');
       const player = await res.json();
 
@@ -197,7 +257,7 @@ import { fetchTranslations, getVideoStuff } from './functions.js';
         pageSize: String(state.pageSize)
       });
 
-      const res = await fetch(`/api/games?${params.toString()}`);
+      const res = await fetch(`/api/games?${params.toString()}`, getDefaultFetchOptions());
       const data = await res.json();
 
       if (!res.ok) {
@@ -445,7 +505,7 @@ import { fetchTranslations, getVideoStuff } from './functions.js';
 
   async function loadGameAchievements(appid) {
     try {
-      const res = await fetch(`/api/achievements?provider=${encodeURIComponent(state.provider)}&appid=${encodeURIComponent(appid)}`);
+      const res = await fetch(`/api/achievements?provider=${encodeURIComponent(state.provider)}&appid=${encodeURIComponent(appid)}`, getDefaultFetchOptions());
       const data = await res.json();
 
       if (!res.ok) {
@@ -626,12 +686,31 @@ import { fetchTranslations, getVideoStuff } from './functions.js';
 
   function loadVideoContent() {
     if(!els.videoContainer) return;
+    if (!state.showVideo) {
+      els.videoContainer.innerHTML = '';
+      return;
+    }
 
     els.videoContainer.innerHTML = getVideoStuff(true, "https://stream.mux.com/BV3YZtogl89mg9VcNBhhnHm02Y34zI1nlMuMQfAbl3dM/highest.mp4", "https://image.mux.com/BV3YZtogl89mg9VcNBhhnHm02Y34zI1nlMuMQfAbl3dM/thumbnail.webp");
   }
 
+  function updateToggleVideoButton() {
+    if (!els.toggleVideoBtn) return;
+    els.toggleVideoBtn.textContent = state.showVideo ? 'Hide Video' : 'Show Video';
+    els.videoContainer.classList.toggle('d-none', !state.showVideo);
+  }
+
+  function toggleVideo() {
+    state.showVideo = !state.showVideo;
+    saveSettings();
+    updateToggleVideoButton();
+    if (state.showVideo) loadVideoContent();
+  }
+
   async function init() {
     gameModal = new bootstrap.Modal(document.getElementById('gameModal'));
+    loginModal = new bootstrap.Modal(els.loginModalEl);
+    registerModal = new bootstrap.Modal(els.registerModalEl);
 
     // Load saved settings from localStorage
     loadSettings();
@@ -662,7 +741,7 @@ import { fetchTranslations, getVideoStuff } from './functions.js';
             const payload = { filename: file.name, data: dataUrl };
             const res = await fetch('/api/upload-bg', {
               method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
+              ...getDefaultFetchOptions({ headers: { 'Content-Type': 'application/json' } }),
               body: JSON.stringify(payload)
             });
             const data = await res.json();
@@ -680,10 +759,77 @@ import { fetchTranslations, getVideoStuff } from './functions.js';
         reader.readAsDataURL(file);
       });
     }
+    if (els.btnLogin) els.btnLogin.addEventListener('click', () => loginModal.show());
+    if (els.btnRegister) els.btnRegister.addEventListener('click', () => registerModal.show());
+    if (els.btnLogout) els.btnLogout.addEventListener('click', async () => {
+      try {
+        await fetch('/api/auth/logout', { method: 'POST', ...getDefaultFetchOptions() });
+      } catch (err) {
+        console.warn('Logout failed:', err.message);
+      }
+      currentUser = null;
+      updateAuthUI();
+    });
+
+    if (els.loginForm) {
+      els.loginForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        try {
+          els.loginError.classList.add('d-none');
+          const username = document.getElementById('login-username').value.trim();
+          const password = document.getElementById('login-password').value;
+          const res = await fetch('/api/auth/login', {
+            method: 'POST',
+            ...getDefaultFetchOptions({ headers: { 'Content-Type': 'application/json' } }),
+            body: JSON.stringify({ username, password })
+          });
+          const data = await res.json();
+          if (!res.ok) {
+            els.loginError.textContent = data.error || 'Login failed';
+            els.loginError.classList.remove('d-none');
+            return;
+          }
+          await fetchCurrentUser();
+          loginModal.hide();
+        } catch (err) {
+          els.loginError.textContent = err.message || 'Login error';
+          els.loginError.classList.remove('d-none');
+        }
+      });
+    }
+
+    if (els.registerForm) {
+      els.registerForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        try {
+          els.registerError.classList.add('d-none');
+          const username = document.getElementById('reg-username').value.trim();
+          const password = document.getElementById('reg-password').value;
+          const displayName = document.getElementById('reg-displayName').value.trim();
+          const res = await fetch('/api/auth/register', {
+            method: 'POST',
+            ...getDefaultFetchOptions({ headers: { 'Content-Type': 'application/json' } }),
+            body: JSON.stringify({ username, password, displayName })
+          });
+          const data = await res.json();
+          if (!res.ok) {
+            els.registerError.textContent = data.error || 'Registration failed';
+            els.registerError.classList.remove('d-none');
+            return;
+          }
+          await fetchCurrentUser();
+          registerModal.hide();
+        } catch (err) {
+          els.registerError.textContent = err.message || 'Registration error';
+          els.registerError.classList.remove('d-none');
+        }
+      });
+    }
     els.exportJsonBtn.addEventListener('click', () => downloadExport('json'));
     els.exportXmlBtn.addEventListener('click', () => downloadExport('xml'));
     els.viewGridBtn.addEventListener('click', () => setView('grid'));
     els.viewListBtn.addEventListener('click', () => setView('list'));
+    if (els.toggleVideoBtn) els.toggleVideoBtn.addEventListener('click', toggleVideo);
 
     const bkgimg = state.backgroundImage || 'images/cool_gaming_bkg.png';
     if (els.bgImageInput) els.bgImageInput.value = bkgimg;
@@ -695,6 +841,8 @@ import { fetchTranslations, getVideoStuff } from './functions.js';
     els.searchInput.value = state.search;
     els.sortSelect.value = state.sortBy;
 
+    await fetchCurrentUser();
+
     setTheme(state.theme);
     setBackgroundImage(bkgimg);
     await setLanguage(state.lang);
@@ -704,6 +852,7 @@ import { fetchTranslations, getVideoStuff } from './functions.js';
     loadGames();
     showStats();
     clearFilter();
+    updateToggleVideoButton();
     loadVideoContent();
   }
 

@@ -29,6 +29,12 @@
             <p class="mb-0 text-muted small hidden" id="player-name">Loading profile...</p>
           </div>
         </div>
+        <div class="d-flex align-items-center gap-2">
+          <span id="header-username" class="small text-muted me-2 d-none"></span>
+          <button id="btn-login" class="btn btn-sm btn-outline-primary">Login</button>
+          <button id="btn-register" class="btn btn-sm btn-outline-secondary">Register</button>
+          <button id="btn-logout" class="btn btn-sm btn-outline-danger d-none">Logout</button>
+        </div>
         <div id="player-card" class="player-card d-flex align-items-center gap-3 d-none">
           <img id="player-avatar" src="/images/notfound.jpg" alt="Avatar" class="player-avatar" onerror="this.onerror=null;this.src='/images/notfound.jpg';" />
           <div>
@@ -258,6 +264,9 @@
               <span id="modalAchievementsStatus" class="small text-muted">--</span>
             </div>
             <div id="modalAchievements" class="list-group"></div>
+            <div class="d-flex justify-content-end mb-2">
+              <button id="toggle-video-btn" class="btn btn-sm btn-outline-secondary">Hide Video</button>
+            </div>
             <div id="video-container" class="video-container d-block mt-3"></div>
           </div>
         </div>
@@ -269,6 +278,69 @@
       </div>
     </div>
   </div>
+
+        <!-- Login Modal -->
+        <div class="modal fade" id="loginModal" tabindex="-1" aria-hidden="true">
+          <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title">Login</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
+                <form id="login-form">
+                  <div class="mb-3">
+                    <label for="login-username" class="form-label">Username</label>
+                    <input id="login-username" class="form-control" required />
+                  </div>
+                  <div class="mb-3">
+                    <label for="login-password" class="form-label">Password</label>
+                    <input id="login-password" type="password" class="form-control" required />
+                  </div>
+                  <div id="login-error" class="text-danger small mb-2 d-none"></div>
+                  <div class="d-flex flex-column gap-2">
+                    <button type="submit" class="btn btn-primary">Login</button>
+                    <a href="/auth/google" class="btn btn-outline-secondary d-flex align-items-center justify-content-center">
+                      <i class="fa-brands fa-google me-2"></i> Continue with Google
+                    </a>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Register Modal -->
+        <div class="modal fade" id="registerModal" tabindex="-1" aria-hidden="true">
+          <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title">Register</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
+                <form id="register-form">
+                  <div class="mb-3">
+                    <label for="reg-username" class="form-label">Username</label>
+                    <input id="reg-username" class="form-control" required />
+                  </div>
+                  <div class="mb-3">
+                    <label for="reg-password" class="form-label">Password</label>
+                    <input id="reg-password" type="password" class="form-control" required />
+                  </div>
+                  <div class="mb-3">
+                    <label for="reg-displayName" class="form-label">Display name</label>
+                    <input id="reg-displayName" class="form-control" />
+                  </div>
+                  <div id="register-error" class="text-danger small mb-2 d-none"></div>
+                  <div class="d-flex justify-content-end">
+                    <button type="submit" class="btn btn-primary">Register</button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
 
   <script src="/node_modules/@popperjs/core/dist/umd/popper.min.js"></script>
   <script src="/node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>

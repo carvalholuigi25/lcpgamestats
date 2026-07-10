@@ -4,9 +4,15 @@ import axios from 'axios';
 import path from 'path';
 import cors from 'cors';
 import fs from 'fs';
+import session from 'express-session';
+import passport from 'passport';
+import { Strategy as LocalStrategy } from 'passport-local';
+import { Strategy as GoogleStrategy } from 'passport-google-oauth20';
 import { fileURLToPath } from 'url';
+import { randomBytes } from 'node:crypto';
 import { getHeaderImage, getStoreGameLink, normalizeEpicAchievement } from './lib/utils.js';
 import multer from 'multer';
+import auth from './lib/auth.js';
 dotenv.config();
 
 const app = express();
@@ -26,9 +32,71 @@ const RETROACHIEVEMENTS_API_KEY = process.env.RETROACHIEVEMENTS_API_KEY || '';
 const EPIC_API_BASE = process.env.EPIC_API_BASE || '';
 const EPIC_API_KEY = process.env.EPIC_API_KEY || '';
 const API_AUTH_TOKEN = process.env.API_AUTH_TOKEN || 'changeme';
+const hasGoogleOAuth = Boolean(process.env.GOOGLE_CLIENT_ID && process.env.GOOGLE_CLIENT_SECRET);
+// Initialize auth DB
+try {
+  auth.init();
+} catch (err) {
+  console.warn('Auth DB init failed:', err.message);
+}
 const RATE_LIMIT_WINDOW_MS = Number(process.env.RATE_LIMIT_WINDOW_MS || 60000);
 const RATE_LIMIT_MAX_REQUESTS = Number(process.env.RATE_LIMIT_MAX_REQUESTS || 30);
+const SESSION_SECRET = process.env.SESSION_SECRET || 'changeme-session';
 const requestCounts = new Map();
+
+passport.serializeUser((user, done) => {
+  done(null, user.id);
+});
+
+passport.deserializeUser((id, done) => {
+  try {
+    const user = auth.getUserById(id);
+    done(null, user || false);
+  } catch (err) {
+    done(err);
+  }
+});
+
+passport.use(new LocalStrategy((username, password, done) => {
+  try {
+    const userRow = auth.getUserWithHashByUsername(username);
+    if (!userRow || !auth.verifyPassword(userRow, password)) {
+      return done(null, false, { message: 'Invalid username or password' });
+    }
+    const user = auth.getUserById(userRow.id);
+    return done(null, user);
+  } catch (err) {
+    return done(err);
+  }
+}));
+
+if (hasGoogleOAuth) {
+  passport.use(new GoogleStrategy({
+    clientID: process.env.GOOGLE_CLIENT_ID,
+    clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+    callbackURL: process.env.GOOGLE_CALLBACK_URL || 'http://localhost:3000/auth/google/callback'
+  }, async (accessToken, refreshToken, profile, done) => {
+    try {
+      const googleUsername = `google:${profile.id}`;
+      let user = auth.getUserByUsername(googleUsername);
+      if (!user) {
+        const email = profile.emails && profile.emails[0] && profile.emails[0].value ? profile.emails[0].value : '';
+        const displayName = profile.displayName || profile.username || 'Google User';
+        const password = randomBytes(16).toString('hex');
+        user = auth.createUser({
+          username: googleUsername,
+          password,
+          displayName,
+          email,
+          role: 'user'
+        });
+      }
+      return done(null, user);
+    } catch (err) {
+      return done(err);
+    }
+  }));
+}
 
 // Ensure public/images exists
 const IMAGES_DIR = path.join(__dirname, 'public', 'images');
@@ -78,7 +146,15 @@ function apiRateLimiter(req, res, next) {
 }
 
 function requireApiAuth(req, res, next) {
+  if (req.isAuthenticated && req.isAuthenticated()) {
+    return next();
+  }
+
   if (!API_AUTH_TOKEN || API_AUTH_TOKEN === 'changeme') {
+    return next();
+  }
+
+  if (req.path.startsWith('/auth')) {
     return next();
   }
 
@@ -90,6 +166,21 @@ function requireApiAuth(req, res, next) {
   }
 
   next();
+}
+
+function requireLogin(req, res, next) {
+  if (req.isAuthenticated && req.isAuthenticated()) {
+    return next();
+  }
+  return res.status(401).json({ error: 'Authentication required' });
+}
+
+function requireRole(role) {
+  return (req, res, next) => {
+    if (!req.user) return res.status(401).json({ error: 'Unauthorized' });
+    if (req.user.role !== role) return res.status(403).json({ error: 'Forbidden' });
+    next();
+  };
 }
 
 function getProvider(providerId) {
@@ -742,7 +833,20 @@ app.use('/node_modules', express.static(path.join(__dirname, 'node_modules')));
 // app.use('/assets/@fortawesome/fontawesome-free', express.static(path.join(__dirname, 'node_modules', '@fortawesome', 'fontawesome-free')));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.json({ space: spaces, limit: '10mb' }));
-app.use(cors());
+app.use(cors({ origin: process.env.CORS_ORIGIN || true, credentials: true }));
+app.use(session({
+  secret: SESSION_SECRET,
+  resave: false,
+  saveUninitialized: false,
+  cookie: {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === 'production',
+    sameSite: 'lax',
+    maxAge: 24 * 60 * 60 * 1000
+  }
+}));
+app.use(passport.initialize());
+app.use(passport.session());
 app.use('/api', apiRateLimiter);
 app.use('/api', (req, res, next) => {
   if (req.path === '/' || req.path === '/health') {
@@ -784,6 +888,97 @@ app.get('/api/gamesmixedheader', async (req, res) => {
 
 app.get('/api/achievements', async (req, res) => {
   await getApiAchievements(req, res);
+});
+
+// Authentication routes
+app.post('/api/auth/register', (req, res, next) => {
+  try {
+    const { username, password, displayName, email } = req.body || {};
+    if (!username || !password) return res.status(400).json({ error: 'username and password are required' });
+    const existing = auth.getUserByUsername(username);
+    if (existing) return res.status(409).json({ error: 'User already exists' });
+    const user = auth.createUser({ username, password, displayName, email, role: 'user' });
+    req.login(user, (loginErr) => {
+      if (loginErr) return next(loginErr);
+      return res.json({ user });
+    });
+  } catch (err) {
+    console.error('Register error:', err.message);
+    return res.status(500).json({ error: err.message || 'Failed to register' });
+  }
+});
+
+app.post('/api/auth/login', (req, res, next) => {
+  passport.authenticate('local', (err, user, info) => {
+    if (err) {
+      console.error('Login error:', err.message);
+      return next(err);
+    }
+    if (!user) {
+      return res.status(401).json({ error: info?.message || 'Invalid credentials' });
+    }
+    req.login(user, (loginErr) => {
+      if (loginErr) {
+        console.error('Login error:', loginErr.message);
+        return next(loginErr);
+      }
+      return res.json({ user });
+    });
+  })(req, res, next);
+});
+
+app.post('/api/auth/logout', requireLogin, (req, res, next) => {
+  req.logout((err) => {
+    if (err) return next(err);
+    req.session.destroy(() => {
+      res.clearCookie('connect.sid');
+      res.json({ message: 'Logged out' });
+    });
+  });
+});
+
+app.get('/api/auth/me', requireLogin, (req, res) => {
+  res.json({ user: req.user });
+});
+
+app.put('/api/auth/me', requireLogin, (req, res) => {
+  try {
+    const updates = req.body || {};
+    const updated = auth.updateUserProfile(req.user.id, updates);
+    if (!updated) return res.status(404).json({ error: 'User not found' });
+    return res.json({ user: updated });
+  } catch (err) {
+    console.error('Profile update error:', err.message);
+    return res.status(500).json({ error: 'Failed to update profile' });
+  }
+});
+
+app.get('/api/admin/users', requireLogin, requireRole('admin'), (req, res) => {
+  try {
+    const users = auth.listUsers();
+    res.json({ users });
+  } catch (err) {
+    console.error('List users error:', err.message);
+    res.status(500).json({ error: 'Failed to list users' });
+  }
+});
+
+app.get('/auth/google', (req, res, next) => {
+  if (!hasGoogleOAuth) {
+    return res.status(501).send('Google OAuth is not configured.');
+  }
+  passport.authenticate('google', { scope: ['profile', 'email'] })(req, res, next);
+});
+
+app.get('/auth/google/callback', (req, res, next) => {
+  if (!hasGoogleOAuth) {
+    return res.status(501).send('Google OAuth is not configured.');
+  }
+  passport.authenticate('google', {
+    failureRedirect: '/?auth=failed'
+  })(req, res, next);
+}, (req, res) => {
+  res.redirect('/');
 });
 
 app.post('/api/upload-bg', upload.single('bg'), (req, res) => {
