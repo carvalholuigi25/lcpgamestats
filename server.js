@@ -10,7 +10,7 @@ import { Strategy as LocalStrategy } from 'passport-local';
 import { Strategy as GoogleStrategy } from 'passport-google-oauth20';
 import { fileURLToPath } from 'url';
 import { randomBytes } from 'node:crypto';
-import { getHeaderImage, getStoreGameLink, normalizeEpicAchievement } from './lib/utils.js';
+import { getHeaderImage, getStoreGameLink, normalizeEpicAchievement, getVideoTrailerData, resolveAchievementBadgeImage } from './lib/utils.js';
 import multer from 'multer';
 import auth from './lib/auth.js';
 dotenv.config();
@@ -189,6 +189,8 @@ function getProvider(providerId) {
 
 
 function normalizeProviderGame(provider, game) {
+  const trailer = getVideoTrailerData(provider, game);
+
   const normalized = provider.id === 'retroachievements' ? {
     gameId: game.gameId || game.GameId || game.ID || game.id,
     appid: game.gameId || game.GameId || game.ID || game.id,
@@ -205,7 +207,11 @@ function normalizeProviderGame(provider, game) {
     hardcoreMode: game.hardcoreMode || game.HardcoreMode,
     playtime_forever: Number(game.playtime_forever || 0),
     playtime_2weeks: Number(game.playtime_2weeks || 0),
-    provider: provider.id
+    provider: provider.id,
+    video_url: trailer.videoUrl,
+    video_thumbnail: trailer.thumbnailUrl,
+    trailer_url: trailer.videoUrl,
+    trailer_thumbnail: trailer.thumbnailUrl
   } : {
     appid: game.appid || game.gameId || game.GameId || game.id || game.ID,
     name: game.name || game.title || game.Title,
@@ -214,7 +220,11 @@ function normalizeProviderGame(provider, game) {
     rtime_last_played: Number(game.rtime_last_played || 0),
     header_image: getHeaderImage(provider, game),
     store_link: getStoreGameLink(provider, game),
-    provider: provider.id
+    provider: provider.id,
+    video_url: trailer.videoUrl,
+    video_thumbnail: trailer.thumbnailUrl,
+    trailer_url: trailer.videoUrl,
+    trailer_thumbnail: trailer.thumbnailUrl
   };
 
   if (Array.isArray(game.achievements)) {
@@ -348,14 +358,13 @@ function convertGamesResponseToXml(response) {
   </gamesResponse>`;
 }
 
-async function getActualHeaderFromSteamAPI(req, res) {
-  try {
-    const appid = req.query.appid;
-    
-    if(!appid) {
-      return res.status(400).json({ error: 'Please provide the app id from steam' });
-    }
+const steamAppDetailsCache = new Map();
 
+async function fetchSteamAppDetails(appid) {
+  if (steamAppDetailsCache.has(appid)) return steamAppDetailsCache.get(appid);
+
+  let details = null;
+  try {
     const endpoint = `https://store.steampowered.com/api/appdetails?appids=${appid}`;
     const resp = await axios.get(endpoint, {
       headers: {
@@ -363,7 +372,33 @@ async function getActualHeaderFromSteamAPI(req, res) {
       }
     });
 
-    const rawData = resp.data[appid].data.header_image;
+    details = resp.data?.[appid]?.data || null;
+  } catch (err) {
+    console.error(`Error fetching Steam app details for appid ${appid}:`, err.message);
+  }
+
+  steamAppDetailsCache.set(appid, details);
+  return details;
+}
+
+async function fetchActualSteamHeaderImage(appid) {
+  const details = await fetchSteamAppDetails(appid);
+  return details?.header_image || '';
+}
+
+async function getActualHeaderFromSteamAPI(req, res) {
+  try {
+    const appid = req.query.appid;
+
+    if(!appid) {
+      return res.status(400).json({ error: 'Please provide the app id from steam' });
+    }
+
+    const rawData = await fetchActualSteamHeaderImage(appid);
+    if (!rawData) {
+      return res.status(404).json({ error: 'Header image not found for the given app id' });
+    }
+
     return res.json({
       data_images: {
         header_image: rawData,
@@ -377,6 +412,34 @@ async function getActualHeaderFromSteamAPI(req, res) {
   }
 }
 
+
+const steamSchemaCache = new Map();
+
+async function fetchSteamAchievementSchema(appid) {
+  if (steamSchemaCache.has(appid)) return steamSchemaCache.get(appid);
+
+  const icons = new Map();
+  try {
+    const { data } = await axios.get(`${STEAM_API_BASE}/ISteamUserStats/GetSchemaForGame/v2/`, {
+      params: { key: STEAM_API_KEY, appid, l: 'en' }
+    });
+
+    const schemaAchievements = data?.game?.availableGameStats?.achievements || [];
+    schemaAchievements.forEach((achievement) => {
+      icons.set(achievement.name, {
+        icon: achievement.icon || '',
+        icongray: achievement.icongray || '',
+        displayName: achievement.displayName || '',
+        description: achievement.description || ''
+      });
+    });
+  } catch (err) {
+    console.error('Error fetching Steam achievement schema:', err.message);
+  }
+
+  steamSchemaCache.set(appid, icons);
+  return icons;
+}
 
 async function fetchEpicAchievements(appid) {
   const sampleGames = SAMPLE_GAME_DATA.epic || [];
@@ -561,6 +624,29 @@ async function getApiGames(req, res) {
       games = sortGames(games, sortBy);
 
       const responseData = createGamesResponse(games, page, pageSize, provider);
+
+      const gamesNeedingHeaders = new Map();
+      [...responseData.games, ...responseData.topGames, ...(responseData.topGame ? [responseData.topGame] : [])]
+        .forEach((game) => gamesNeedingHeaders.set(game.appid, game));
+
+      await Promise.all([...gamesNeedingHeaders.keys()].map(async (appid) => {
+        const details = await fetchSteamAppDetails(appid);
+        const game = gamesNeedingHeaders.get(appid);
+
+        if (details?.header_image) {
+          game.header_image = details.header_image;
+        }
+
+        const movies = Array.isArray(details?.movies) ? details.movies : [];
+        if (movies.length > 0) {
+          const trailer = getVideoTrailerData(provider, { movies, appid });
+          game.video_url = trailer.videoUrl;
+          game.video_thumbnail = trailer.thumbnailUrl;
+          game.trailer_url = trailer.videoUrl;
+          game.trailer_thumbnail = trailer.thumbnailUrl;
+        }
+      }));
+
       const format = getQueryParamValue(req, 'format', 'json').toLowerCase();
       if (format === 'xml') {
         return res.type('application/xml').send(convertGamesResponseToXml(responseData));
@@ -794,28 +880,36 @@ async function getApiAchievements(req, res) {
   }
 
   try {
-    const { data } = await axios.get(`${STEAM_API_BASE}/ISteamUserStats/GetPlayerAchievements/v1/`, {
-      params: {
-        key: STEAM_API_KEY,
-        steamid: STEAM_USER_ID,
-        appid,
-        l: 'en'
-      }
-    });
+    const [{ data }, schemaIcons] = await Promise.all([
+      axios.get(`${STEAM_API_BASE}/ISteamUserStats/GetPlayerAchievements/v1/`, {
+        params: {
+          key: STEAM_API_KEY,
+          steamid: STEAM_USER_ID,
+          appid,
+          l: 'en'
+        }
+      }),
+      fetchSteamAchievementSchema(appid)
+    ]);
 
     const stats = data?.playerstats;
     if (!stats || !stats.achievements) {
       return res.status(404).json({ error: 'No achievement data available for this game' });
     }
 
-    const achievements = stats.achievements.map((achievement) => ({
-      apiname: achievement.apiname,
-      name: achievement.name || achievement.apiname,
-      description: achievement.description || '',
-      achieved: Boolean(achievement.achieved),
-      badgeimage: achievement.badgeimage || '/images/notfound.jpg',
-      unlocktime: achievement.unlocktime || 0
-    }));
+    const achievements = stats.achievements.map((achievement) => {
+      const icons = schemaIcons.get(achievement.apiname) || {};
+      const badgeimage = (achievement.achieved ? icons.icon : icons.icongray) || icons.icon
+        || resolveAchievementBadgeImage(achievement, appid);
+      return {
+        apiname: achievement.apiname,
+        name: achievement.name || icons.displayName || achievement.apiname,
+        description: achievement.description || icons.description || '',
+        achieved: Boolean(achievement.achieved),
+        badgeimage,
+        unlocktime: achievement.unlocktime || 0
+      };
+    });
 
     const unlocked = achievements.filter((a) => a.achieved).length;
     res.json({ provider: provider.id, appid, total: achievements.length, unlocked, achievements });
@@ -1025,6 +1119,7 @@ export {
   convertGamesResponseToXml,
   fetchEpicAchievements,
   getMixedDataGameHeader,
+  getApiGames,
   requireApiAuth,
   apiRateLimiter
 };

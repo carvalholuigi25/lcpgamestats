@@ -22,8 +22,9 @@ import { fetchTranslations, getVideoStuff } from './functions.js';
     totalGames: 0,
     totalMinutes: 0,
     recentlyPlayed: 0,
-    topGames: []
-    ,showVideo: true
+    topGames: [],
+    showVideo: true,
+    activeGame: null
   };
 
   let translations = {};
@@ -80,7 +81,8 @@ import { fetchTranslations, getVideoStuff } from './functions.js';
     bgFileInput: document.getElementById('bg-file-input'),
     uploadBgBtn: document.getElementById('upload-bg-btn'),
     bkgControls: document.getElementById('background-controls'),
-    videoContainer: document.getElementById('video-container')
+    videoContainer: document.getElementById('video-container'),
+    toggleVideoBtn: document.getElementById('toggle-video-btn')
   };
 
   // Auth-related elements
@@ -472,6 +474,7 @@ import { fetchTranslations, getVideoStuff } from './functions.js';
 
   /** Open the game detail modal */
   function openModal(game) {
+    state.activeGame = game;
     els.modalGameTitle.textContent = game.name;
     els.modalGameImage.src = game.header_image || '/images/notfound.jpg';
     els.modalGameImage.alt = game.name;
@@ -489,6 +492,7 @@ import { fetchTranslations, getVideoStuff } from './functions.js';
     els.modalAchievements.innerHTML = `<div class="text-center text-muted small">${translations.loadingAchievements || 'Loading achievements...'}</div>`;
 
     gameModal.show();
+    loadVideoContent(game);
     // Reset modal scroll position and move focus to close button for accessibility
     try {
       const modalEl = document.getElementById('gameModal');
@@ -684,27 +688,46 @@ import { fetchTranslations, getVideoStuff } from './functions.js';
     loadGames();
   }
 
-  function loadVideoContent() {
-    if(!els.videoContainer) return;
+  function getGameVideoData(game = state.activeGame) {
+    const fallbackVideoUrl = 'https://stream.mux.com/BV3YZtogl89mg9VcNBhhnHm02Y34zI1nlMuMQfAbl3dM/highest.mp4';
+    const fallbackThumbnailUrl = 'https://image.mux.com/BV3YZtogl89mg9VcNBhhnHm02Y34zI1nlMuMQfAbl3dM/thumbnail.webp';
+    const videoUrl = game?.video_url || game?.videoUrl || game?.trailer_url || game?.trailerUrl || game?.movie_url || game?.movieUrl || '';
+    const thumbnailUrl = game?.video_thumbnail || game?.videoThumbnail || game?.trailer_thumbnail || game?.trailerThumbnail || game?.movie_thumbnail || game?.movieThumbnail || '';
+
+    return {
+      videoUrl: videoUrl || fallbackVideoUrl,
+      thumbnailUrl: thumbnailUrl || fallbackThumbnailUrl
+    };
+  }
+
+  function loadVideoContent(game = state.activeGame) {
+    if (!els.videoContainer) return;
     if (!state.showVideo) {
       els.videoContainer.innerHTML = '';
       return;
     }
 
-    els.videoContainer.innerHTML = getVideoStuff(true, "https://stream.mux.com/BV3YZtogl89mg9VcNBhhnHm02Y34zI1nlMuMQfAbl3dM/highest.mp4", "https://image.mux.com/BV3YZtogl89mg9VcNBhhnHm02Y34zI1nlMuMQfAbl3dM/thumbnail.webp");
+    const { videoUrl, thumbnailUrl } = getGameVideoData(game);
+    els.videoContainer.innerHTML = getVideoStuff(true, videoUrl, thumbnailUrl);
   }
 
   function updateToggleVideoButton() {
-    if (!els.toggleVideoBtn) return;
+    if (!els.toggleVideoBtn || !els.videoContainer) return;
     els.toggleVideoBtn.textContent = state.showVideo ? 'Hide Video' : 'Show Video';
+    els.toggleVideoBtn.setAttribute('aria-pressed', String(state.showVideo));
     els.videoContainer.classList.toggle('d-none', !state.showVideo);
+    if (!state.showVideo) {
+      els.videoContainer.innerHTML = '';
+    }
   }
 
   function toggleVideo() {
     state.showVideo = !state.showVideo;
     saveSettings();
     updateToggleVideoButton();
-    if (state.showVideo) loadVideoContent();
+    if (state.showVideo) {
+      loadVideoContent();
+    }
   }
 
   async function init() {

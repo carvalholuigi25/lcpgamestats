@@ -12,10 +12,12 @@ async function fetchTranslations(lang = "en") {
 
 function getVideoStuff(isEnabled = true, url = "https://stream.mux.com/BV3YZtogl89mg9VcNBhhnHm02Y34zI1nlMuMQfAbl3dM/highest.mp4", thumbnail = "https://image.mux.com/BV3YZtogl89mg9VcNBhhnHm02Y34zI1nlMuMQfAbl3dM/thumbnail.webp") {
     if (!isEnabled) return '';
+    const isHls = /\.m3u8(\?|$)/i.test(url);
+    const mediaTag = isHls ? `<hlsjs-video src="${url}"></hlsjs-video>` : `<video src="${url}"></video>`;
     return document.querySelector('#video-container') && isEnabled ? `
     <video-player class="video-player" id="video-player" autoplay muted playsinline>
       <media-container class="media-default-skin media-default-skin--video">
-        <video src="${url}"></video>
+        ${mediaTag}
 
         <media-poster>
           <img src="${thumbnail}" alt="Thumbnail..." />

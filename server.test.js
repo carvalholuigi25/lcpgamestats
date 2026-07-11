@@ -8,8 +8,10 @@ import {
   createGamesResponse,
   convertGamesResponseToXml,
   fetchEpicAchievements,
-  getMixedDataGameHeader
+  getMixedDataGameHeader,
+  getApiGames
 } from './server.js';
+import { getVideoTrailerData, resolveAchievementBadgeImage } from './lib/utils.js';
 
 describe('server helper functions', () => {
   it('normalizes page values to integer >= 1', () => {
@@ -94,6 +96,39 @@ describe('server helper functions', () => {
     assert.strictEqual(typeof achievements[0].achieved, 'boolean');
   });
 
+  it('builds a Steam-style achievement icon URL when no direct badge image is provided', () => {
+    const badgeImage = resolveAchievementBadgeImage({ apiname: 'ach_1' }, '730');
+    assert.ok(badgeImage.includes('steamcommunity/public/images/apps/730/ach_1.jpg'));
+  });
+
+  it('uses provider trailer data when available and falls back to the sample trailer otherwise', () => {
+    const provider = { id: 'steam' };
+    const withTrailer = getVideoTrailerData(provider, { trailer_url: 'https://example.com/steam-trailer.mp4' });
+    assert.strictEqual(withTrailer.videoUrl, 'https://example.com/steam-trailer.mp4');
+
+    const fallback = getVideoTrailerData(provider, {});
+    assert.ok(fallback.videoUrl.includes('stream.mux.com'));
+  });
+
+  it('resolves the real Steam movie video URL instead of leaking the thumbnail image as the video src', () => {
+    const provider = { id: 'steam' };
+    // Current Steam appdetails responses only expose hls_h264/dash_h264 manifests plus a thumbnail image
+    // (no more direct webm/mp4 files) - the thumbnail must never end up as the video src.
+    const trailer = getVideoTrailerData(provider, {
+      appid: 570,
+      movies: [
+        {
+          thumbnail: 'https://example.com/570/trailer-thumb.jpg',
+          hls_h264: 'https://example.com/570/hls_264_master.m3u8',
+          dash_h264: 'https://example.com/570/dash_h264.mpd'
+        }
+      ]
+    });
+
+    assert.strictEqual(trailer.videoUrl, 'https://example.com/570/hls_264_master.m3u8');
+    assert.strictEqual(trailer.thumbnailUrl, 'https://example.com/570/trailer-thumb.jpg');
+  });
+
   it('combines game library data with a Steam header image response', async () => {
     const axios = (await import('axios')).default;
     const originalGet = axios.get;
@@ -143,5 +178,77 @@ describe('server helper functions', () => {
     assert.strictEqual(res.body.headerImage.header_image, 'https://example.com/header.jpg?t=1');
 
     axios.get = originalGet;
+  });
+
+  it('refreshes Steam games with the real trailer video and thumbnail from appdetails', async () => {
+    const axios = (await import('axios')).default;
+    const originalGet = axios.get;
+    const originalKey = process.env.STEAM_API_KEY;
+    const originalUserId = process.env.STEAM_USER_ID;
+
+    process.env.STEAM_API_KEY = 'test-key';
+    process.env.STEAM_USER_ID = 'test-user';
+
+    axios.get = async (url) => {
+      if (url.includes('IPlayerService/GetOwnedGames')) {
+        return {
+          data: {
+            response: {
+              games: [
+                { appid: 570, name: 'Dota 2', playtime_forever: 100, playtime_2weeks: 10, rtime_last_played: 12345 }
+              ]
+            }
+          }
+        };
+      }
+
+      if (url.includes('store.steampowered.com/api/appdetails')) {
+        const appid = url.split('appids=')[1];
+        return {
+          data: {
+            [appid]: {
+              data: {
+                header_image: 'https://example.com/570/header.jpg',
+                movies: [
+                  {
+                    thumbnail: 'https://example.com/570/trailer-thumb.jpg',
+                    mp4: { max: 'https://example.com/570/trailer.mp4' }
+                  }
+                ]
+              }
+            }
+          }
+        };
+      }
+
+      throw new Error(`Unexpected URL: ${url}`);
+    };
+
+    const req = { query: {} };
+    const res = {
+      statusCode: 200,
+      body: null,
+      status(code) {
+        this.statusCode = code;
+        return this;
+      },
+      json(payload) {
+        this.body = payload;
+        return this;
+      }
+    };
+
+    await getApiGames(req, res);
+
+    const game = res.body.games.find((g) => String(g.appid) === '570');
+    assert.ok(game);
+    assert.strictEqual(game.video_url, 'https://example.com/570/trailer.mp4');
+    assert.strictEqual(game.video_thumbnail, 'https://example.com/570/trailer-thumb.jpg');
+    assert.strictEqual(game.trailer_url, 'https://example.com/570/trailer.mp4');
+    assert.strictEqual(game.trailer_thumbnail, 'https://example.com/570/trailer-thumb.jpg');
+
+    axios.get = originalGet;
+    process.env.STEAM_API_KEY = originalKey;
+    process.env.STEAM_USER_ID = originalUserId;
   });
 });
