@@ -28,6 +28,16 @@
         "achievements": "Conquistas",
         "noAchievements": "Nenhuma conquista disponível para este jogo.",
         "loadingAchievements": "Carregando conquistas...",
-        "achievementsStatus": "Desbloqueadas {unlocked} de {total}"
+        "achievementsStatus": "Desbloqueadas {unlocked} de {total}",
+        "hideAchievements": "Ocultar Conquistas",
+        "showAchievements": "Mostrar Conquistas",
+        "noAchievementsFilter": "Nenhuma conquista corresponde ao filtro selecionado.",
+        "achievementsFilterLabel": "Filtrar conquistas por status",
+        "achievementsFilterAll": "Todas",
+        "achievementsFilterUnlocked": "Desbloqueadas",
+        "achievementsFilterLocked": "Bloqueadas",
+        "achievementsSortLabel": "Ordenar conquistas por data",
+        "achievementsSortNewest": "Mais recentes primeiro",
+        "achievementsSortOldest": "Mais antigas primeiro"
     }
 }

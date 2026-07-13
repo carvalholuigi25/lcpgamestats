@@ -1,138 +1,525 @@
 @charset "UTF-8";
-/* Liquid Glass theme */
-:root {
-  --btnbg2: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath fill='none' stroke='%23e6f7ff' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M1 1l14 14M15 1L1 15'/%3E%3C/svg%3E") !important;
+body {
+  font-family: "Segoe UI", Roboto, system-ui, sans-serif;
+  min-height: 100vh;
 }
 
-html[data-bs-theme=liquid], body.theme-liquid, .liquid {
-  background: linear-gradient(180deg, #0f1724 0%, #071021 100%);
-  color: #e6f7ff;
+.hidden, .hide {
+  display: none !important;
 }
-html[data-bs-theme=liquid] label, html[data-bs-theme=liquid] span, html[data-bs-theme=liquid] p, html[data-bs-theme=liquid] h1, html[data-bs-theme=liquid] h2, html[data-bs-theme=liquid] h3, html[data-bs-theme=liquid] h4, html[data-bs-theme=liquid] h5, html[data-bs-theme=liquid] h6, html[data-bs-theme=liquid] .small, html[data-bs-theme=liquid] .form-label, html[data-bs-theme=liquid] .form-text, html[data-bs-theme=liquid] .form-check-label, html[data-bs-theme=liquid] .form-check-input, body.theme-liquid label, body.theme-liquid span, body.theme-liquid p, body.theme-liquid h1, body.theme-liquid h2, body.theme-liquid h3, body.theme-liquid h4, body.theme-liquid h5, body.theme-liquid h6, body.theme-liquid .small, body.theme-liquid .form-label, body.theme-liquid .form-text, body.theme-liquid .form-check-label, body.theme-liquid .form-check-input, .liquid label, .liquid span, .liquid p, .liquid h1, .liquid h2, .liquid h3, .liquid h4, .liquid h5, .liquid h6, .liquid .small, .liquid .form-label, .liquid .form-text, .liquid .form-check-label, .liquid .form-check-input {
-  color: #e6f7ff !important;
+
+.card .card-body {
+  background: inherit;
 }
-html[data-bs-theme=liquid] .app-header, html[data-bs-theme=liquid] .app-footer, body.theme-liquid .app-header, body.theme-liquid .app-footer, .liquid .app-header, .liquid .app-footer {
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.02), rgba(255, 255, 255, 0.01)) !important;
-  -webkit-backdrop-filter: blur(6px) saturate(120%) !important;
-  backdrop-filter: blur(6px) saturate(120%) !important;
-  border: none !important;
-  color: #e6f7ff !important;
+
+.modal .btn-close {
+  color: inherit;
 }
-html[data-bs-theme=liquid] .player-card, html[data-bs-theme=liquid] .stat-box, html[data-bs-theme=liquid] .game-card, html[data-bs-theme=liquid] .modal-content, body.theme-liquid .player-card, body.theme-liquid .stat-box, body.theme-liquid .game-card, body.theme-liquid .modal-content, .liquid .player-card, .liquid .stat-box, .liquid .game-card, .liquid .modal-content {
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.01)) !important;
-  -webkit-backdrop-filter: blur(6px) saturate(120%) !important;
-  backdrop-filter: blur(6px) saturate(120%) !important;
-  border: none !important;
-  color: #e6f7ff !important;
+
+.bg-body, .bg-body-secondary, .bg-body-tertiary {
+  background: inherit;
 }
-html[data-bs-theme=liquid] .game-card__body, body.theme-liquid .game-card__body, .liquid .game-card__body {
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.01)) !important;
-  -webkit-backdrop-filter: blur(6px) saturate(120%) !important;
-  backdrop-filter: blur(6px) saturate(120%) !important;
-  border: none !important;
-  color: #e6f7ff !important;
+
+.input-group .bg-body-tertiary:not(.btnsearchicogrp) {
+  background: none !important;
+  border-color: inherit;
+  color: inherit;
 }
-html[data-bs-theme=liquid] select, body.theme-liquid select, .liquid select {
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.01)) !important;
-  -webkit-backdrop-filter: blur(6px) saturate(120%) !important;
-  backdrop-filter: blur(6px) saturate(120%) !important;
-  border: none !important;
-  color: #e6f7ff !important;
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
-html[data-bs-theme=liquid] select option, body.theme-liquid select option, .liquid select option {
-  background: rgba(6, 18, 48, 0.6) !important;
+.btn {
+  border-radius: 24px;
+  background-color: var(--bs-body-bg);
+  border-color: var(--bs-border-color);
 }
-html[data-bs-theme=liquid] input, html[data-bs-theme=liquid] .input-group-text, html[data-bs-theme=liquid] .form-control, body.theme-liquid input, body.theme-liquid .input-group-text, body.theme-liquid .form-control, .liquid input, .liquid .input-group-text, .liquid .form-control {
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.01)) !important;
-  -webkit-backdrop-filter: blur(6px) saturate(120%) !important;
-  backdrop-filter: blur(6px) saturate(120%) !important;
-  border: none !important;
-  color: #e6f7ff !important;
-  color: #e6f7ff !important;
-}
-html[data-bs-theme=liquid] input ::placeholder, html[data-bs-theme=liquid] .input-group-text ::placeholder, html[data-bs-theme=liquid] .form-control ::placeholder, body.theme-liquid input ::placeholder, body.theme-liquid .input-group-text ::placeholder, body.theme-liquid .form-control ::placeholder, .liquid input ::placeholder, .liquid .input-group-text ::placeholder, .liquid .form-control ::placeholder {
-  color: #e6f7ff !important;
-}
-html[data-bs-theme=liquid] input :focus, html[data-bs-theme=liquid] .input-group-text :focus, html[data-bs-theme=liquid] .form-control :focus, body.theme-liquid input :focus, body.theme-liquid .input-group-text :focus, body.theme-liquid .form-control :focus, .liquid input :focus, .liquid .input-group-text :focus, .liquid .form-control :focus {
-  color: #e6f7ff !important;
-}
-html[data-bs-theme=liquid] #search-input:focus, html[data-bs-theme=liquid] #sort-select:focus, body.theme-liquid #search-input:focus, body.theme-liquid #sort-select:focus, .liquid #search-input:focus, .liquid #sort-select:focus {
-  color: #e6f7ff !important;
-}
-html[data-bs-theme=liquid] #pagination-controls, html[data-bs-theme=liquid] .pagination-controls,
-html[data-bs-theme=liquid] #pagination, html[data-bs-theme=liquid] .pagination, body.theme-liquid #pagination-controls, body.theme-liquid .pagination-controls,
-body.theme-liquid #pagination, body.theme-liquid .pagination, .liquid #pagination-controls, .liquid .pagination-controls,
-.liquid #pagination, .liquid .pagination {
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.01)) !important;
-  -webkit-backdrop-filter: blur(6px) saturate(120%) !important;
-  backdrop-filter: blur(6px) saturate(120%) !important;
-  border: none !important;
-  color: #e6f7ff !important;
-  color: #e6f7ff;
-}
-html[data-bs-theme=liquid] #pagination-controls .page-link, html[data-bs-theme=liquid] #pagination-controls .page-item, html[data-bs-theme=liquid] .pagination-controls .page-link, html[data-bs-theme=liquid] .pagination-controls .page-item,
-html[data-bs-theme=liquid] #pagination .page-link,
-html[data-bs-theme=liquid] #pagination .page-item, html[data-bs-theme=liquid] .pagination .page-link, html[data-bs-theme=liquid] .pagination .page-item, body.theme-liquid #pagination-controls .page-link, body.theme-liquid #pagination-controls .page-item, body.theme-liquid .pagination-controls .page-link, body.theme-liquid .pagination-controls .page-item,
-body.theme-liquid #pagination .page-link,
-body.theme-liquid #pagination .page-item, body.theme-liquid .pagination .page-link, body.theme-liquid .pagination .page-item, .liquid #pagination-controls .page-link, .liquid #pagination-controls .page-item, .liquid .pagination-controls .page-link, .liquid .pagination-controls .page-item,
-.liquid #pagination .page-link,
-.liquid #pagination .page-item, .liquid .pagination .page-link, .liquid .pagination .page-item {
-  background: inherit !important;
-  border: none !important;
-  color: inherit !important;
-}
-html[data-bs-theme=liquid] #pagination-controls .page-link.active, html[data-bs-theme=liquid] #pagination-controls .page-item.active, html[data-bs-theme=liquid] .pagination-controls .page-link.active, html[data-bs-theme=liquid] .pagination-controls .page-item.active,
-html[data-bs-theme=liquid] #pagination .page-link.active,
-html[data-bs-theme=liquid] #pagination .page-item.active, html[data-bs-theme=liquid] .pagination .page-link.active, html[data-bs-theme=liquid] .pagination .page-item.active, body.theme-liquid #pagination-controls .page-link.active, body.theme-liquid #pagination-controls .page-item.active, body.theme-liquid .pagination-controls .page-link.active, body.theme-liquid .pagination-controls .page-item.active,
-body.theme-liquid #pagination .page-link.active,
-body.theme-liquid #pagination .page-item.active, body.theme-liquid .pagination .page-link.active, body.theme-liquid .pagination .page-item.active, .liquid #pagination-controls .page-link.active, .liquid #pagination-controls .page-item.active, .liquid .pagination-controls .page-link.active, .liquid .pagination-controls .page-item.active,
-.liquid #pagination .page-link.active,
-.liquid #pagination .page-item.active, .liquid .pagination .page-link.active, .liquid .pagination .page-item.active {
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.01)) !important;
-  -webkit-backdrop-filter: blur(6px) saturate(120%) !important;
-  backdrop-filter: blur(6px) saturate(120%) !important;
-  border: none !important;
-  color: #e6f7ff !important;
-  color: #66c0f4 !important;
-}
-html[data-bs-theme=liquid] .bg-body, html[data-bs-theme=liquid] .bg-body-secondary, html[data-bs-theme=liquid] .bg-body-tertiary, body.theme-liquid .bg-body, body.theme-liquid .bg-body-secondary, body.theme-liquid .bg-body-tertiary, .liquid .bg-body, .liquid .bg-body-secondary, .liquid .bg-body-tertiary {
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.02)) !important;
-}
-html[data-bs-theme=liquid] .machievementlist, body.theme-liquid .machievementlist, .liquid .machievementlist {
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.01)) !important;
-  -webkit-backdrop-filter: blur(6px) saturate(120%) !important;
-  backdrop-filter: blur(6px) saturate(120%) !important;
-  border: none !important;
-  color: #e6f7ff !important;
-}
-html[data-bs-theme=liquid] .btn, body.theme-liquid .btn, .liquid .btn {
+
+.btn-login, .btn-logout, .btn-register,
+#btn-login, #btn-logout, #btn-register {
+  border-radius: 24px;
   background: linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.02)) !important;
   border: 1px solid rgba(200, 230, 255, 0.06) !important;
   box-shadow: 0 6px 24px rgba(6, 18, 48, 0.6);
-  color: #e6f7ff;
-  border-radius: 20px !important;
-}
-html[data-bs-theme=liquid] #view-grid, html[data-bs-theme=liquid] #view-list, body.theme-liquid #view-grid, body.theme-liquid #view-list, .liquid #view-grid, .liquid #view-list {
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.01)) !important;
-  -webkit-backdrop-filter: blur(6px) saturate(120%) !important;
-  backdrop-filter: blur(6px) saturate(120%) !important;
-  border: none !important;
-  color: #e6f7ff !important;
-}
-html[data-bs-theme=liquid] #view-grid.active, html[data-bs-theme=liquid] #view-list.active, body.theme-liquid #view-grid.active, body.theme-liquid #view-list.active, .liquid #view-grid.active, .liquid #view-list.active {
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.01)) !important;
-  -webkit-backdrop-filter: blur(6px) saturate(120%) !important;
-  backdrop-filter: blur(6px) saturate(120%) !important;
-  border: none !important;
-  color: #e6f7ff !important;
-  color: #66c0f4 !important;
-}
-html[data-bs-theme=liquid] .modal .btn-close, body.theme-liquid .modal .btn-close, .liquid .modal .btn-close {
-  background: transparent var(--btnbg2) center/1em auto no-repeat !important;
-  color: #e6f7ff !important;
+  padding: 0.5rem 1.25rem;
+  font-size: 0.9rem;
+  line-height: 1.5;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
-/* Glassmorphism theme */
+.badge {
+  border-radius: 20px;
+  border: 1px solid rgba(200, 230, 255, 0.06) !important;
+  box-shadow: 0 6px 24px rgba(6, 18, 48, 0.6);
+  padding: 0.25rem 0.75rem;
+  font-size: 0.75rem;
+  line-height: 1.5;
+  margin-top: 0.25rem;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.btnsearchicogrp {
+  background: var(--bs-body-bg) !important;
+}
+
+.app-header {
+  background: linear-gradient(135deg, #1b2838 0%, #2a475e 100%);
+  border-bottom: 1px solid rgba(102, 192, 244, 0.2);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.35);
+}
+
+.steam-icon {
+  color: #66c0f4;
+  filter: drop-shadow(0 0 8px rgba(102, 192, 244, 0.4));
+}
+
+.player-card {
+  background: rgba(0, 0, 0, 0.25);
+  border-radius: 0.75rem;
+  padding: 0.5rem 1rem;
+  border: 1px solid rgba(102, 192, 244, 0.15);
+}
+
+.player-avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: 8px;
+  border: 2px solid #66c0f4;
+}
+
+#player-profile-link {
+  color: #66c0f4;
+}
+#player-profile-link:hover {
+  text-decoration: underline !important;
+}
+
+.app-footer {
+  background: linear-gradient(135deg, #1b2838 0%, #2a475e 100%);
+  border-bottom: 1px solid rgba(102, 192, 244, 0.2);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.35);
+}
+
+.mchartstats {
+  background: rgba(42, 71, 94, 0.35);
+  border: 1px solid rgba(102, 192, 244, 0.15);
+  border-radius: 0.75rem;
+  transition: transform 0.2s ease, border-color 0.2s ease;
+  margin-top: 15px;
+}
+
+.stat-box {
+  background: rgba(42, 71, 94, 0.35);
+  border: 1px solid rgba(102, 192, 244, 0.15);
+  border-radius: 0.75rem;
+  transition: transform 0.2s ease, border-color 0.2s ease;
+}
+.stat-box:hover {
+  transform: translateY(-2px);
+  border-color: rgba(102, 192, 244, 0.4);
+}
+
+.stat-value {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #66c0f4;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.stat-label {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #9fb1c1;
+  margin-top: 0.25rem;
+}
+
+#stats-chart {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.stats-chart__row {
+  display: grid;
+  gap: 0.65rem;
+  align-items: center;
+}
+
+.stats-chart__meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.stats-chart__label {
+  color: #e9eef2;
+  font-size: 0.9rem;
+  font-weight: 600;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.stats-chart__value {
+  color: #9fb1c1;
+  font-size: 0.85rem;
+  white-space: nowrap;
+}
+
+.stats-chart__bar-wrap {
+  background: rgba(42, 71, 94, 0.18);
+  border: 1px solid rgba(102, 192, 244, 0.14);
+  border-radius: 999px;
+  overflow: hidden;
+  height: 0.9rem;
+}
+
+.stats-chart__bar {
+  width: 0;
+  height: 100%;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #66c0f4, rgb(173.368902439, 221.387195122, 249.131097561));
+  transition: width 0.35s ease;
+}
+
+#search-input,
+#sort-select {
+  background-color: var(--bs-body-bg);
+  border-color: var(--bs-border-color);
+  color: #e9eef2;
+}
+#search-input:focus,
+#sort-select:focus {
+  background-color: rgba(42, 71, 94, 0.5);
+  border-color: #66c0f4;
+  box-shadow: 0 0 0 0.2rem rgba(102, 192, 244, 0.15);
+  color: #fff;
+}
+#search-input::placeholder,
+#sort-select::placeholder {
+  color: #7c8e9e;
+}
+
+.input-group-text {
+  background-color: var(--bs-body-bg) !important;
+  border-color: var(--bs-border-color) !important;
+  color: #66c0f4;
+}
+
+#view-grid.active,
+#view-list.active {
+  background-color: #66c0f4;
+  border-color: #66c0f4;
+  color: #171a21;
+}
+
+.game-card {
+  background: rgba(42, 71, 94, 0.3);
+  border: 1px solid rgba(102, 192, 244, 0.1);
+  border-radius: 0.75rem;
+  overflow: hidden;
+  cursor: pointer;
+  transition: transform 0.35s ease, box-shadow 0.35s ease, border-color 0.2s ease;
+  height: 100%;
+}
+.game-card:hover {
+  transform: translateY(-6px) scale(1.02);
+  box-shadow: 0 12px 30px rgba(102, 192, 244, 0.2);
+  border-color: rgba(102, 192, 244, 0.5);
+}
+.game-card:hover .game-card__image img {
+  transform: scale(1.08);
+}
+.game-card:hover .game-card__title {
+  color: #66c0f4;
+}
+
+.game-card__image {
+  position: relative;
+  width: 100%;
+  padding-top: 46.7%;
+  overflow: hidden;
+  background-color: #171a21;
+}
+.game-card__image img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.35s ease;
+}
+
+.game-card__recent-badge {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  background: rgba(164, 208, 7, 0.95);
+  color: #171a21;
+  font-size: 0.7rem;
+  font-weight: 700;
+  padding: 0.2rem 0.5rem;
+  border-radius: 0.4rem;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.game-card__body {
+  background: rgba(42, 71, 94, 0.35);
+  padding: 0.85rem 1rem;
+}
+
+.game-card__title {
+  font-size: 0.95rem;
+  font-weight: 600;
+  margin-bottom: 0.35rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  transition: color 0.2s ease;
+}
+
+.game-card__meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.8rem;
+  color: #9fb1c1;
+}
+
+.game-card__playtime {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+.game-card__playtime i {
+  color: #66c0f4;
+}
+
+.game-card-col {
+  animation: fadeInUp 0.4s ease both;
+}
+
+#games-container {
+  justify-content: center;
+}
+
+#games-container.list-view {
+  display: block;
+}
+#games-container.list-view .game-card-col {
+  width: 100%;
+  margin-bottom: 0.75rem;
+}
+#games-container.list-view .game-card {
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+  height: auto;
+}
+#games-container.list-view .game-card:hover {
+  transform: translateX(4px);
+}
+#games-container.list-view .game-card__image {
+  width: 184px;
+  min-width: 184px;
+  padding-top: 0;
+  height: 86px;
+}
+#games-container.list-view .game-card__body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+#games-container.list-view .game-card__title {
+  font-size: 1rem;
+}
+
+.modal-content {
+  background: #1b2838;
+  border: 1px solid rgba(102, 192, 244, 0.2);
+  color: #e9eef2;
+}
+
+#modalGameImage {
+  border: 1px solid rgba(102, 192, 244, 0.2);
+}
+
+.modal {
+  position: fixed;
+  z-index: 99999;
+}
+
+#modalAchievements {
+  overflow: auto;
+  max-height: 600px;
+}
+
+.machievementlist {
+  text-align: left;
+}
+.machievementlist .row {
+  justify-content: space-around !important;
+  align-items: flex-start !important;
+  text-align: left !important;
+  padding: 15px;
+}
+
+.loadingblk {
+  width: 3rem;
+  height: 3rem;
+}
+
+#error-state {
+  background-color: rgba(220, 53, 69, 0.15);
+  border-color: rgba(220, 53, 69, 0.4);
+  color: #ff8b97;
+}
+
+body.has-custom-bg {
+  background-size: cover !important;
+  background-position: center center !important;
+  background-repeat: no-repeat !important;
+  background-attachment: fixed !important;
+}
+
+body.has-custom-bg::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.28);
+  pointer-events: none;
+  z-index: 0;
+}
+
+body.theme-glassmorphism.has-custom-bg::before {
+  background: rgba(255, 255, 255, 0.06);
+}
+
+body.theme-liquid.has-custom-bg::before {
+  background: rgba(0, 0, 0, 0.36);
+}
+
+main, .app-header, .app-footer {
+  position: relative;
+  z-index: 1;
+}
+
+@media (max-width: 767.98px) {
+  .stat-value {
+    font-size: 1.15rem;
+  }
+  .stat-label {
+    font-size: 0.65rem;
+  }
+  #games-container.list-view .game-card__image {
+    width: 110px;
+    min-width: 110px;
+    height: 60px;
+  }
+  #games-container.list-view .game-card__title {
+    font-size: 0.85rem;
+  }
+  #games-container.list-view .game-card__meta {
+    font-size: 0.7rem;
+  }
+}
+@media (max-width: 575.98px) {
+  .player-card {
+    width: 100%;
+    justify-content: center;
+  }
+}
+@media all and (max-width: 768px) {
+  .machievementlist {
+    text-align: center;
+  }
+  .machievementlist .row {
+    justify-content: center !important;
+    align-items: center !important;
+    text-align: center !important;
+  }
+}
+body {
+  background: linear-gradient(180deg, #171a21 0%, #0e1116 100%);
+  color: #e9eef2;
+}
+
+body.theme-dark .player-card,
+body.theme-dark .stat-box,
+body.theme-dark .game-card,
+body.theme-dark .modal-content,
+body.theme-dark .form-select {
+  --bs-body-bg: rgba(42, 71, 94, 0.35);
+  --bs-border-color: rgba(102, 192, 244, 0.15);
+  background: var(--bs-body-bg);
+  border-color: var(--bs-border-color);
+  color: #e9eef2;
+}
+
+body.dark .btnsearchicogrp {
+  background: var(--bs-body-bg) !important;
+}
+
+body.theme-light {
+  background: linear-gradient(180deg, #f7f8fb 0%, #e2e6ed 100%);
+  color: #1f2937;
+}
+
+body.theme-light .app-header,
+body.theme-light .app-footer {
+  background: linear-gradient(135deg, #ced7e8 0%, #9ab8d9 100%);
+  border-bottom-color: rgba(34, 92, 148, 0.2);
+  box-shadow: 0 4px 18px rgba(79, 110, 152, 0.15);
+}
+
+body.theme-light .player-card,
+body.theme-light .stat-box,
+body.theme-light .game-card,
+body.theme-light .modal-content {
+  background: rgba(255, 255, 255, 0.88);
+  border-color: rgba(34, 92, 148, 0.16);
+  color: #1f2937;
+}
+
+body.theme-light #player-profile-link,
+body.theme-light .game-card__title,
+body.theme-light .stat-value,
+body.theme-light .stat-label,
+body.theme-light .game-card__meta {
+  color: #1f2937;
+}
+
+body.theme-light .game-card__image {
+  background-color: #d8e4f2;
+}
+
+body.theme-light #loading-state .spinner-border {
+  color: #4f83c7;
+}
+
+body.theme-light #error-state {
+  background-color: rgba(220, 53, 69, 0.12);
+  border-color: rgba(220, 53, 69, 0.28);
+  color: #842029;
+}
+
+body.light .btnsearchicogrp {
+  background: rgb(255, 255, 255) !important;
+  color: rgb(0, 0, 0) !important;
+}
+
 :root {
   --btnbg2: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath fill='none' stroke='%23e6f7ff' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M1 1l14 14M15 1L1 15'/%3E%3C/svg%3E") !important;
 }
@@ -273,6 +660,138 @@ html[data-bs-theme=glassmorphism] #view-grid.active, html[data-bs-theme=glassmor
 html[data-bs-theme=glassmorphism] .modal .btn-close, body.theme-glassmorphism .modal .btn-close, .glassmorphism .modal .btn-close {
   background: transparent var(--btnbg2) center/1em auto no-repeat !important;
   color: white !important;
+}
+
+:root {
+  --btnbg2: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath fill='none' stroke='%23e6f7ff' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M1 1l14 14M15 1L1 15'/%3E%3C/svg%3E") !important;
+}
+
+html[data-bs-theme=liquid], body.theme-liquid, .liquid {
+  background: linear-gradient(180deg, #0f1724 0%, #071021 100%);
+  color: #e6f7ff;
+}
+html[data-bs-theme=liquid] label, html[data-bs-theme=liquid] span, html[data-bs-theme=liquid] p, html[data-bs-theme=liquid] h1, html[data-bs-theme=liquid] h2, html[data-bs-theme=liquid] h3, html[data-bs-theme=liquid] h4, html[data-bs-theme=liquid] h5, html[data-bs-theme=liquid] h6, html[data-bs-theme=liquid] .small, html[data-bs-theme=liquid] .form-label, html[data-bs-theme=liquid] .form-text, html[data-bs-theme=liquid] .form-check-label, html[data-bs-theme=liquid] .form-check-input, body.theme-liquid label, body.theme-liquid span, body.theme-liquid p, body.theme-liquid h1, body.theme-liquid h2, body.theme-liquid h3, body.theme-liquid h4, body.theme-liquid h5, body.theme-liquid h6, body.theme-liquid .small, body.theme-liquid .form-label, body.theme-liquid .form-text, body.theme-liquid .form-check-label, body.theme-liquid .form-check-input, .liquid label, .liquid span, .liquid p, .liquid h1, .liquid h2, .liquid h3, .liquid h4, .liquid h5, .liquid h6, .liquid .small, .liquid .form-label, .liquid .form-text, .liquid .form-check-label, .liquid .form-check-input {
+  color: #e6f7ff !important;
+}
+html[data-bs-theme=liquid] .app-header, html[data-bs-theme=liquid] .app-footer, body.theme-liquid .app-header, body.theme-liquid .app-footer, .liquid .app-header, .liquid .app-footer {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.02), rgba(255, 255, 255, 0.01)) !important;
+  -webkit-backdrop-filter: blur(6px) saturate(120%) !important;
+  backdrop-filter: blur(6px) saturate(120%) !important;
+  border: none !important;
+  color: #e6f7ff !important;
+}
+html[data-bs-theme=liquid] .player-card, html[data-bs-theme=liquid] .stat-box, html[data-bs-theme=liquid] .game-card, html[data-bs-theme=liquid] .modal-content, body.theme-liquid .player-card, body.theme-liquid .stat-box, body.theme-liquid .game-card, body.theme-liquid .modal-content, .liquid .player-card, .liquid .stat-box, .liquid .game-card, .liquid .modal-content {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.01)) !important;
+  -webkit-backdrop-filter: blur(6px) saturate(120%) !important;
+  backdrop-filter: blur(6px) saturate(120%) !important;
+  border: none !important;
+  color: #e6f7ff !important;
+}
+html[data-bs-theme=liquid] .game-card__body, body.theme-liquid .game-card__body, .liquid .game-card__body {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.01)) !important;
+  -webkit-backdrop-filter: blur(6px) saturate(120%) !important;
+  backdrop-filter: blur(6px) saturate(120%) !important;
+  border: none !important;
+  color: #e6f7ff !important;
+}
+html[data-bs-theme=liquid] select, body.theme-liquid select, .liquid select {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.01)) !important;
+  -webkit-backdrop-filter: blur(6px) saturate(120%) !important;
+  backdrop-filter: blur(6px) saturate(120%) !important;
+  border: none !important;
+  color: #e6f7ff !important;
+}
+html[data-bs-theme=liquid] select option, body.theme-liquid select option, .liquid select option {
+  background: rgba(6, 18, 48, 0.6) !important;
+}
+html[data-bs-theme=liquid] input, html[data-bs-theme=liquid] .input-group-text, html[data-bs-theme=liquid] .form-control, body.theme-liquid input, body.theme-liquid .input-group-text, body.theme-liquid .form-control, .liquid input, .liquid .input-group-text, .liquid .form-control {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.01)) !important;
+  -webkit-backdrop-filter: blur(6px) saturate(120%) !important;
+  backdrop-filter: blur(6px) saturate(120%) !important;
+  border: none !important;
+  color: #e6f7ff !important;
+  color: #e6f7ff !important;
+}
+html[data-bs-theme=liquid] input ::placeholder, html[data-bs-theme=liquid] .input-group-text ::placeholder, html[data-bs-theme=liquid] .form-control ::placeholder, body.theme-liquid input ::placeholder, body.theme-liquid .input-group-text ::placeholder, body.theme-liquid .form-control ::placeholder, .liquid input ::placeholder, .liquid .input-group-text ::placeholder, .liquid .form-control ::placeholder {
+  color: #e6f7ff !important;
+}
+html[data-bs-theme=liquid] input :focus, html[data-bs-theme=liquid] .input-group-text :focus, html[data-bs-theme=liquid] .form-control :focus, body.theme-liquid input :focus, body.theme-liquid .input-group-text :focus, body.theme-liquid .form-control :focus, .liquid input :focus, .liquid .input-group-text :focus, .liquid .form-control :focus {
+  color: #e6f7ff !important;
+}
+html[data-bs-theme=liquid] #search-input:focus, html[data-bs-theme=liquid] #sort-select:focus, body.theme-liquid #search-input:focus, body.theme-liquid #sort-select:focus, .liquid #search-input:focus, .liquid #sort-select:focus {
+  color: #e6f7ff !important;
+}
+html[data-bs-theme=liquid] #pagination-controls, html[data-bs-theme=liquid] .pagination-controls,
+html[data-bs-theme=liquid] #pagination, html[data-bs-theme=liquid] .pagination, body.theme-liquid #pagination-controls, body.theme-liquid .pagination-controls,
+body.theme-liquid #pagination, body.theme-liquid .pagination, .liquid #pagination-controls, .liquid .pagination-controls,
+.liquid #pagination, .liquid .pagination {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.01)) !important;
+  -webkit-backdrop-filter: blur(6px) saturate(120%) !important;
+  backdrop-filter: blur(6px) saturate(120%) !important;
+  border: none !important;
+  color: #e6f7ff !important;
+  color: #e6f7ff;
+}
+html[data-bs-theme=liquid] #pagination-controls .page-link, html[data-bs-theme=liquid] #pagination-controls .page-item, html[data-bs-theme=liquid] .pagination-controls .page-link, html[data-bs-theme=liquid] .pagination-controls .page-item,
+html[data-bs-theme=liquid] #pagination .page-link,
+html[data-bs-theme=liquid] #pagination .page-item, html[data-bs-theme=liquid] .pagination .page-link, html[data-bs-theme=liquid] .pagination .page-item, body.theme-liquid #pagination-controls .page-link, body.theme-liquid #pagination-controls .page-item, body.theme-liquid .pagination-controls .page-link, body.theme-liquid .pagination-controls .page-item,
+body.theme-liquid #pagination .page-link,
+body.theme-liquid #pagination .page-item, body.theme-liquid .pagination .page-link, body.theme-liquid .pagination .page-item, .liquid #pagination-controls .page-link, .liquid #pagination-controls .page-item, .liquid .pagination-controls .page-link, .liquid .pagination-controls .page-item,
+.liquid #pagination .page-link,
+.liquid #pagination .page-item, .liquid .pagination .page-link, .liquid .pagination .page-item {
+  background: inherit !important;
+  border: none !important;
+  color: inherit !important;
+}
+html[data-bs-theme=liquid] #pagination-controls .page-link.active, html[data-bs-theme=liquid] #pagination-controls .page-item.active, html[data-bs-theme=liquid] .pagination-controls .page-link.active, html[data-bs-theme=liquid] .pagination-controls .page-item.active,
+html[data-bs-theme=liquid] #pagination .page-link.active,
+html[data-bs-theme=liquid] #pagination .page-item.active, html[data-bs-theme=liquid] .pagination .page-link.active, html[data-bs-theme=liquid] .pagination .page-item.active, body.theme-liquid #pagination-controls .page-link.active, body.theme-liquid #pagination-controls .page-item.active, body.theme-liquid .pagination-controls .page-link.active, body.theme-liquid .pagination-controls .page-item.active,
+body.theme-liquid #pagination .page-link.active,
+body.theme-liquid #pagination .page-item.active, body.theme-liquid .pagination .page-link.active, body.theme-liquid .pagination .page-item.active, .liquid #pagination-controls .page-link.active, .liquid #pagination-controls .page-item.active, .liquid .pagination-controls .page-link.active, .liquid .pagination-controls .page-item.active,
+.liquid #pagination .page-link.active,
+.liquid #pagination .page-item.active, .liquid .pagination .page-link.active, .liquid .pagination .page-item.active {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.01)) !important;
+  -webkit-backdrop-filter: blur(6px) saturate(120%) !important;
+  backdrop-filter: blur(6px) saturate(120%) !important;
+  border: none !important;
+  color: #e6f7ff !important;
+  color: #66c0f4 !important;
+}
+html[data-bs-theme=liquid] .bg-body, html[data-bs-theme=liquid] .bg-body-secondary, html[data-bs-theme=liquid] .bg-body-tertiary, body.theme-liquid .bg-body, body.theme-liquid .bg-body-secondary, body.theme-liquid .bg-body-tertiary, .liquid .bg-body, .liquid .bg-body-secondary, .liquid .bg-body-tertiary {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.02)) !important;
+}
+html[data-bs-theme=liquid] .machievementlist, body.theme-liquid .machievementlist, .liquid .machievementlist {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.01)) !important;
+  -webkit-backdrop-filter: blur(6px) saturate(120%) !important;
+  backdrop-filter: blur(6px) saturate(120%) !important;
+  border: none !important;
+  color: #e6f7ff !important;
+}
+html[data-bs-theme=liquid] .btn, body.theme-liquid .btn, .liquid .btn {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.02)) !important;
+  border: 1px solid rgba(200, 230, 255, 0.06) !important;
+  box-shadow: 0 6px 24px rgba(6, 18, 48, 0.6);
+  color: #e6f7ff;
+  border-radius: 20px !important;
+}
+html[data-bs-theme=liquid] #view-grid, html[data-bs-theme=liquid] #view-list, body.theme-liquid #view-grid, body.theme-liquid #view-list, .liquid #view-grid, .liquid #view-list {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.01)) !important;
+  -webkit-backdrop-filter: blur(6px) saturate(120%) !important;
+  backdrop-filter: blur(6px) saturate(120%) !important;
+  border: none !important;
+  color: #e6f7ff !important;
+}
+html[data-bs-theme=liquid] #view-grid.active, html[data-bs-theme=liquid] #view-list.active, body.theme-liquid #view-grid.active, body.theme-liquid #view-list.active, .liquid #view-grid.active, .liquid #view-list.active {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.01)) !important;
+  -webkit-backdrop-filter: blur(6px) saturate(120%) !important;
+  backdrop-filter: blur(6px) saturate(120%) !important;
+  border: none !important;
+  color: #e6f7ff !important;
+  color: #66c0f4 !important;
+}
+html[data-bs-theme=liquid] .modal .btn-close, body.theme-liquid .modal .btn-close, .liquid .modal .btn-close {
+  background: transparent var(--btnbg2) center/1em auto no-repeat !important;
+  color: #e6f7ff !important;
 }
 
 /* -------------------------------------------------------------------------- */
@@ -1743,530 +2262,6 @@ media-tooltip-group {
   opacity: 1;
   filter: blur(0);
   scale: 1;
-}
-
-body {
-  background: linear-gradient(180deg, #171a21 0%, #0e1116 100%);
-  color: #e9eef2;
-  font-family: "Segoe UI", Roboto, system-ui, sans-serif;
-  min-height: 100vh;
-}
-
-body.theme-light {
-  background: linear-gradient(180deg, #f7f8fb 0%, #e2e6ed 100%);
-  color: #1f2937;
-}
-
-body.theme-light .app-header {
-  background: linear-gradient(135deg, #ced7e8 0%, #9ab8d9 100%);
-  border-bottom-color: rgba(34, 92, 148, 0.2);
-  box-shadow: 0 4px 18px rgba(79, 110, 152, 0.15);
-}
-
-body.theme-light .app-footer {
-  background: linear-gradient(135deg, #ced7e8 0%, #9ab8d9 100%);
-  border-bottom-color: rgba(34, 92, 148, 0.2);
-  box-shadow: 0 4px 18px rgba(79, 110, 152, 0.15);
-}
-
-body.theme-light .player-card,
-body.theme-light .stat-box,
-body.theme-light .game-card,
-body.theme-light .modal-content {
-  background: rgba(255, 255, 255, 0.88);
-  border-color: rgba(34, 92, 148, 0.16);
-  color: #1f2937;
-}
-
-body.theme-light #player-profile-link,
-body.theme-light .game-card__title,
-body.theme-light .stat-value,
-body.theme-light .stat-label,
-body.theme-light .game-card__meta {
-  color: #1f2937;
-}
-
-body.theme-light .game-card__image {
-  background-color: #d8e4f2;
-}
-
-body.theme-light #loading-state .spinner-border {
-  color: #4f83c7;
-}
-
-body.theme-light #error-state {
-  background-color: rgba(220, 53, 69, 0.12);
-  border-color: rgba(220, 53, 69, 0.28);
-  color: #842029;
-}
-
-body.theme-dark .player-card,
-body.theme-dark .stat-box,
-body.theme-dark .game-card,
-body.theme-dark .modal-content,
-body.theme-dark .form-select {
-  --bs-body-bg: rgba(42, 71, 94, 0.35);
-  --bs-border-color: rgba(102, 192, 244, 0.15);
-  background: var(--bs-body-bg);
-  border-color: var(--bs-border-color);
-  color: #e9eef2;
-}
-
-.hidden, .hide {
-  display: none !important;
-}
-
-.mchartstats {
-  background: rgba(42, 71, 94, 0.35);
-  border: 1px solid rgba(102, 192, 244, 0.15);
-  border-radius: 0.75rem;
-  transition: transform 0.2s ease, border-color 0.2s ease;
-  margin-top: 15px;
-}
-
-.loadingblk {
-  width: 3rem;
-  height: 3rem;
-}
-
-.btn {
-  border-radius: 24px;
-  background-color: var(--bs-body-bg);
-  border-color: var(--bs-border-color);
-}
-
-.btn-login, .btn-logout, .btn-register,
-#btn-login, #btn-logout, #btn-register {
-  border-radius: 24px;
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.02)) !important;
-  border: 1px solid rgba(200, 230, 255, 0.06) !important;
-  box-shadow: 0 6px 24px rgba(6, 18, 48, 0.6);
-  padding: 0.5rem 1.25rem;
-  font-size: 0.9rem;
-  line-height: 1.5;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
-
-.badge {
-  border-radius: 20px;
-  border: 1px solid rgba(200, 230, 255, 0.06) !important;
-  box-shadow: 0 6px 24px rgba(6, 18, 48, 0.6);
-  padding: 0.25rem 0.75rem;
-  font-size: 0.75rem;
-  line-height: 1.5;
-  margin-top: 0.25rem;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
-
-.card .card-body {
-  background: inherit;
-}
-
-.modal .btn-close {
-  color: inherit;
-}
-
-.app-header {
-  background: linear-gradient(135deg, #1b2838 0%, #2a475e 100%);
-  border-bottom: 1px solid rgba(102, 192, 244, 0.2);
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.35);
-}
-
-.steam-icon {
-  color: #66c0f4;
-  filter: drop-shadow(0 0 8px rgba(102, 192, 244, 0.4));
-}
-
-.player-card {
-  background: rgba(0, 0, 0, 0.25);
-  border-radius: 0.75rem;
-  padding: 0.5rem 1rem;
-  border: 1px solid rgba(102, 192, 244, 0.15);
-}
-
-.player-avatar {
-  width: 48px;
-  height: 48px;
-  border-radius: 8px;
-  border: 2px solid #66c0f4;
-}
-
-#player-profile-link {
-  color: #66c0f4;
-}
-#player-profile-link:hover {
-  text-decoration: underline !important;
-}
-
-.app-footer {
-  background: linear-gradient(135deg, #1b2838 0%, #2a475e 100%);
-  border-bottom: 1px solid rgba(102, 192, 244, 0.2);
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.35);
-}
-
-.stat-box {
-  background: rgba(42, 71, 94, 0.35);
-  border: 1px solid rgba(102, 192, 244, 0.15);
-  border-radius: 0.75rem;
-  transition: transform 0.2s ease, border-color 0.2s ease;
-}
-.stat-box:hover {
-  transform: translateY(-2px);
-  border-color: rgba(102, 192, 244, 0.4);
-}
-
-.stat-value {
-  font-size: 1.5rem;
-  font-weight: 700;
-  color: #66c0f4;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.stat-label {
-  font-size: 0.75rem;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  color: #9fb1c1;
-  margin-top: 0.25rem;
-}
-
-#search-input,
-#sort-select {
-  background-color: var(--bs-body-bg);
-  border-color: var(--bs-border-color);
-  color: #e9eef2;
-}
-#search-input:focus,
-#sort-select:focus {
-  background-color: rgba(42, 71, 94, 0.5);
-  border-color: #66c0f4;
-  box-shadow: 0 0 0 0.2rem rgba(102, 192, 244, 0.15);
-  color: #fff;
-}
-#search-input::placeholder,
-#sort-select::placeholder {
-  color: #7c8e9e;
-}
-
-.input-group-text {
-  background-color: var(--bs-body-bg) !important;
-  border-color: var(--bs-border-color) !important;
-  color: #66c0f4;
-}
-
-#view-grid.active,
-#view-list.active {
-  background-color: #66c0f4;
-  border-color: #66c0f4;
-  color: #171a21;
-}
-
-.game-card {
-  background: rgba(42, 71, 94, 0.3);
-  border: 1px solid rgba(102, 192, 244, 0.1);
-  border-radius: 0.75rem;
-  overflow: hidden;
-  cursor: pointer;
-  transition: transform 0.35s ease, box-shadow 0.35s ease, border-color 0.2s ease;
-  height: 100%;
-}
-.game-card:hover {
-  transform: translateY(-6px) scale(1.02);
-  box-shadow: 0 12px 30px rgba(102, 192, 244, 0.2);
-  border-color: rgba(102, 192, 244, 0.5);
-}
-.game-card:hover .game-card__image img {
-  transform: scale(1.08);
-}
-.game-card:hover .game-card__title {
-  color: #66c0f4;
-}
-
-.game-card__image {
-  position: relative;
-  width: 100%;
-  padding-top: 46.7%;
-  overflow: hidden;
-  background-color: #171a21;
-}
-.game-card__image img {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  transition: transform 0.35s ease;
-}
-
-.game-card__recent-badge {
-  position: absolute;
-  top: 0.5rem;
-  right: 0.5rem;
-  background: rgba(164, 208, 7, 0.95);
-  color: #171a21;
-  font-size: 0.7rem;
-  font-weight: 700;
-  padding: 0.2rem 0.5rem;
-  border-radius: 0.4rem;
-  text-transform: uppercase;
-  letter-spacing: 0.03em;
-}
-
-.game-card__body {
-  background: rgba(42, 71, 94, 0.35);
-  padding: 0.85rem 1rem;
-}
-
-.game-card__title {
-  font-size: 0.95rem;
-  font-weight: 600;
-  margin-bottom: 0.35rem;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  transition: color 0.2s ease;
-}
-
-.game-card__meta {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  font-size: 0.8rem;
-  color: #9fb1c1;
-}
-
-.game-card__playtime {
-  display: flex;
-  align-items: center;
-  gap: 0.35rem;
-}
-.game-card__playtime i {
-  color: #66c0f4;
-}
-
-#stats-chart {
-  display: grid;
-  gap: 0.75rem;
-}
-
-.stats-chart__row {
-  display: grid;
-  gap: 0.65rem;
-  align-items: center;
-}
-
-.stats-chart__meta {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 0.75rem;
-}
-
-.stats-chart__label {
-  color: #e9eef2;
-  font-size: 0.9rem;
-  font-weight: 600;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-.stats-chart__value {
-  color: #9fb1c1;
-  font-size: 0.85rem;
-  white-space: nowrap;
-}
-
-.stats-chart__bar-wrap {
-  background: rgba(42, 71, 94, 0.18);
-  border: 1px solid rgba(102, 192, 244, 0.14);
-  border-radius: 999px;
-  overflow: hidden;
-  height: 0.9rem;
-}
-
-.stats-chart__bar {
-  width: 0;
-  height: 100%;
-  border-radius: 999px;
-  background: linear-gradient(90deg, #66c0f4, rgb(173.368902439, 221.387195122, 249.131097561));
-  transition: width 0.35s ease;
-}
-
-#games-container {
-  justify-content: center;
-}
-
-#games-container.list-view {
-  display: block;
-}
-#games-container.list-view .game-card-col {
-  width: 100%;
-  margin-bottom: 0.75rem;
-}
-#games-container.list-view .game-card {
-  display: flex;
-  flex-direction: row;
-  align-items: stretch;
-  height: auto;
-}
-#games-container.list-view .game-card:hover {
-  transform: translateX(4px);
-}
-#games-container.list-view .game-card__image {
-  width: 184px;
-  min-width: 184px;
-  padding-top: 0;
-  height: 86px;
-}
-#games-container.list-view .game-card__body {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-}
-#games-container.list-view .game-card__title {
-  font-size: 1rem;
-}
-
-.modal-content {
-  background: #1b2838;
-  border: 1px solid rgba(102, 192, 244, 0.2);
-  color: #e9eef2;
-}
-
-#modalGameImage {
-  border: 1px solid rgba(102, 192, 244, 0.2);
-}
-
-body.has-custom-bg {
-  background-size: cover !important;
-  background-position: center center !important;
-  background-repeat: no-repeat !important;
-  background-attachment: fixed !important;
-}
-
-body.has-custom-bg::before {
-  content: "";
-  position: fixed;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.28);
-  pointer-events: none;
-  z-index: 0;
-}
-
-body.theme-glassmorphism.has-custom-bg::before {
-  background: rgba(255, 255, 255, 0.06);
-}
-
-body.theme-liquid.has-custom-bg::before {
-  background: rgba(0, 0, 0, 0.36);
-}
-
-main, .app-header, .app-footer {
-  position: relative;
-  z-index: 1;
-}
-
-.modal {
-  position: fixed;
-  z-index: 99999;
-}
-
-#modalAchievements {
-  overflow: auto;
-  max-height: 600px;
-}
-
-.machievementlist {
-  text-align: left;
-}
-.machievementlist .row {
-  justify-content: space-around !important;
-  align-items: flex-start !important;
-  text-align: left !important;
-  padding: 15px;
-}
-
-#error-state {
-  background-color: rgba(220, 53, 69, 0.15);
-  border-color: rgba(220, 53, 69, 0.4);
-  color: #ff8b97;
-}
-
-@keyframes fadeInUp {
-  from {
-    opacity: 0;
-    transform: translateY(12px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-.game-card-col {
-  animation: fadeInUp 0.4s ease both;
-}
-
-.btnsearchicogrp {
-  background: var(--bs-body-bg) !important;
-}
-
-body.dark .btnsearchicogrp {
-  background: var(--bs-body-bg) !important;
-}
-
-body.light .btnsearchicogrp {
-  background: rgb(255, 255, 255) !important;
-  color: rgb(0, 0, 0) !important;
-}
-
-.input-group .bg-body-tertiary:not(.btnsearchicogrp) {
-  background: none !important;
-  border-color: inherit;
-  color: inherit;
-}
-
-.bg-body, .bg-body-secondary, .bg-body-tertiary {
-  background: inherit;
-}
-
-@media (max-width: 767.98px) {
-  .stat-value {
-    font-size: 1.15rem;
-  }
-  .stat-label {
-    font-size: 0.65rem;
-  }
-  #games-container.list-view .game-card__image {
-    width: 110px;
-    min-width: 110px;
-    height: 60px;
-  }
-  #games-container.list-view .game-card__title {
-    font-size: 0.85rem;
-  }
-  #games-container.list-view .game-card__meta {
-    font-size: 0.7rem;
-  }
-}
-@media (max-width: 575.98px) {
-  .player-card {
-    width: 100%;
-    justify-content: center;
-  }
-}
-@media all and (max-width: 768px) {
-  .machievementlist {
-    text-align: center;
-  }
-  .machievementlist .row {
-    justify-content: center !important;
-    align-items: center !important;
-    text-align: center !important;
-  }
 }
 
 /*# sourceMappingURL=style.css.map */

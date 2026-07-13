@@ -1,0 +1,35 @@
+// ==========================================================================
+// Buttons & badges
+// ==========================================================================
+.btn {
+  border-radius: calc(16px + 8px);
+  background-color: var(--bs-body-bg);
+  border-color: var(--bs-border-color);
+}
+
+.btn-login, .btn-logout, .btn-register,
+#btn-login, #btn-logout, #btn-register {
+  border-radius: calc(16px + 8px);
+  background: linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.02)) !important;
+  border: 1px solid rgba(200,230,255,0.06) !important;
+  box-shadow: 0 6px 24px rgba(6,18,48,0.6);
+  padding: 0.5rem 1.25rem;
+  font-size: 0.9rem;
+  line-height: 1.5;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.badge {
+  border-radius: calc(16px + 4px);
+  border: 1px solid rgba(200,230,255,0.06) !important;
+  box-shadow: 0 6px 24px rgba(6,18,48,0.6);
+  padding: 0.25rem 0.75rem;
+  font-size: 0.75rem;
+  line-height: 1.5;
+  margin-top: 0.25rem;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.btnsearchicogrp {
+  background: var(--bs-body-bg) !important;
+}

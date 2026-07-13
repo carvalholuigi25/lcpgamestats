@@ -28,6 +28,16 @@
         "achievements": "Logros",
         "noAchievements": "No hay logros disponibles para este juego.",
         "loadingAchievements": "Cargando logros...",
-        "achievementsStatus": "Desbloqueados {unlocked} de {total}"
+        "achievementsStatus": "Desbloqueados {unlocked} de {total}",
+        "hideAchievements": "Ocultar Logros",
+        "showAchievements": "Mostrar Logros",
+        "noAchievementsFilter": "Ningún logro coincide con el filtro seleccionado.",
+        "achievementsFilterLabel": "Filtrar logros por estado",
+        "achievementsFilterAll": "Todos",
+        "achievementsFilterUnlocked": "Desbloqueados",
+        "achievementsFilterLocked": "Bloqueados",
+        "achievementsSortLabel": "Ordenar logros por fecha",
+        "achievementsSortNewest": "Más recientes primero",
+        "achievementsSortOldest": "Más antiguos primero"
     }
 }

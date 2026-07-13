@@ -24,8 +24,14 @@ import { fetchTranslations, getVideoStuff } from './functions.js';
     recentlyPlayed: 0,
     topGames: [],
     showVideo: true,
+    showAchievements: true,
+    achievementsStatusFilter: 'all',
+    achievementsDateSort: 'desc',
     activeGame: null
   };
+
+  let currentAchievements = [];
+  let currentAchievementsSummary = {};
 
   let translations = {};
 
@@ -56,6 +62,8 @@ import { fetchTranslations, getVideoStuff } from './functions.js';
     modalAchievementsTitle: document.getElementById('modalAchievementsTitle'),
     modalAchievementsStatus: document.getElementById('modalAchievementsStatus'),
     modalAchievements: document.getElementById('modalAchievements'),
+    achievementsStatusFilter: document.getElementById('achievements-status-filter'),
+    achievementsDateSort: document.getElementById('achievements-date-sort'),
     themeSelect: document.getElementById('theme-select'),
     langSelect: document.getElementById('lang-select'),
     providerInfoText: document.getElementById('provider-info-text'),
@@ -82,7 +90,8 @@ import { fetchTranslations, getVideoStuff } from './functions.js';
     uploadBgBtn: document.getElementById('upload-bg-btn'),
     bkgControls: document.getElementById('background-controls'),
     videoContainer: document.getElementById('video-container'),
-    toggleVideoBtn: document.getElementById('toggle-video-btn')
+    toggleVideoBtn: document.getElementById('toggle-video-btn'),
+    toggleAchievementsBtn: document.getElementById('toggle-achievements-btn')
   };
 
   // Auth-related elements
@@ -184,7 +193,8 @@ import { fetchTranslations, getVideoStuff } from './functions.js';
       view: state.view
       ,
       backgroundImage: state.backgroundImage || '',
-      showVideo: state.showVideo === undefined ? true : Boolean(state.showVideo)
+      showVideo: state.showVideo === undefined ? true : Boolean(state.showVideo),
+      showAchievements: state.showAchievements === undefined ? true : Boolean(state.showAchievements)
     };
     localStorage.setItem('settings', JSON.stringify(settings));
   }
@@ -207,6 +217,7 @@ import { fetchTranslations, getVideoStuff } from './functions.js';
         state.view = settings.view || state.view;
         state.backgroundImage = settings.backgroundImage || '';
         state.showVideo = settings.showVideo === undefined ? true : Boolean(settings.showVideo);
+        state.showAchievements = settings.showAchievements === undefined ? true : Boolean(settings.showAchievements);
       }
     } catch (err) {
       console.warn('Failed to load settings from localStorage:', err.message);
@@ -487,9 +498,15 @@ import { fetchTranslations, getVideoStuff } from './functions.js';
       : `https://store.steampowered.com/app/${encodeURIComponent(game.appid)}`);
     els.modalStoreLink.textContent = translations.viewMore || 'View more';
 
+    state.achievementsStatusFilter = 'all';
+    state.achievementsDateSort = 'desc';
+    if (els.achievementsStatusFilter) els.achievementsStatusFilter.value = 'all';
+    if (els.achievementsDateSort) els.achievementsDateSort.value = 'desc';
+
     els.modalAchievementsTitle.textContent = translations.achievements || 'Achievements';
     els.modalAchievementsStatus.textContent = translations.loadingAchievements || 'Loading achievements...';
     els.modalAchievements.innerHTML = `<div class="text-center text-muted small">${translations.loadingAchievements || 'Loading achievements...'}</div>`;
+    updateToggleAchievementsButton();
 
     gameModal.show();
     loadVideoContent(game);
@@ -524,6 +541,9 @@ import { fetchTranslations, getVideoStuff } from './functions.js';
   }
 
   function renderAchievements(achievements = [], summary = {}) {
+    currentAchievements = achievements;
+    currentAchievementsSummary = summary;
+
     els.modalAchievementsTitle.textContent = translations.achievements || 'Achievements';
     const total = summary.total || achievements.length;
     const unlocked = summary.unlocked || achievements.filter((a) => a.achieved).length;
@@ -532,13 +552,41 @@ import { fetchTranslations, getVideoStuff } from './functions.js';
       .replace('{unlocked}', unlocked)
       .replace('{total}', total);
 
-    if (achievements.length === 0) {
+    renderAchievementsList();
+  }
+
+  /** Re-render the achievements list applying the current status filter and date sort */
+  function renderAchievementsList() {
+    if (currentAchievements.length === 0) {
       els.modalAchievements.innerHTML = `<div class="text-center text-muted small">${translations.noAchievements || 'No achievements are available for this game.'}</div>`;
       return;
     }
 
+    const statusFilter = state.achievementsStatusFilter;
+    const dateSort = state.achievementsDateSort;
+
+    const filteredAchievements = currentAchievements.filter((achievement) => {
+      if (statusFilter === 'unlocked') return achievement.achieved;
+      if (statusFilter === 'locked') return !achievement.achieved;
+      return true;
+    });
+
+    if (filteredAchievements.length === 0) {
+      els.modalAchievements.innerHTML = `<div class="text-center text-muted small">${translations.noAchievementsFilter || 'No achievements match the selected filter.'}</div>`;
+      return;
+    }
+
+    const sortedAchievements = [...filteredAchievements].sort((a, b) => {
+      if (a.achieved !== b.achieved) return a.achieved ? -1 : 1;
+      if (a.achieved) {
+        const diff = (a.unlocktime || 0) - (b.unlocktime || 0);
+        return dateSort === 'asc' ? diff : -diff;
+      }
+      return 0;
+    });
+
     const fragment = document.createDocumentFragment();
-    achievements.forEach((achievement) => {
+    sortedAchievements.forEach((achievement) => {
       const item = document.createElement('div');
       item.className = 'machievementlist list-group-item list-group-item-dark d-flex justify-content-between align-items-start';
       item.innerHTML = `
@@ -636,6 +684,29 @@ import { fetchTranslations, getVideoStuff } from './functions.js';
         : (t.emptyLibrary || 'No games found in this library.');
       els.emptyText.textContent = message;
     }
+
+    updateAchievementsFilterLabels();
+  }
+
+  function updateAchievementsFilterLabels() {
+    const t = translations;
+
+    if (els.achievementsStatusFilter) {
+      els.achievementsStatusFilter.title = t.achievementsFilterLabel || 'Filter achievements';
+      els.achievementsStatusFilter.setAttribute('aria-label', t.achievementsFilterLabel || 'Filter achievements by status');
+      const [allOpt, unlockedOpt, lockedOpt] = els.achievementsStatusFilter.options;
+      if (allOpt) allOpt.textContent = t.achievementsFilterAll || 'All';
+      if (unlockedOpt) unlockedOpt.textContent = t.achievementsFilterUnlocked || 'Unlocked';
+      if (lockedOpt) lockedOpt.textContent = t.achievementsFilterLocked || 'Locked';
+    }
+
+    if (els.achievementsDateSort) {
+      els.achievementsDateSort.title = t.achievementsSortLabel || 'Sort achievements by date';
+      els.achievementsDateSort.setAttribute('aria-label', t.achievementsSortLabel || 'Sort achievements by date');
+      const [newestOpt, oldestOpt] = els.achievementsDateSort.options;
+      if (newestOpt) newestOpt.textContent = t.achievementsSortNewest || 'Newest first';
+      if (oldestOpt) oldestOpt.textContent = t.achievementsSortOldest || 'Oldest first';
+    }
   }
 
   function setView(view) {
@@ -728,6 +799,24 @@ import { fetchTranslations, getVideoStuff } from './functions.js';
     if (state.showVideo) {
       loadVideoContent();
     }
+  }
+
+  function updateToggleAchievementsButton() {
+    if (!els.toggleAchievementsBtn || !els.modalAchievements) return;
+    const hideLabel = translations.hideAchievements || 'Hide Achievements';
+    const showLabel = translations.showAchievements || 'Show Achievements';
+    els.toggleAchievementsBtn.textContent = state.showAchievements ? hideLabel : showLabel;
+    els.toggleAchievementsBtn.setAttribute('aria-pressed', String(state.showAchievements));
+    els.modalAchievements.classList.toggle('d-none', !state.showAchievements);
+    if (els.modalAchievementsStatus) {
+      els.modalAchievementsStatus.classList.toggle('d-none', !state.showAchievements);
+    }
+  }
+
+  function toggleAchievements() {
+    state.showAchievements = !state.showAchievements;
+    saveSettings();
+    updateToggleAchievementsButton();
   }
 
   async function init() {
@@ -853,6 +942,15 @@ import { fetchTranslations, getVideoStuff } from './functions.js';
     els.viewGridBtn.addEventListener('click', () => setView('grid'));
     els.viewListBtn.addEventListener('click', () => setView('list'));
     if (els.toggleVideoBtn) els.toggleVideoBtn.addEventListener('click', toggleVideo);
+    if (els.toggleAchievementsBtn) els.toggleAchievementsBtn.addEventListener('click', toggleAchievements);
+    if (els.achievementsStatusFilter) els.achievementsStatusFilter.addEventListener('change', (e) => {
+      state.achievementsStatusFilter = e.target.value;
+      renderAchievementsList();
+    });
+    if (els.achievementsDateSort) els.achievementsDateSort.addEventListener('change', (e) => {
+      state.achievementsDateSort = e.target.value;
+      renderAchievementsList();
+    });
 
     const bkgimg = state.backgroundImage || 'images/cool_gaming_bkg.png';
     if (els.bgImageInput) els.bgImageInput.value = bkgimg;

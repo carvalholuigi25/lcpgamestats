@@ -1,0 +1,50 @@
+// ==========================================================================
+// Light theme
+// ==========================================================================
+body.theme-light {
+  background: linear-gradient(180deg, #f7f8fb 0%, #e2e6ed 100%);
+  color: #1f2937;
+}
+
+body.theme-light .app-header,
+body.theme-light .app-footer {
+  background: linear-gradient(135deg, #ced7e8 0%, #9ab8d9 100%);
+  border-bottom-color: rgba(34, 92, 148, 0.2);
+  box-shadow: 0 4px 18px rgba(79, 110, 152, 0.15);
+}
+
+body.theme-light .player-card,
+body.theme-light .stat-box,
+body.theme-light .game-card,
+body.theme-light .modal-content {
+  background: rgba(255, 255, 255, 0.88);
+  border-color: rgba(34, 92, 148, 0.16);
+  color: #1f2937;
+}
+
+body.theme-light #player-profile-link,
+body.theme-light .game-card__title,
+body.theme-light .stat-value,
+body.theme-light .stat-label,
+body.theme-light .game-card__meta {
+  color: #1f2937;
+}
+
+body.theme-light .game-card__image {
+  background-color: #d8e4f2;
+}
+
+body.theme-light #loading-state .spinner-border {
+  color: #4f83c7;
+}
+
+body.theme-light #error-state {
+  background-color: rgba(220, 53, 69, 0.12);
+  border-color: rgba(220, 53, 69, 0.28);
+  color: #842029;
+}
+
+body.light .btnsearchicogrp {
+  background: rgb(255, 255, 255) !important;
+  color: rgb(0, 0, 0) !important;
+}

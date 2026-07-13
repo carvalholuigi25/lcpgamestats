@@ -1,0 +1,45 @@
+// ==========================================================================
+// Responsive tweaks
+// ==========================================================================
+@media (max-width: 767.98px) {
+  .stat-value {
+    font-size: 1.15rem;
+  }
+
+  .stat-label {
+    font-size: 0.65rem;
+  }
+
+  #games-container.list-view .game-card__image {
+    width: 110px;
+    min-width: 110px;
+    height: 60px;
+  }
+
+  #games-container.list-view .game-card__title {
+    font-size: 0.85rem;
+  }
+
+  #games-container.list-view .game-card__meta {
+    font-size: 0.7rem;
+  }
+}
+
+@media (max-width: 575.98px) {
+  .player-card {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+@media all and (max-width: 768px) {
+  .machievementlist {
+    text-align: center;
+
+    .row {
+      justify-content: center !important;
+      align-items: center !important;
+      text-align: center !important;
+    }
+  }
+}

@@ -1,0 +1,13 @@
+// ==========================================================================
+// Loading / Empty / Error states
+// ==========================================================================
+.loadingblk {
+  width: 3rem;
+  height: 3rem;
+}
+
+#error-state {
+  background-color: rgba(#dc3545, 0.15);
+  border-color: rgba(#dc3545, 0.4);
+  color: #ff8b97;
+}

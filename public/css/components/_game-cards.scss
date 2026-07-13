@@ -1,0 +1,141 @@
+@use '../base/variables' as *;
+
+// ==========================================================================
+// Game cards — grid view
+// ==========================================================================
+.game-card {
+  background: rgba($steam-blue, 0.3);
+  border: 1px solid rgba($steam-accent, 0.1);
+  border-radius: $card-radius;
+  overflow: hidden;
+  cursor: pointer;
+  transition: transform $transition-med, box-shadow $transition-med, border-color $transition-fast;
+  height: 100%;
+
+  &:hover {
+    transform: translateY(-6px) scale(1.02);
+    box-shadow: 0 12px 30px rgba($steam-accent, 0.2);
+    border-color: rgba($steam-accent, 0.5);
+
+    .game-card__image img {
+      transform: scale(1.08);
+    }
+
+    .game-card__title {
+      color: $steam-accent;
+    }
+  }
+}
+
+.game-card__image {
+  position: relative;
+  width: 100%;
+  padding-top: 46.7%; // Steam header aspect ratio (460x215)
+  overflow: hidden;
+  background-color: $steam-dark;
+
+  img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform $transition-med;
+  }
+}
+
+.game-card__recent-badge {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  background: rgba($steam-green, 0.95);
+  color: $steam-dark;
+  font-size: 0.7rem;
+  font-weight: 700;
+  padding: 0.2rem 0.5rem;
+  border-radius: 0.4rem;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.game-card__body {
+  background: rgba($steam-blue, 0.35);
+  padding: 0.85rem 1rem;
+}
+
+.game-card__title {
+  font-size: 0.95rem;
+  font-weight: 600;
+  margin-bottom: 0.35rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  transition: color $transition-fast;
+}
+
+.game-card__meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.8rem;
+  color: #9fb1c1;
+}
+
+.game-card__playtime {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+
+  i {
+    color: $steam-accent;
+  }
+}
+
+.game-card-col {
+  animation: fadeInUp 0.4s ease both;
+}
+
+// ==========================================================================
+// Game cards — list view
+// ==========================================================================
+#games-container {
+  justify-content: center;
+}
+
+#games-container.list-view {
+  display: block;
+
+  .game-card-col {
+    width: 100%;
+    margin-bottom: 0.75rem;
+  }
+
+  .game-card {
+    display: flex;
+    flex-direction: row;
+    align-items: stretch;
+    height: auto;
+
+    &:hover {
+      transform: translateX(4px);
+    }
+  }
+
+  .game-card__image {
+    width: 184px;
+    min-width: 184px;
+    padding-top: 0;
+    height: 86px;
+  }
+
+  .game-card__body {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .game-card__title {
+    font-size: 1rem;
+  }
+}

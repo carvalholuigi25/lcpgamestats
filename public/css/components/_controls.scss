@@ -1,0 +1,37 @@
+@use '../base/variables' as *;
+
+// ==========================================================================
+// Search / sort / view controls
+// ==========================================================================
+#search-input,
+#sort-select {
+  background-color: var(--bs-body-bg);
+  border-color: var(--bs-border-color);
+  color: #e9eef2;
+
+  &:focus {
+    background-color: rgba($steam-blue, 0.5);
+    border-color: $steam-accent;
+    box-shadow: 0 0 0 0.2rem rgba($steam-accent, 0.15);
+    color: #fff;
+  }
+
+  &::placeholder {
+    color: #7c8e9e;
+  }
+}
+
+.input-group-text {
+  background-color: var(--bs-body-bg) !important;
+  border-color: var(--bs-border-color) !important;
+  color: $steam-accent;
+}
+
+#view-grid,
+#view-list {
+  &.active {
+    background-color: $steam-accent;
+    border-color: $steam-accent;
+    color: $steam-dark;
+  }
+}

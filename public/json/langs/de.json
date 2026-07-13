@@ -28,6 +28,16 @@
         "achievements": "Errungenschaften",
         "noAchievements": "Für dieses Spiel sind keine Errungenschaften verfügbar.",
         "loadingAchievements": "Lade Errungenschaften...",
-        "achievementsStatus": "Freigeschaltet {unlocked} von {total}"
+        "achievementsStatus": "Freigeschaltet {unlocked} von {total}",
+        "hideAchievements": "Errungenschaften ausblenden",
+        "showAchievements": "Errungenschaften anzeigen",
+        "noAchievementsFilter": "Keine Errungenschaften entsprechen dem ausgewählten Filter.",
+        "achievementsFilterLabel": "Errungenschaften nach Status filtern",
+        "achievementsFilterAll": "Alle",
+        "achievementsFilterUnlocked": "Freigeschaltet",
+        "achievementsFilterLocked": "Gesperrt",
+        "achievementsSortLabel": "Errungenschaften nach Datum sortieren",
+        "achievementsSortNewest": "Neueste zuerst",
+        "achievementsSortOldest": "Älteste zuerst"
     }
 }

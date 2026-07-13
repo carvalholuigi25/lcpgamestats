@@ -91,8 +91,13 @@ lcpgamestats/
 └── public/
     ├── index.html
     ├── css/
-    │   ├── style.scss     # Source SCSS
-    │   └── style.css      # Compiled CSS
+    │   ├── style.scss          # Entry point (@use only, no rules)
+    │   ├── style.css           # Compiled CSS (generated, do not edit)
+    │   ├── base/               # Variables, reset, animations
+    │   ├── components/         # Header, footer, cards, buttons, modal, etc.
+    │   ├── layout/              # Custom background support, responsive tweaks
+    │   ├── themes/              # dark, light, glassmorphism, liquid
+    │   └── vendor/              # Third-party skin CSS (video player)
     └── js/
         └── app.js          # Frontend logic
 ```

@@ -1,0 +1,10 @@
+@use '../base/variables' as *;
+
+// ==========================================================================
+// Footer
+// ==========================================================================
+.app-footer {
+  background: linear-gradient(135deg, $steam-blue-dark 0%, $steam-blue 100%);
+  border-bottom: 1px solid rgba($steam-accent, 0.2);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.35);
+}

@@ -28,6 +28,16 @@
         "achievements": "Achievements",
         "noAchievements": "No achievements are available for this game.",
         "loadingAchievements": "Loading achievements...",
-        "achievementsStatus": "Unlocked {unlocked} of {total}"
+        "achievementsStatus": "Unlocked {unlocked} of {total}",
+        "hideAchievements": "Hide Achievements",
+        "showAchievements": "Show Achievements",
+        "noAchievementsFilter": "No achievements match the selected filter.",
+        "achievementsFilterLabel": "Filter achievements by status",
+        "achievementsFilterAll": "All",
+        "achievementsFilterUnlocked": "Unlocked",
+        "achievementsFilterLocked": "Locked",
+        "achievementsSortLabel": "Sort achievements by date",
+        "achievementsSortNewest": "Newest first",
+        "achievementsSortOldest": "Oldest first"
     }
 }

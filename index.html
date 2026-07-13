@@ -182,10 +182,10 @@
           <option value="glassmorphism">Glassmorphism</option>
         </select>
         <select id="lang-select" class="form-select" title="Language" aria-label="Language">
-          <option value="en">English</option>
-          <option value="es">Español</option>
-          <option value="de">Deutsch</option>
-          <option value="pt">Português</option>
+          <option value="en">🇺🇸 English</option>
+          <option value="es">🇪🇸 Español</option>
+          <option value="de">🇩🇪 Deutsch</option>
+          <option value="pt">🇧🇷 Português</option>
         </select>
       </div>
       <div class="col-12 col-md-6 d-flex justify-content-md-end align-items-center">
@@ -261,7 +261,19 @@
           <div class="mt-4">
             <div class="d-flex justify-content-between align-items-center mb-3">
               <h6 id="modalAchievementsTitle" class="mb-0">Achievements</h6>
-              <span id="modalAchievementsStatus" class="small text-muted">--</span>
+              <div class="d-flex align-items-center gap-2 flex-wrap">
+                <span id="modalAchievementsStatus" class="small text-muted">--</span>
+                <select id="achievements-status-filter" class="form-select form-select-sm w-auto" title="Filter achievements" aria-label="Filter achievements by status">
+                  <option value="all">All</option>
+                  <option value="unlocked">Unlocked</option>
+                  <option value="locked">Locked</option>
+                </select>
+                <select id="achievements-date-sort" class="form-select form-select-sm w-auto" title="Sort achievements by date" aria-label="Sort achievements by date">
+                  <option value="desc">Newest first</option>
+                  <option value="asc">Oldest first</option>
+                </select>
+                <button id="toggle-achievements-btn" class="btn btn-sm btn-outline-secondary" type="button">Hide Achievements</button>
+              </div>
             </div>
             <div id="modalAchievements" class="list-group"></div>
             <div class="d-flex justify-content-center mb-2 mt-3 mx-auto">

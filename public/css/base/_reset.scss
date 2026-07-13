@@ -1,0 +1,33 @@
+// ==========================================================================
+// Base document reset — theme-independent structural defaults
+// ==========================================================================
+body {
+  font-family: "Segoe UI", Roboto, system-ui, sans-serif;
+  min-height: 100vh;
+}
+
+.hidden, .hide {
+  display: none !important;
+}
+
+.card {
+  .card-body {
+    background: inherit;
+  }
+}
+
+.modal {
+  .btn-close {
+    color: inherit;
+  }
+}
+
+.bg-body, .bg-body-secondary, .bg-body-tertiary {
+  background: inherit;
+}
+
+.input-group .bg-body-tertiary:not(.btnsearchicogrp) {
+  background: none !important;
+  border-color: inherit;
+  color: inherit;
+}

@@ -1,0 +1,35 @@
+@use '../base/variables' as *;
+
+// ==========================================================================
+// Modal
+// ==========================================================================
+.modal-content {
+  background: $steam-blue-dark;
+  border: 1px solid rgba($steam-accent, 0.2);
+  color: #e9eef2;
+}
+
+#modalGameImage {
+  border: 1px solid rgba($steam-accent, 0.2);
+}
+
+.modal {
+  position: fixed;
+  z-index: 99999;
+}
+
+#modalAchievements {
+  overflow: auto;
+  max-height: 600px;
+}
+
+.machievementlist {
+  text-align: left;
+
+  .row {
+    justify-content: space-around !important;
+    align-items: flex-start !important;
+    text-align: left !important;
+    padding: 15px;
+  }
+}
