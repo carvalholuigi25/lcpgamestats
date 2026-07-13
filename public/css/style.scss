@@ -73,6 +73,18 @@ body.theme-light #error-state {
   color: #842029;
 }
 
+body.theme-dark .player-card,
+body.theme-dark .stat-box,
+body.theme-dark .game-card,
+body.theme-dark .modal-content,
+body.theme-dark .form-select {
+  --bs-body-bg: rgba(42, 71, 94, 0.35);
+  --bs-border-color: rgba(102, 192, 244, 0.15);
+  background: var(--bs-body-bg);
+  border-color: var(--bs-border-color);
+  color: #e9eef2;
+}
+
 .hidden, .hide {
   display: none !important;
 }
@@ -91,7 +103,39 @@ body.theme-light #error-state {
 }
 
 .btn {
+  border-radius: calc(16px + 8px);
+  background-color: var(--bs-body-bg);
+  border-color: var(--bs-border-color);
+}
+
+.btn-login, .btn-logout, .btn-register,
+#btn-login, #btn-logout, #btn-register {
+  border-radius: calc(16px + 8px);
+  background: linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.02)) !important;
+  border: 1px solid rgba(200,230,255,0.06) !important;
+  box-shadow: 0 6px 24px rgba(6,18,48,0.6);
+  padding: 0.5rem 1.25rem;
+  font-size: 0.9rem;
+  line-height: 1.5;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.badge {
   border-radius: calc(16px + 4px);
+  // background: linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.02)) !important;
+  border: 1px solid rgba(200,230,255,0.06) !important;
+  box-shadow: 0 6px 24px rgba(6,18,48,0.6);
+  padding: 0.25rem 0.75rem;
+  font-size: 0.75rem;
+  line-height: 1.5;
+  margin-top: 0.25rem;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card {
+  .card-body {
+    background: inherit;
+  }
 }
 
 .modal {
@@ -183,8 +227,10 @@ body.theme-light #error-state {
 // ==========================================================================
 #search-input,
 #sort-select {
-  background-color: rgba($steam-blue, 0.35);
-  border-color: rgba($steam-accent, 0.2);
+  background-color: var(--bs-body-bg);
+  border-color: var(--bs-border-color);
+  // background-color: rgba($steam-blue, 0.35);
+  // border-color: rgba($steam-accent, 0.2);
   color: #e9eef2;
 
   &:focus {
@@ -200,8 +246,10 @@ body.theme-light #error-state {
 }
 
 .input-group-text {
-  background-color: rgba($steam-blue, 0.35);
-  border-color: rgba($steam-accent, 0.2);
+  background-color: var(--bs-body-bg) !important;
+  border-color: var(--bs-border-color) !important;
+  // background-color: rgba($steam-blue, 0.35);
+  // border-color: rgba($steam-accent, 0.2);
   color: $steam-accent;
 }
 
@@ -273,6 +321,7 @@ body.theme-light #error-state {
 }
 
 .game-card__body {
+  background: rgba($steam-blue, 0.35);
   padding: 0.85rem 1rem;
 }
 
@@ -495,6 +544,29 @@ main, .app-header, .app-footer {
 
 .game-card-col {
   animation: fadeInUp 0.4s ease both;
+}
+
+.btnsearchicogrp {
+  background: var(--bs-body-bg) !important;
+}
+
+body.dark .btnsearchicogrp {
+  background: var(--bs-body-bg) !important;
+}
+
+body.light .btnsearchicogrp {
+  background: rgb(255, 255, 255) !important;
+  color: rgb(0, 0, 0) !important;
+}
+
+.input-group .bg-body-tertiary:not(.btnsearchicogrp) {
+  background: none !important;
+  border-color: inherit;
+  color: inherit;
+}
+
+.bg-body, .bg-body-secondary, .bg-body-tertiary {
+  background: inherit;
 }
 
 // ==========================================================================

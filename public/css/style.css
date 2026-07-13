@@ -1,7 +1,7 @@
 @charset "UTF-8";
 /* Liquid Glass theme */
 :root {
-  --btnbg2: url(data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23fff'%3e%3cpath d='M.293.293a1 1 0 0 1 1.414 0L8 6.586 14.293.293a1 1 0 1 1 1.414 1.414L9.414 8l6.293 6.293a1 1 0 0 1-1.414 1.414L8 9.414l-6.293 6.293a1 1 0 0 1-1.414-1.414L6.586 8 .293 1.707a1 1 0 0 1 0-1.414'/%3e%3c/svg%3e);
+  --btnbg2: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath fill='none' stroke='%23e6f7ff' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M1 1l14 14M15 1L1 15'/%3E%3C/svg%3E") !important;
 }
 
 html[data-bs-theme=liquid], body.theme-liquid, .liquid {
@@ -134,7 +134,7 @@ html[data-bs-theme=liquid] .modal .btn-close, body.theme-liquid .modal .btn-clos
 
 /* Glassmorphism theme */
 :root {
-  --btnbg2: url(data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23fff'%3e%3cpath d='M.293.293a1 1 0 0 1 1.414 0L8 6.586 14.293.293a1 1 0 1 1 1.414 1.414L9.414 8l6.293 6.293a1 1 0 0 1-1.414 1.414L8 9.414l-6.293 6.293a1 1 0 0 1-1.414-1.414L6.586 8 .293 1.707a1 1 0 0 1 0-1.414'/%3e%3c/svg%3e);
+  --btnbg2: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath fill='none' stroke='%23e6f7ff' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M1 1l14 14M15 1L1 15'/%3E%3C/svg%3E") !important;
 }
 
 html[data-bs-theme=glassmorphism], body.theme-glassmorphism, .glassmorphism {
@@ -391,6 +391,7 @@ media-tooltip-group {
 .media-default-skin .media-surface {
   background-color: var(--media-surface-background-color);
   box-shadow: 0 0 0 1px var(--media-surface-outer-border-color), 0 1px 3px 0 var(--media-surface-shadow-color), 0 1px 2px -1px var(--media-surface-shadow-color);
+  -webkit-backdrop-filter: var(--media-surface-backdrop-filter);
   backdrop-filter: var(--media-surface-backdrop-filter);
   /* Inner border ring */
 }
@@ -439,6 +440,7 @@ media-tooltip-group {
   background-image: linear-gradient(to top, oklch(0% 0 0deg / 0.5), oklch(0% 0 0deg / 0.3), oklch(0% 0 0deg / 0));
   border-radius: inherit;
   opacity: 0;
+  -webkit-backdrop-filter: blur(0) saturate(1);
   backdrop-filter: blur(0) saturate(1);
   transition-timing-function: ease-out;
   transition-duration: var(--media-controls-transition-duration);
@@ -456,6 +458,7 @@ media-tooltip-group {
 }
 
 .media-default-skin .media-error[data-open] ~ .media-overlay {
+  -webkit-backdrop-filter: blur(16px) saturate(1.5);
   backdrop-filter: blur(16px) saturate(1.5);
 }
 
@@ -468,7 +471,7 @@ media-tooltip-group {
   display: none;
   align-items: center;
   justify-content: center;
-  color: oklch(100% 0 0deg);
+  color: rgba(0, 0, 0, 0.8);
   pointer-events: none;
 }
 .media-default-skin .media-buffering-indicator:not([data-visible]) {
@@ -558,6 +561,7 @@ media-tooltip-group {
   text-align: center;
   touch-action: manipulation;
   cursor: pointer;
+  -webkit-user-select: none;
   user-select: none;
   outline: 2px solid transparent;
   outline-offset: -2px;
@@ -588,7 +592,7 @@ media-tooltip-group {
 /* Primary button variant */
 .media-default-skin .media-button--primary {
   font-weight: 500;
-  color: oklch(0% 0 0deg);
+  color: rgba(0, 0, 0, 0.8);
   text-shadow: none;
   background: oklch(100% 0 0deg);
 }
@@ -601,7 +605,7 @@ media-tooltip-group {
 }
 .media-default-skin .media-button--subtle:hover, .media-default-skin .media-button--subtle:focus-visible, .media-default-skin .media-button--subtle[aria-expanded=true] {
   text-decoration: none;
-  background-color: oklch(from currentColor l c h/0.1);
+  background-color: rgba(0, 0, 0, 0.1);
 }
 
 /* Icon button variant */
@@ -1796,6 +1800,18 @@ body.theme-light #error-state {
   color: #842029;
 }
 
+body.theme-dark .player-card,
+body.theme-dark .stat-box,
+body.theme-dark .game-card,
+body.theme-dark .modal-content,
+body.theme-dark .form-select {
+  --bs-body-bg: rgba(42, 71, 94, 0.35);
+  --bs-border-color: rgba(102, 192, 244, 0.15);
+  background: var(--bs-body-bg);
+  border-color: var(--bs-border-color);
+  color: #e9eef2;
+}
+
 .hidden, .hide {
   display: none !important;
 }
@@ -1814,7 +1830,36 @@ body.theme-light #error-state {
 }
 
 .btn {
+  border-radius: 24px;
+  background-color: var(--bs-body-bg);
+  border-color: var(--bs-border-color);
+}
+
+.btn-login, .btn-logout, .btn-register,
+#btn-login, #btn-logout, #btn-register {
+  border-radius: 24px;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.02)) !important;
+  border: 1px solid rgba(200, 230, 255, 0.06) !important;
+  box-shadow: 0 6px 24px rgba(6, 18, 48, 0.6);
+  padding: 0.5rem 1.25rem;
+  font-size: 0.9rem;
+  line-height: 1.5;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.badge {
   border-radius: 20px;
+  border: 1px solid rgba(200, 230, 255, 0.06) !important;
+  box-shadow: 0 6px 24px rgba(6, 18, 48, 0.6);
+  padding: 0.25rem 0.75rem;
+  font-size: 0.75rem;
+  line-height: 1.5;
+  margin-top: 0.25rem;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card .card-body {
+  background: inherit;
 }
 
 .modal .btn-close {
@@ -1889,8 +1934,8 @@ body.theme-light #error-state {
 
 #search-input,
 #sort-select {
-  background-color: rgba(42, 71, 94, 0.35);
-  border-color: rgba(102, 192, 244, 0.2);
+  background-color: var(--bs-body-bg);
+  border-color: var(--bs-border-color);
   color: #e9eef2;
 }
 #search-input:focus,
@@ -1906,8 +1951,8 @@ body.theme-light #error-state {
 }
 
 .input-group-text {
-  background-color: rgba(42, 71, 94, 0.35);
-  border-color: rgba(102, 192, 244, 0.2);
+  background-color: var(--bs-body-bg) !important;
+  border-color: var(--bs-border-color) !important;
   color: #66c0f4;
 }
 
@@ -1970,6 +2015,7 @@ body.theme-light #error-state {
 }
 
 .game-card__body {
+  background: rgba(42, 71, 94, 0.35);
   padding: 0.85rem 1rem;
 }
 
@@ -2162,6 +2208,29 @@ main, .app-header, .app-footer {
 }
 .game-card-col {
   animation: fadeInUp 0.4s ease both;
+}
+
+.btnsearchicogrp {
+  background: var(--bs-body-bg) !important;
+}
+
+body.dark .btnsearchicogrp {
+  background: var(--bs-body-bg) !important;
+}
+
+body.light .btnsearchicogrp {
+  background: rgb(255, 255, 255) !important;
+  color: rgb(0, 0, 0) !important;
+}
+
+.input-group .bg-body-tertiary:not(.btnsearchicogrp) {
+  background: none !important;
+  border-color: inherit;
+  color: inherit;
+}
+
+.bg-body, .bg-body-secondary, .bg-body-tertiary {
+  background: inherit;
 }
 
 @media (max-width: 767.98px) {
