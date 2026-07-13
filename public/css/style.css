@@ -1,41 +1,73 @@
 @charset "UTF-8";
 /* Liquid Glass theme */
+:root {
+  --btnbg2: url(data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23fff'%3e%3cpath d='M.293.293a1 1 0 0 1 1.414 0L8 6.586 14.293.293a1 1 0 1 1 1.414 1.414L9.414 8l6.293 6.293a1 1 0 0 1-1.414 1.414L8 9.414l-6.293 6.293a1 1 0 0 1-1.414-1.414L6.586 8 .293 1.707a1 1 0 0 1 0-1.414'/%3e%3c/svg%3e);
+}
+
 html[data-bs-theme=liquid], body.theme-liquid, .liquid {
   background: linear-gradient(180deg, #0f1724 0%, #071021 100%);
   color: #e6f7ff;
 }
+html[data-bs-theme=liquid] label, html[data-bs-theme=liquid] span, html[data-bs-theme=liquid] p, html[data-bs-theme=liquid] h1, html[data-bs-theme=liquid] h2, html[data-bs-theme=liquid] h3, html[data-bs-theme=liquid] h4, html[data-bs-theme=liquid] h5, html[data-bs-theme=liquid] h6, html[data-bs-theme=liquid] .small, html[data-bs-theme=liquid] .form-label, html[data-bs-theme=liquid] .form-text, html[data-bs-theme=liquid] .form-check-label, html[data-bs-theme=liquid] .form-check-input, body.theme-liquid label, body.theme-liquid span, body.theme-liquid p, body.theme-liquid h1, body.theme-liquid h2, body.theme-liquid h3, body.theme-liquid h4, body.theme-liquid h5, body.theme-liquid h6, body.theme-liquid .small, body.theme-liquid .form-label, body.theme-liquid .form-text, body.theme-liquid .form-check-label, body.theme-liquid .form-check-input, .liquid label, .liquid span, .liquid p, .liquid h1, .liquid h2, .liquid h3, .liquid h4, .liquid h5, .liquid h6, .liquid .small, .liquid .form-label, .liquid .form-text, .liquid .form-check-label, .liquid .form-check-input {
+  color: #e6f7ff !important;
+}
 html[data-bs-theme=liquid] .app-header, html[data-bs-theme=liquid] .app-footer, body.theme-liquid .app-header, body.theme-liquid .app-footer, .liquid .app-header, .liquid .app-footer {
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.02), rgba(255, 255, 255, 0.01));
-  -webkit-backdrop-filter: blur(6px) saturate(120%);
-  backdrop-filter: blur(6px) saturate(120%);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.02), rgba(255, 255, 255, 0.01)) !important;
+  -webkit-backdrop-filter: blur(6px) saturate(120%) !important;
+  backdrop-filter: blur(6px) saturate(120%) !important;
+  border: none !important;
   color: #e6f7ff !important;
 }
 html[data-bs-theme=liquid] .player-card, html[data-bs-theme=liquid] .stat-box, html[data-bs-theme=liquid] .game-card, html[data-bs-theme=liquid] .modal-content, body.theme-liquid .player-card, body.theme-liquid .stat-box, body.theme-liquid .game-card, body.theme-liquid .modal-content, .liquid .player-card, .liquid .stat-box, .liquid .game-card, .liquid .modal-content {
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.02)) !important;
-  border: 1px solid rgba(200, 230, 255, 0.06) !important;
-  box-shadow: 0 6px 24px rgba(6, 18, 48, 0.6);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.01)) !important;
+  -webkit-backdrop-filter: blur(6px) saturate(120%) !important;
+  backdrop-filter: blur(6px) saturate(120%) !important;
+  border: none !important;
+  color: #e6f7ff !important;
+}
+html[data-bs-theme=liquid] .game-card__body, body.theme-liquid .game-card__body, .liquid .game-card__body {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.01)) !important;
+  -webkit-backdrop-filter: blur(6px) saturate(120%) !important;
+  backdrop-filter: blur(6px) saturate(120%) !important;
+  border: none !important;
   color: #e6f7ff !important;
 }
 html[data-bs-theme=liquid] select, body.theme-liquid select, .liquid select {
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.02)) !important;
-  border: 1px solid rgba(200, 230, 255, 0.06) !important;
-  box-shadow: 0 6px 24px rgba(6, 18, 48, 0.6);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.01)) !important;
+  -webkit-backdrop-filter: blur(6px) saturate(120%) !important;
+  backdrop-filter: blur(6px) saturate(120%) !important;
+  border: none !important;
   color: #e6f7ff !important;
 }
+html[data-bs-theme=liquid] select option, body.theme-liquid select option, .liquid select option {
+  background: rgba(6, 18, 48, 0.6) !important;
+}
 html[data-bs-theme=liquid] input, html[data-bs-theme=liquid] .input-group-text, html[data-bs-theme=liquid] .form-control, body.theme-liquid input, body.theme-liquid .input-group-text, body.theme-liquid .form-control, .liquid input, .liquid .input-group-text, .liquid .form-control {
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.02)) !important;
-  border: 1px solid rgba(200, 230, 255, 0.06) !important;
-  box-shadow: 0 6px 24px rgba(6, 18, 48, 0.6);
-  color: #e6f7ff;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.01)) !important;
+  -webkit-backdrop-filter: blur(6px) saturate(120%) !important;
+  backdrop-filter: blur(6px) saturate(120%) !important;
+  border: none !important;
+  color: #e6f7ff !important;
+  color: #e6f7ff !important;
+}
+html[data-bs-theme=liquid] input ::placeholder, html[data-bs-theme=liquid] .input-group-text ::placeholder, html[data-bs-theme=liquid] .form-control ::placeholder, body.theme-liquid input ::placeholder, body.theme-liquid .input-group-text ::placeholder, body.theme-liquid .form-control ::placeholder, .liquid input ::placeholder, .liquid .input-group-text ::placeholder, .liquid .form-control ::placeholder {
+  color: #e6f7ff !important;
+}
+html[data-bs-theme=liquid] input :focus, html[data-bs-theme=liquid] .input-group-text :focus, html[data-bs-theme=liquid] .form-control :focus, body.theme-liquid input :focus, body.theme-liquid .input-group-text :focus, body.theme-liquid .form-control :focus, .liquid input :focus, .liquid .input-group-text :focus, .liquid .form-control :focus {
+  color: #e6f7ff !important;
+}
+html[data-bs-theme=liquid] #search-input:focus, html[data-bs-theme=liquid] #sort-select:focus, body.theme-liquid #search-input:focus, body.theme-liquid #sort-select:focus, .liquid #search-input:focus, .liquid #sort-select:focus {
+  color: #e6f7ff !important;
 }
 html[data-bs-theme=liquid] #pagination-controls, html[data-bs-theme=liquid] .pagination-controls,
 html[data-bs-theme=liquid] #pagination, html[data-bs-theme=liquid] .pagination, body.theme-liquid #pagination-controls, body.theme-liquid .pagination-controls,
 body.theme-liquid #pagination, body.theme-liquid .pagination, .liquid #pagination-controls, .liquid .pagination-controls,
 .liquid #pagination, .liquid .pagination {
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.02)) !important;
-  border: 1px solid rgba(200, 230, 255, 0.06) !important;
-  box-shadow: 0 6px 24px rgba(6, 18, 48, 0.6);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.01)) !important;
+  -webkit-backdrop-filter: blur(6px) saturate(120%) !important;
+  backdrop-filter: blur(6px) saturate(120%) !important;
+  border: none !important;
+  color: #e6f7ff !important;
   color: #e6f7ff;
 }
 html[data-bs-theme=liquid] #pagination-controls .page-link, html[data-bs-theme=liquid] #pagination-controls .page-item, html[data-bs-theme=liquid] .pagination-controls .page-link, html[data-bs-theme=liquid] .pagination-controls .page-item,
@@ -56,66 +88,127 @@ body.theme-liquid #pagination .page-link.active,
 body.theme-liquid #pagination .page-item.active, body.theme-liquid .pagination .page-link.active, body.theme-liquid .pagination .page-item.active, .liquid #pagination-controls .page-link.active, .liquid #pagination-controls .page-item.active, .liquid .pagination-controls .page-link.active, .liquid .pagination-controls .page-item.active,
 .liquid #pagination .page-link.active,
 .liquid #pagination .page-item.active, .liquid .pagination .page-link.active, .liquid .pagination .page-item.active {
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.02)) !important;
-  border: 1px solid rgba(200, 230, 255, 0.06) !important;
-  box-shadow: 0 6px 24px rgba(6, 18, 48, 0.6);
-  color: #e6f7ff;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.01)) !important;
+  -webkit-backdrop-filter: blur(6px) saturate(120%) !important;
+  backdrop-filter: blur(6px) saturate(120%) !important;
+  border: none !important;
+  color: #e6f7ff !important;
+  color: #66c0f4 !important;
 }
 html[data-bs-theme=liquid] .bg-body, html[data-bs-theme=liquid] .bg-body-secondary, html[data-bs-theme=liquid] .bg-body-tertiary, body.theme-liquid .bg-body, body.theme-liquid .bg-body-secondary, body.theme-liquid .bg-body-tertiary, .liquid .bg-body, .liquid .bg-body-secondary, .liquid .bg-body-tertiary {
   background: linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.02)) !important;
+}
+html[data-bs-theme=liquid] .machievementlist, body.theme-liquid .machievementlist, .liquid .machievementlist {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.01)) !important;
+  -webkit-backdrop-filter: blur(6px) saturate(120%) !important;
+  backdrop-filter: blur(6px) saturate(120%) !important;
+  border: none !important;
+  color: #e6f7ff !important;
 }
 html[data-bs-theme=liquid] .btn, body.theme-liquid .btn, .liquid .btn {
   background: linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.02)) !important;
   border: 1px solid rgba(200, 230, 255, 0.06) !important;
   box-shadow: 0 6px 24px rgba(6, 18, 48, 0.6);
   color: #e6f7ff;
+  border-radius: 20px !important;
+}
+html[data-bs-theme=liquid] #view-grid, html[data-bs-theme=liquid] #view-list, body.theme-liquid #view-grid, body.theme-liquid #view-list, .liquid #view-grid, .liquid #view-list {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.01)) !important;
+  -webkit-backdrop-filter: blur(6px) saturate(120%) !important;
+  backdrop-filter: blur(6px) saturate(120%) !important;
+  border: none !important;
+  color: #e6f7ff !important;
+}
+html[data-bs-theme=liquid] #view-grid.active, html[data-bs-theme=liquid] #view-list.active, body.theme-liquid #view-grid.active, body.theme-liquid #view-list.active, .liquid #view-grid.active, .liquid #view-list.active {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.01)) !important;
+  -webkit-backdrop-filter: blur(6px) saturate(120%) !important;
+  backdrop-filter: blur(6px) saturate(120%) !important;
+  border: none !important;
+  color: #e6f7ff !important;
+  color: #66c0f4 !important;
+}
+html[data-bs-theme=liquid] .modal .btn-close, body.theme-liquid .modal .btn-close, .liquid .modal .btn-close {
+  background: transparent var(--btnbg2) center/1em auto no-repeat !important;
+  color: #e6f7ff !important;
 }
 
 /* Glassmorphism theme */
+:root {
+  --btnbg2: url(data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23fff'%3e%3cpath d='M.293.293a1 1 0 0 1 1.414 0L8 6.586 14.293.293a1 1 0 1 1 1.414 1.414L9.414 8l6.293 6.293a1 1 0 0 1-1.414 1.414L8 9.414l-6.293 6.293a1 1 0 0 1-1.414-1.414L6.586 8 .293 1.707a1 1 0 0 1 0-1.414'/%3e%3c/svg%3e);
+}
+
 html[data-bs-theme=glassmorphism], body.theme-glassmorphism, .glassmorphism {
   background: linear-gradient(180deg, rgba(255, 255, 255, 0.02), rgba(255, 255, 255, 0.01));
   color: white;
 }
+html[data-bs-theme=glassmorphism] label, html[data-bs-theme=glassmorphism] span, html[data-bs-theme=glassmorphism] p, html[data-bs-theme=glassmorphism] h1, html[data-bs-theme=glassmorphism] h2, html[data-bs-theme=glassmorphism] h3, html[data-bs-theme=glassmorphism] h4, html[data-bs-theme=glassmorphism] h5, html[data-bs-theme=glassmorphism] h6, html[data-bs-theme=glassmorphism] .small, html[data-bs-theme=glassmorphism] .form-label, html[data-bs-theme=glassmorphism] .form-text, html[data-bs-theme=glassmorphism] .form-check-label, html[data-bs-theme=glassmorphism] .form-check-input, body.theme-glassmorphism label, body.theme-glassmorphism span, body.theme-glassmorphism p, body.theme-glassmorphism h1, body.theme-glassmorphism h2, body.theme-glassmorphism h3, body.theme-glassmorphism h4, body.theme-glassmorphism h5, body.theme-glassmorphism h6, body.theme-glassmorphism .small, body.theme-glassmorphism .form-label, body.theme-glassmorphism .form-text, body.theme-glassmorphism .form-check-label, body.theme-glassmorphism .form-check-input, .glassmorphism label, .glassmorphism span, .glassmorphism p, .glassmorphism h1, .glassmorphism h2, .glassmorphism h3, .glassmorphism h4, .glassmorphism h5, .glassmorphism h6, .glassmorphism .small, .glassmorphism .form-label, .glassmorphism .form-text, .glassmorphism .form-check-label, .glassmorphism .form-check-input {
+  color: white !important;
+}
 html[data-bs-theme=glassmorphism] .app-header, html[data-bs-theme=glassmorphism] .app-footer, body.theme-glassmorphism .app-header, body.theme-glassmorphism .app-footer, .glassmorphism .app-header, .glassmorphism .app-footer {
-  background: rgba(255, 255, 255, 0.06);
-  -webkit-backdrop-filter: blur(6px) saturate(120%);
-  backdrop-filter: blur(6px) saturate(120%);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  background: rgba(255, 255, 255, 0.02) !important;
+  -webkit-backdrop-filter: blur(6px) saturate(120%) !important;
+  backdrop-filter: blur(6px) saturate(120%) !important;
+  border: none !important;
   color: white !important;
 }
 html[data-bs-theme=glassmorphism] .player-card, html[data-bs-theme=glassmorphism] .stat-box, html[data-bs-theme=glassmorphism] .game-card, html[data-bs-theme=glassmorphism] .modal-content, body.theme-glassmorphism .player-card, body.theme-glassmorphism .stat-box, body.theme-glassmorphism .game-card, body.theme-glassmorphism .modal-content, .glassmorphism .player-card, .glassmorphism .stat-box, .glassmorphism .game-card, .glassmorphism .modal-content {
-  background: rgba(255, 255, 255, 0.06) !important;
   border: 1px solid rgba(255, 255, 255, 0.08) !important;
-  -webkit-backdrop-filter: blur(8px);
-  backdrop-filter: blur(8px);
+  background: rgba(255, 255, 255, 0.06) !important;
+  -webkit-backdrop-filter: blur(6px) saturate(120%) !important;
+  backdrop-filter: blur(6px) saturate(120%) !important;
+  border: none !important;
+  color: white !important;
+}
+html[data-bs-theme=glassmorphism] .game-card__body, body.theme-glassmorphism .game-card__body, .glassmorphism .game-card__body {
+  background: rgba(255, 255, 255, 0.04) !important;
+  -webkit-backdrop-filter: blur(6px) saturate(120%) !important;
+  backdrop-filter: blur(6px) saturate(120%) !important;
+  border: none !important;
   color: white !important;
 }
 html[data-bs-theme=glassmorphism] .game-card__image, body.theme-glassmorphism .game-card__image, .glassmorphism .game-card__image {
   background-color: rgba(255, 255, 255, 0.03);
 }
 html[data-bs-theme=glassmorphism] select, body.theme-glassmorphism select, .glassmorphism select {
-  background: rgba(255, 255, 255, 0.06) !important;
-  border: 1px solid rgba(255, 255, 255, 0.08) !important;
-  -webkit-backdrop-filter: blur(8px);
-  backdrop-filter: blur(8px);
-  color: #0f1724;
+  background: rgba(255, 255, 255, 0.08) !important;
+  -webkit-backdrop-filter: blur(6px) saturate(120%) !important;
+  backdrop-filter: blur(6px) saturate(120%) !important;
+  border: none !important;
+  color: white !important;
+  color: white;
+}
+html[data-bs-theme=glassmorphism] select option, body.theme-glassmorphism select option, .glassmorphism select option {
+  background: rgba(6, 18, 48, 0.6) !important;
 }
 html[data-bs-theme=glassmorphism] .input, html[data-bs-theme=glassmorphism] .input-group-text, html[data-bs-theme=glassmorphism] .form-control, body.theme-glassmorphism .input, body.theme-glassmorphism .input-group-text, body.theme-glassmorphism .form-control, .glassmorphism .input, .glassmorphism .input-group-text, .glassmorphism .form-control {
-  background: rgba(255, 255, 255, 0.06) !important;
+  background: rgba(255, 255, 255, 0.08) !important;
+  -webkit-backdrop-filter: blur(6px) saturate(120%) !important;
+  backdrop-filter: blur(6px) saturate(120%) !important;
+  border: none !important;
+  color: white !important;
   border: 1px solid rgba(255, 255, 255, 0.08) !important;
-  -webkit-backdrop-filter: blur(8px);
-  backdrop-filter: blur(8px);
-  color: #0f1724;
+  color: white !important;
+}
+html[data-bs-theme=glassmorphism] .input ::placeholder, html[data-bs-theme=glassmorphism] .input-group-text ::placeholder, html[data-bs-theme=glassmorphism] .form-control ::placeholder, body.theme-glassmorphism .input ::placeholder, body.theme-glassmorphism .input-group-text ::placeholder, body.theme-glassmorphism .form-control ::placeholder, .glassmorphism .input ::placeholder, .glassmorphism .input-group-text ::placeholder, .glassmorphism .form-control ::placeholder {
+  color: white !important;
+}
+html[data-bs-theme=glassmorphism] .input :focus, html[data-bs-theme=glassmorphism] .input-group-text :focus, html[data-bs-theme=glassmorphism] .form-control :focus, body.theme-glassmorphism .input :focus, body.theme-glassmorphism .input-group-text :focus, body.theme-glassmorphism .form-control :focus, .glassmorphism .input :focus, .glassmorphism .input-group-text :focus, .glassmorphism .form-control :focus {
+  color: white !important;
+}
+html[data-bs-theme=glassmorphism] #search-input:focus, html[data-bs-theme=glassmorphism] #sort-select:focus, body.theme-glassmorphism #search-input:focus, body.theme-glassmorphism #sort-select:focus, .glassmorphism #search-input:focus, .glassmorphism #sort-select:focus {
+  color: white !important;
 }
 html[data-bs-theme=glassmorphism] #pagination-controls, html[data-bs-theme=glassmorphism] .pagination-controls,
 html[data-bs-theme=glassmorphism] #pagination, html[data-bs-theme=glassmorphism] .pagination, body.theme-glassmorphism #pagination-controls, body.theme-glassmorphism .pagination-controls,
 body.theme-glassmorphism #pagination, body.theme-glassmorphism .pagination, .glassmorphism #pagination-controls, .glassmorphism .pagination-controls,
 .glassmorphism #pagination, .glassmorphism .pagination {
-  background: rgba(255, 255, 255, 0.06) !important;
+  background: rgba(255, 255, 255, 0.08) !important;
+  -webkit-backdrop-filter: blur(6px) saturate(120%) !important;
+  backdrop-filter: blur(6px) saturate(120%) !important;
+  border: none !important;
+  color: white !important;
   border: 1px solid rgba(255, 255, 255, 0.08) !important;
-  -webkit-backdrop-filter: blur(8px);
-  backdrop-filter: blur(8px);
-  color: #0f1724;
+  color: white;
 }
 html[data-bs-theme=glassmorphism] #pagination-controls .page-link, html[data-bs-theme=glassmorphism] #pagination-controls .page-item, html[data-bs-theme=glassmorphism] .pagination-controls .page-link, html[data-bs-theme=glassmorphism] .pagination-controls .page-item,
 html[data-bs-theme=glassmorphism] #pagination .page-link,
@@ -139,17 +232,47 @@ body.theme-glassmorphism #pagination .page-item.active, body.theme-glassmorphism
   border: 1px solid rgba(255, 255, 255, 0.08) !important;
   -webkit-backdrop-filter: blur(8px);
   backdrop-filter: blur(8px);
-  color: #0f1724;
+  color: #66c0f4 !important;
 }
 html[data-bs-theme=glassmorphism] .bg-body, html[data-bs-theme=glassmorphism] .bg-body-secondary, html[data-bs-theme=glassmorphism] .bg-body-tertiary, body.theme-glassmorphism .bg-body, body.theme-glassmorphism .bg-body-secondary, body.theme-glassmorphism .bg-body-tertiary, .glassmorphism .bg-body, .glassmorphism .bg-body-secondary, .glassmorphism .bg-body-tertiary {
   background-color: rgba(255, 255, 255, 0.03) !important;
+}
+html[data-bs-theme=glassmorphism] .machievementlist, body.theme-glassmorphism .machievementlist, .glassmorphism .machievementlist {
+  background: rgba(255, 255, 255, 0.04) !important;
+  -webkit-backdrop-filter: blur(6px) saturate(120%) !important;
+  backdrop-filter: blur(6px) saturate(120%) !important;
+  border: none !important;
+  color: white !important;
 }
 html[data-bs-theme=glassmorphism] .btn, body.theme-glassmorphism .btn, .glassmorphism .btn {
   background: rgba(255, 255, 255, 0.06) !important;
   border: 1px solid rgba(255, 255, 255, 0.08) !important;
   -webkit-backdrop-filter: blur(8px);
   backdrop-filter: blur(8px);
-  color: #0f1724;
+  color: white;
+  border-radius: 20px !important;
+}
+html[data-bs-theme=glassmorphism] #view-grid, html[data-bs-theme=glassmorphism] #view-list, body.theme-glassmorphism #view-grid, body.theme-glassmorphism #view-list, .glassmorphism #view-grid, .glassmorphism #view-list {
+  background: rgba(255, 255, 255, 0.04) !important;
+  -webkit-backdrop-filter: blur(6px) saturate(120%) !important;
+  backdrop-filter: blur(6px) saturate(120%) !important;
+  border: none !important;
+  color: white !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+  color: white;
+}
+html[data-bs-theme=glassmorphism] #view-grid.active, html[data-bs-theme=glassmorphism] #view-list.active, body.theme-glassmorphism #view-grid.active, body.theme-glassmorphism #view-list.active, .glassmorphism #view-grid.active, .glassmorphism #view-list.active {
+  background: rgba(255, 255, 255, 0.06) !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+  color: #66c0f4 !important;
+}
+html[data-bs-theme=glassmorphism] .modal .btn-close, body.theme-glassmorphism .modal .btn-close, .glassmorphism .modal .btn-close {
+  background: transparent var(--btnbg2) center/1em auto no-repeat !important;
+  color: white !important;
 }
 
 /* -------------------------------------------------------------------------- */
@@ -1688,6 +1811,14 @@ body.theme-light #error-state {
 .loadingblk {
   width: 3rem;
   height: 3rem;
+}
+
+.btn {
+  border-radius: 20px;
+}
+
+.modal .btn-close {
+  color: inherit;
 }
 
 .app-header {
