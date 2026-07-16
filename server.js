@@ -953,6 +953,10 @@ app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'index.html'));
 });
 
+app.get('/admin', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public/pages/admin.html'));
+});
+
 app.get('/api', (req, res) => {
   res.json({ message: 'Welcome to the Game Library API', endpoints: ['/api/health', '/api/providers', '/api/player', '/api/games', '/api/achievements'] });
 });
@@ -1054,6 +1058,43 @@ app.get('/api/admin/users', requireLogin, requireRole('admin'), (req, res) => {
   } catch (err) {
     console.error('List users error:', err.message);
     res.status(500).json({ error: 'Failed to list users' });
+  }
+});
+
+app.get('/api/admin/summary', requireLogin, requireRole('admin'), (req, res) => {
+  try {
+    const users = auth.listUsers();
+    const now = Math.floor(Date.now() / 1000);
+    const recentWindow = now - 7 * 24 * 60 * 60;
+    const summary = {
+      totalUsers: users.length,
+      totalAdmins: users.filter((user) => user.role === 'admin').length,
+      recentSignups: users.filter((user) => (user.createdAt || 0) >= recentWindow).length
+    };
+    res.json({ summary });
+  } catch (err) {
+    console.error('Admin summary error:', err.message);
+    res.status(500).json({ error: 'Failed to load admin summary' });
+  }
+});
+
+app.patch('/api/admin/users/:id/role', requireLogin, requireRole('admin'), (req, res) => {
+  try {
+    const userId = Number(req.params.id);
+    if (!Number.isInteger(userId) || userId <= 0) {
+      return res.status(400).json({ error: 'Invalid user id' });
+    }
+    if (Number(req.user.id) === userId) {
+      return res.status(400).json({ error: 'You cannot change your own role.' });
+    }
+    const updated = auth.updateUserRole(userId, req.body?.role);
+    if (!updated) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+    return res.json({ user: updated });
+  } catch (err) {
+    console.error('Role update error:', err.message);
+    return res.status(400).json({ error: err.message || 'Failed to update role' });
   }
 });
 

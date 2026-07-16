@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Dashboard - LCPGameStats</title>
+  <link href="/node_modules/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+  <header class="app-header py-4 mb-4">
+    <div class="container">
+      <div class="d-flex flex-column flex-md-row align-items-center justify-content-between gap-3">
+        <div>
+          <h1 class="h3 mb-1 fw-bold">Admin Dashboard</h1>
+          <p class="mb-0 text-muted small">Manage users and review administration data.</p>
+        </div>
+        <div class="d-flex align-items-center gap-2">
+          <a href="/" class="btn btn-sm btn-outline-secondary">Back to library</a>
+          <button id="btn-logout" class="btn btn-sm btn-outline-danger">Logout</button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="container pb-5">
+    <div id="admin-status" class="alert alert-info py-2 small d-none" role="status"></div>
+
+    <div class="row g-3 mb-4">
+      <div class="col-12 col-md-4">
+        <div class="border rounded p-3">
+          <div class="small text-muted">Total users</div>
+          <div id="admin-summary-total" class="fs-4 fw-bold">0</div>
+        </div>
+      </div>
+      <div class="col-12 col-md-4">
+        <div class="border rounded p-3">
+          <div class="small text-muted">Admins</div>
+          <div id="admin-summary-admins" class="fs-4 fw-bold">0</div>
+        </div>
+      </div>
+      <div class="col-12 col-md-4">
+        <div class="border rounded p-3">
+          <div class="small text-muted">Recent signups</div>
+          <div id="admin-summary-recent" class="fs-4 fw-bold">0</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card border-primary-subtle">
+      <div class="card-body">
+        <div class="d-flex flex-column flex-md-row align-items-md-center justify-content-between gap-2 mb-3">
+          <div>
+            <h2 class="h5 mb-1">User management</h2>
+            <p class="mb-0 small text-muted">Promote or demote users from this dashboard.</p>
+          </div>
+          <button id="refresh-admin-btn" class="btn btn-outline-secondary btn-sm" type="button">Refresh</button>
+        </div>
+        <div class="table-responsive">
+          <table class="table table-sm align-middle mb-0">
+            <thead>
+              <tr>
+                <th scope="col">User</th>
+                <th scope="col">Role</th>
+                <th scope="col">Created</th>
+                <th scope="col">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="admin-users-table-body"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script type="module" src="/js/admin.js"></script>
+</body>
+</html>

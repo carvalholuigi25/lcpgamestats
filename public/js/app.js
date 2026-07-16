@@ -97,6 +97,7 @@ import { fetchTranslations, getVideoStuff } from './functions.js';
   // Auth-related elements
   els.btnLogin = document.getElementById('btn-login');
   els.btnRegister = document.getElementById('btn-register');
+  els.btnAdmin = document.getElementById('btn-admin');
   els.btnLogout = document.getElementById('btn-logout');
   els.headerUsername = document.getElementById('header-username');
   els.loginModalEl = document.getElementById('loginModal');
@@ -120,7 +121,7 @@ import { fetchTranslations, getVideoStuff } from './functions.js';
 
   function updateAuthUI() {
     if (currentUser) {
-      els.headerUsername.textContent = currentUser.displayName || currentUser.username || '';
+      els.headerUsername.innerHTML = `<a href="/admin">${currentUser.displayName || currentUser.username || ''}</a>`;
       els.headerUsername.classList.remove('d-none');
       els.btnLogin.classList.add('d-none');
       els.btnRegister.classList.add('d-none');
@@ -131,6 +132,11 @@ import { fetchTranslations, getVideoStuff } from './functions.js';
       els.btnRegister.classList.remove('d-none');
       els.btnLogout.classList.add('d-none');
     }
+  }
+
+  function updateAdminUI() {
+    const isAdmin = Boolean(currentUser && currentUser.role === 'admin');
+    if (els.btnAdmin) els.btnAdmin.classList.toggle('d-none', !isAdmin);
   }
 
   async function fetchCurrentUser() {
@@ -144,11 +150,13 @@ import { fetchTranslations, getVideoStuff } from './functions.js';
       const data = await res.json();
       currentUser = data.user || null;
       updateAuthUI();
+      updateAdminUI();
       return currentUser;
     } catch (err) {
       console.warn('Failed to fetch current user:', err.message);
       currentUser = null;
       updateAuthUI();
+      updateAdminUI();
       return null;
     }
   }
@@ -881,6 +889,7 @@ import { fetchTranslations, getVideoStuff } from './functions.js';
       }
       currentUser = null;
       updateAuthUI();
+      updateAdminUI();
     });
 
     if (els.loginForm) {

@@ -11,6 +11,7 @@ import {
   getMixedDataGameHeader,
   getApiGames
 } from './server.js';
+import auth from './lib/auth.js';
 import { getVideoTrailerData, resolveAchievementBadgeImage } from './lib/utils.js';
 
 describe('server helper functions', () => {
@@ -99,6 +100,26 @@ describe('server helper functions', () => {
   it('builds a Steam-style achievement icon URL when no direct badge image is provided', () => {
     const badgeImage = resolveAchievementBadgeImage({ apiname: 'ach_1' }, '730');
     assert.ok(badgeImage.includes('steamcommunity/public/images/apps/730/ach_1.jpg'));
+  });
+
+  it('updates a user role through the auth helper', () => {
+    const username = `admin-test-${Date.now()}`;
+    const created = auth.createUser({ username, password: 'secret123', role: 'user', displayName: 'Admin Test' });
+    const updated = auth.updateUserRole(created.id, 'admin');
+
+    assert.ok(updated);
+    assert.strictEqual(updated.role, 'admin');
+    assert.ok(auth.listUsers().some((user) => Number(user.id) === Number(created.id) && user.role === 'admin'));
+  });
+
+  it('can look up a newly created user immediately without async initialization races', () => {
+    const username = `lookup-test-${Date.now()}`;
+    const created = auth.createUser({ username, password: 'secret123', role: 'user', displayName: 'Lookup Test' });
+    const lookup = auth.getUserWithHashByUsername(username);
+
+    assert.ok(created);
+    assert.ok(lookup);
+    assert.strictEqual(lookup.username, username);
   });
 
   it('uses provider trailer data when available and falls back to the sample trailer otherwise', () => {
