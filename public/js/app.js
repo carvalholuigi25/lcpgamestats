@@ -121,7 +121,8 @@ import { fetchTranslations, getVideoStuff } from './functions.js';
 
   function updateAuthUI() {
     if (currentUser) {
-      els.headerUsername.innerHTML = `<a href="/admin">${currentUser.displayName || currentUser.username || ''}</a>`;
+      const urluser = currentUser.role === 'admin' ? 'admin' : `user/${currentUser.id}`;
+      els.headerUsername.innerHTML = `<a href="/${urluser}">${currentUser.displayName || currentUser.username || ''}</a>`;
       els.headerUsername.classList.remove('d-none');
       els.btnLogin.classList.add('d-none');
       els.btnRegister.classList.add('d-none');
