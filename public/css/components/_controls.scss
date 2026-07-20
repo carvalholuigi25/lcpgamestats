@@ -35,3 +35,19 @@
     color: $steam-dark;
   }
 }
+
+// ==========================================================================
+// Language dropdown (flag icons)
+// ==========================================================================
+.lang-flag {
+  width: 22px;
+  height: auto;
+  border-radius: 2px;
+  box-shadow: 0 0 0 1px rgba(#000, 0.25);
+  flex-shrink: 0;
+}
+
+.lang-dropdown .dropdown-menu {
+  min-width: 10rem;
+}
+

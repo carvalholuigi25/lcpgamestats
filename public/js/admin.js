@@ -1,3 +1,5 @@
+import { fetchTranslations } from './functions.js';
+
 const els = {
   adminStatus: document.getElementById('admin-status'),
   adminSummaryTotal: document.getElementById('admin-summary-total'),
@@ -5,10 +7,127 @@ const els = {
   adminSummaryRecent: document.getElementById('admin-summary-recent'),
   adminUsersTableBody: document.getElementById('admin-users-table-body'),
   refreshAdminBtn: document.getElementById('refresh-admin-btn'),
-  logoutBtn: document.getElementById('btn-logout')
+  logoutBtn: document.getElementById('btn-logout'),
+  langSelectFlag: document.getElementById('lang-select-flag'),
+  langSelectLabel: document.getElementById('lang-select-label'),
+  langSelectItems: document.querySelectorAll('#lang-select-btn + .dropdown-menu [data-lang]'),
+  toggleThemeCodesBtn: document.getElementById('toggle-theme-codes-btn'),
+  themeCodesTitle: document.getElementById('theme-codes-title'),
+  themeCodesDesc: document.getElementById('theme-codes-desc')
 };
 
+const THEME_CODES_SETTING_KEY = 'themeCodesEnabled';
+const SETTINGS_STORAGE_KEY = 'settings';
+
 let currentUser = null;
+let translations = {};
+let lastUsers = [];
+
+function isThemeCodesEnabled() {
+  const saved = localStorage.getItem(THEME_CODES_SETTING_KEY);
+  return saved === null ? true : saved !== 'false';
+}
+
+function updateToggleThemeCodesButton() {
+  if (!els.toggleThemeCodesBtn) return;
+  const enabled = isThemeCodesEnabled();
+  const enabledLabel = translations.themeCodesEnabledLabel || 'Enabled';
+  const disabledLabel = translations.themeCodesDisabledLabel || 'Disabled';
+  els.toggleThemeCodesBtn.textContent = enabled ? enabledLabel : disabledLabel;
+  els.toggleThemeCodesBtn.classList.toggle('btn-outline-primary', enabled);
+  els.toggleThemeCodesBtn.classList.toggle('btn-outline-secondary', !enabled);
+  els.toggleThemeCodesBtn.setAttribute('aria-pressed', String(enabled));
+}
+
+function toggleThemeCodesFeature() {
+  localStorage.setItem(THEME_CODES_SETTING_KEY, String(!isThemeCodesEnabled()));
+  updateToggleThemeCodesButton();
+}
+
+function getSavedLanguage() {
+  try {
+    const saved = localStorage.getItem(SETTINGS_STORAGE_KEY);
+    if (saved) {
+      const settings = JSON.parse(saved);
+      return settings.lang || 'en';
+    }
+  } catch (err) {
+    console.warn('Failed to read language setting:', err.message);
+  }
+  return 'en';
+}
+
+function saveLanguage(lang) {
+  try {
+    const saved = localStorage.getItem(SETTINGS_STORAGE_KEY);
+    const settings = saved ? JSON.parse(saved) : {};
+    settings.lang = lang;
+    localStorage.setItem(SETTINGS_STORAGE_KEY, JSON.stringify(settings));
+  } catch (err) {
+    console.warn('Failed to save language setting:', err.message);
+  }
+}
+
+function updateLangSelectorUI(lang) {
+  if (!els.langSelectItems) return;
+  els.langSelectItems.forEach((item) => {
+    const isActive = item.dataset.lang === lang;
+    item.classList.toggle('active', isActive);
+    if (isActive) {
+      if (els.langSelectFlag) els.langSelectFlag.src = `/node_modules/country-flag-icons/3x2/${item.dataset.flag}.svg`;
+      if (els.langSelectLabel) els.langSelectLabel.textContent = item.textContent.trim();
+    }
+  });
+}
+
+function updateInterfaceLanguage() {
+  const t = translations;
+  document.title = t.adminTitle ? `${t.adminTitle} - LCPGameStats` : 'Admin Dashboard - LCPGameStats';
+  const titleEl = document.querySelector('header h1');
+  const subtitleEl = document.querySelector('header p');
+  if (titleEl) titleEl.textContent = t.adminTitle || 'Admin Dashboard';
+  if (subtitleEl) subtitleEl.textContent = t.adminSubtitle || 'Manage users and review administration data.';
+  if (els.logoutBtn) els.logoutBtn.textContent = t.logout || 'Logout';
+  if (els.themeCodesTitle) els.themeCodesTitle.textContent = t.themeCodesTitle || 'Theme codes';
+  if (els.themeCodesDesc) els.themeCodesDesc.textContent = t.themeCodesDesc || 'Allow users to press "C" and type a secret code to unlock a theme.';
+  updateToggleThemeCodesButton();
+
+  const totalLabel = document.getElementById('admin-summary-total-label');
+  const adminsLabel = document.getElementById('admin-summary-admins-label');
+  const recentLabel = document.getElementById('admin-summary-recent-label');
+  if (totalLabel) totalLabel.textContent = t.totalUsers || 'Total users';
+  if (adminsLabel) adminsLabel.textContent = t.adminsLabel || 'Admins';
+  if (recentLabel) recentLabel.textContent = t.recentSignups || 'Recent signups';
+
+  const userManagementTitle = document.getElementById('user-management-title');
+  const userManagementDesc = document.getElementById('user-management-desc');
+  if (userManagementTitle) userManagementTitle.textContent = t.userManagementTitle || 'User management';
+  if (userManagementDesc) userManagementDesc.textContent = t.userManagementDesc || 'Promote or demote users from this dashboard.';
+  if (els.refreshAdminBtn) els.refreshAdminBtn.textContent = t.refresh || 'Refresh';
+
+  const colUser = document.getElementById('col-user');
+  const colRole = document.getElementById('col-role');
+  const colCreated = document.getElementById('col-created');
+  const colActions = document.getElementById('col-actions');
+  if (colUser) colUser.textContent = t.colUser || 'User';
+  if (colRole) colRole.textContent = t.colRole || 'Role';
+  if (colCreated) colCreated.textContent = t.colCreated || 'Created';
+  if (colActions) colActions.textContent = t.colActions || 'Actions';
+
+  renderUsers(lastUsers);
+}
+
+async function setLanguage(lang) {
+  try {
+    translations = await fetchTranslations(lang);
+  } catch (err) {
+    console.warn('Failed to load translations:', err.message);
+    translations = {};
+  }
+  updateInterfaceLanguage();
+  updateLangSelectorUI(lang);
+  saveLanguage(lang);
+}
 
 function getDefaultFetchOptions(overrides = {}) {
   return {
@@ -36,14 +155,20 @@ function escapeHtml(value) {
 
 function renderUsers(users) {
   if (!els.adminUsersTableBody) return;
+  lastUsers = users;
   if (!users.length) {
-    els.adminUsersTableBody.innerHTML = '<tr><td colspan="4" class="text-muted">No users found.</td></tr>';
+    els.adminUsersTableBody.innerHTML = `<tr><td colspan="4" class="text-muted">${escapeHtml(translations.noUsersFound || 'No users found.')}</td></tr>`;
     return;
   }
 
+  const adminLabel = translations.roleAdmin || 'Admin';
+  const userLabel = translations.roleUser || 'User';
+  const promoteLabel = translations.promote || 'Promote';
+  const demoteLabel = translations.demote || 'Demote';
+
   els.adminUsersTableBody.innerHTML = users.map((user) => {
     const createdLabel = user.createdAt ? new Date(Number(user.createdAt) * 1000).toLocaleDateString() : '—';
-    const roleLabel = user.role === 'admin' ? 'Admin' : 'User';
+    const roleLabel = user.role === 'admin' ? adminLabel : userLabel;
     const isSelf = currentUser && Number(user.id) === Number(currentUser.id);
     return `
       <tr>
@@ -55,7 +180,7 @@ function renderUsers(users) {
         <td>${escapeHtml(createdLabel)}</td>
         <td>
           <button class="btn btn-sm btn-outline-primary" type="button" data-action="toggle-role" data-user-id="${user.id}" data-role="${user.role === 'admin' ? 'user' : 'admin'}" ${isSelf ? 'disabled' : ''}>
-            ${user.role === 'admin' ? 'Demote' : 'Promote'}
+            ${user.role === 'admin' ? demoteLabel : promoteLabel}
           </button>
         </td>
       </tr>
@@ -129,6 +254,15 @@ async function fetchCurrentUser() {
 }
 
 async function init() {
+  els.langSelectItems.forEach((item) => {
+    item.addEventListener('click', () => setLanguage(item.dataset.lang));
+  });
+  await setLanguage(getSavedLanguage());
+
+  if (els.toggleThemeCodesBtn) {
+    els.toggleThemeCodesBtn.addEventListener('click', toggleThemeCodesFeature);
+  }
+
   if (els.refreshAdminBtn) {
     els.refreshAdminBtn.addEventListener('click', () => loadAdminData());
   }

@@ -31,7 +31,14 @@ body.theme-liquid.has-custom-bg::before {
 }
 
 // Ensure main content sits above the overlay
-main, .app-header, .app-footer {
+main, .app-footer {
   position: relative;
   z-index: 1;
+}
+
+// Header sits above main so header-anchored dropdowns (e.g. language switcher)
+// aren't trapped behind main's stacking context.
+.app-header {
+  position: relative;
+  z-index: 2;
 }

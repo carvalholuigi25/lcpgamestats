@@ -1,0 +1,14 @@
+@use '../base/variables' as *;
+
+// ==========================================================================
+// Toast notifications
+// ==========================================================================
+.toast-container {
+  z-index: 100000;
+}
+
+#themeToast {
+  background: $steam-blue-dark;
+  border: 1px solid rgba($steam-accent, 0.3);
+  color: #e9eef2;
+}

@@ -19,6 +19,23 @@
 </head>
 <body>
 
+  <!-- Theme spell effects (lumos / nox) -->
+  <div id="spellFlash" class="spell-flash" aria-hidden="true"></div>
+  <div id="wandEffect" class="wand-effect" aria-hidden="true">
+    <div class="wand-glow"></div>
+    <i class="fa-solid fa-wand-magic-sparkles wand-icon"></i>
+  </div>
+
+  <!-- Toast notifications -->
+  <div class="toast-container position-fixed top-0 end-0 p-3">
+    <div id="themeToast" class="toast align-items-center border-0" role="status" aria-live="polite" aria-atomic="true" data-bs-delay="2500">
+      <div class="d-flex">
+        <div class="toast-body" id="themeToastBody">Theme activated</div>
+        <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+      </div>
+    </div>
+  </div>
+
   <!-- Header -->
   <header class="app-header py-4 mb-4">
     <div class="container">
@@ -182,12 +199,18 @@
           <option value="liquid">Liquid Glass</option>
           <option value="glassmorphism">Glassmorphism</option>
         </select>
-        <select id="lang-select" class="form-select" title="Language" aria-label="Language">
-          <option value="en">🇺🇸 English</option>
-          <option value="es">🇪🇸 Español</option>
-          <option value="de">🇩🇪 Deutsch</option>
-          <option value="pt">🇧🇷 Português</option>
-        </select>
+        <div class="dropdown lang-dropdown">
+          <button id="lang-select-btn" class="btn btn-outline-secondary dropdown-toggle d-flex align-items-center gap-2" type="button" data-bs-toggle="dropdown" aria-expanded="false" title="Language" aria-label="Language">
+            <img id="lang-select-flag" class="lang-flag" src="/node_modules/country-flag-icons/3x2/US.svg" alt="" />
+            <span id="lang-select-label">English</span>
+          </button>
+          <ul class="dropdown-menu" aria-labelledby="lang-select-btn">
+            <li><button type="button" class="dropdown-item d-flex align-items-center gap-2 active" data-lang="en" data-flag="US"><img class="lang-flag" src="/node_modules/country-flag-icons/3x2/US.svg" alt="" /> English</button></li>
+            <li><button type="button" class="dropdown-item d-flex align-items-center gap-2" data-lang="es" data-flag="ES"><img class="lang-flag" src="/node_modules/country-flag-icons/3x2/ES.svg" alt="" /> Español</button></li>
+            <li><button type="button" class="dropdown-item d-flex align-items-center gap-2" data-lang="de" data-flag="DE"><img class="lang-flag" src="/node_modules/country-flag-icons/3x2/DE.svg" alt="" /> Deutsch</button></li>
+            <li><button type="button" class="dropdown-item d-flex align-items-center gap-2" data-lang="pt" data-flag="PT"><img class="lang-flag" src="/node_modules/country-flag-icons/3x2/PT.svg" alt="" /> Português</button></li>
+          </ul>
+        </div>
       </div>
       <div class="col-12 col-md-6 d-flex justify-content-md-end align-items-center">
         <div id="provider-info-text" class="text-muted small">Use provider switcher to preview non-Steam sample libraries.</div>
@@ -349,6 +372,28 @@
                   <div class="d-flex justify-content-end">
                     <button type="submit" class="btn btn-primary">Register</button>
                   </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Theme Code Modal -->
+        <div class="modal fade" id="themeCodeModal" tabindex="-1" aria-hidden="true" aria-labelledby="themeCodeModalTitle">
+          <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="themeCodeModalTitle">Theme Codes</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
+                <form id="theme-code-form">
+                  <div class="mb-2">
+                    <label for="theme-code-input" class="form-label" id="themeCodeInputLabel">Enter a theme code</label>
+                    <input id="theme-code-input" class="form-control" type="text" autocomplete="off" spellcheck="false" placeholder="nox, lumos, liquidglass, glassmorphism..." />
+                  </div>
+                  <div id="theme-code-error" class="text-danger small mb-2 d-none"></div>
+                  <p class="text-muted small mb-0" id="themeCodeHint">Try: nox / dark, lumos / light, liquidglass, glassmorphism</p>
                 </form>
               </div>
             </div>

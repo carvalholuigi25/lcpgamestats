@@ -16,6 +16,18 @@
           <p class="mb-0 text-muted small">Manage users and review administration data.</p>
         </div>
         <div class="d-flex align-items-center gap-2">
+          <div class="dropdown lang-dropdown">
+            <button id="lang-select-btn" class="btn btn-outline-secondary btn-sm dropdown-toggle d-flex align-items-center gap-2" type="button" data-bs-toggle="dropdown" aria-expanded="false" title="Language" aria-label="Language">
+              <img id="lang-select-flag" class="lang-flag" src="/node_modules/country-flag-icons/3x2/US.svg" alt="" />
+              <span id="lang-select-label">English</span>
+            </button>
+            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="lang-select-btn">
+              <li><button type="button" class="dropdown-item d-flex align-items-center gap-2 active" data-lang="en" data-flag="US"><img class="lang-flag" src="/node_modules/country-flag-icons/3x2/US.svg" alt="" /> English</button></li>
+              <li><button type="button" class="dropdown-item d-flex align-items-center gap-2" data-lang="es" data-flag="ES"><img class="lang-flag" src="/node_modules/country-flag-icons/3x2/ES.svg" alt="" /> Español</button></li>
+              <li><button type="button" class="dropdown-item d-flex align-items-center gap-2" data-lang="de" data-flag="DE"><img class="lang-flag" src="/node_modules/country-flag-icons/3x2/DE.svg" alt="" /> Deutsch</button></li>
+              <li><button type="button" class="dropdown-item d-flex align-items-center gap-2" data-lang="pt" data-flag="PT"><img class="lang-flag" src="/node_modules/country-flag-icons/3x2/PT.svg" alt="" /> Português</button></li>
+            </ul>
+          </div>
           <a href="/" class="btn btn-sm btn-outline-secondary">Back to library</a>
           <button id="btn-logout" class="btn btn-sm btn-outline-danger">Logout</button>
         </div>
@@ -29,20 +41,32 @@
     <div class="row g-3 mb-4">
       <div class="col-12 col-md-4">
         <div class="border rounded p-3">
-          <div class="small text-muted">Total users</div>
+          <div class="small text-muted" id="admin-summary-total-label">Total users</div>
           <div id="admin-summary-total" class="fs-4 fw-bold">0</div>
         </div>
       </div>
       <div class="col-12 col-md-4">
         <div class="border rounded p-3">
-          <div class="small text-muted">Admins</div>
+          <div class="small text-muted" id="admin-summary-admins-label">Admins</div>
           <div id="admin-summary-admins" class="fs-4 fw-bold">0</div>
         </div>
       </div>
       <div class="col-12 col-md-4">
         <div class="border rounded p-3">
-          <div class="small text-muted">Recent signups</div>
+          <div class="small text-muted" id="admin-summary-recent-label">Recent signups</div>
           <div id="admin-summary-recent" class="fs-4 fw-bold">0</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card border-primary-subtle mb-4">
+      <div class="card-body">
+        <div class="d-flex flex-column flex-md-row align-items-md-center justify-content-between gap-2">
+          <div>
+            <h2 class="h5 mb-1" id="theme-codes-title">Theme codes</h2>
+            <p class="mb-0 small text-muted" id="theme-codes-desc">Allow users to press "C" and type a secret code to unlock a theme.</p>
+          </div>
+          <button id="toggle-theme-codes-btn" class="btn btn-outline-primary btn-sm" type="button">Enabled</button>
         </div>
       </div>
     </div>
@@ -51,8 +75,8 @@
       <div class="card-body">
         <div class="d-flex flex-column flex-md-row align-items-md-center justify-content-between gap-2 mb-3">
           <div>
-            <h2 class="h5 mb-1">User management</h2>
-            <p class="mb-0 small text-muted">Promote or demote users from this dashboard.</p>
+            <h2 class="h5 mb-1" id="user-management-title">User management</h2>
+            <p class="mb-0 small text-muted" id="user-management-desc">Promote or demote users from this dashboard.</p>
           </div>
           <button id="refresh-admin-btn" class="btn btn-outline-secondary btn-sm" type="button">Refresh</button>
         </div>
@@ -60,10 +84,10 @@
           <table class="table table-sm align-middle mb-0">
             <thead>
               <tr>
-                <th scope="col">User</th>
-                <th scope="col">Role</th>
-                <th scope="col">Created</th>
-                <th scope="col">Actions</th>
+                <th scope="col" id="col-user">User</th>
+                <th scope="col" id="col-role">Role</th>
+                <th scope="col" id="col-created">Created</th>
+                <th scope="col" id="col-actions">Actions</th>
               </tr>
             </thead>
             <tbody id="admin-users-table-body"></tbody>
@@ -73,6 +97,7 @@
     </div>
   </main>
 
+  <script src="/node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
   <script type="module" src="/js/admin.js"></script>
 </body>
 </html>

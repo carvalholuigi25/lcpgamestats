@@ -65,7 +65,10 @@ import { fetchTranslations, getVideoStuff } from './functions.js';
     achievementsStatusFilter: document.getElementById('achievements-status-filter'),
     achievementsDateSort: document.getElementById('achievements-date-sort'),
     themeSelect: document.getElementById('theme-select'),
-    langSelect: document.getElementById('lang-select'),
+    langSelectBtn: document.getElementById('lang-select-btn'),
+    langSelectFlag: document.getElementById('lang-select-flag'),
+    langSelectLabel: document.getElementById('lang-select-label'),
+    langSelectItems: document.querySelectorAll('#lang-select-btn + .dropdown-menu [data-lang]'),
     providerInfoText: document.getElementById('provider-info-text'),
     labelTotalGames: document.getElementById('label-total-games'),
     labelTotalHours: document.getElementById('label-total-hours'),
@@ -107,9 +110,136 @@ import { fetchTranslations, getVideoStuff } from './functions.js';
   els.loginError = document.getElementById('login-error');
   els.registerError = document.getElementById('register-error');
 
+  els.themeCodeModalEl = document.getElementById('themeCodeModal');
+  els.themeCodeForm = document.getElementById('theme-code-form');
+  els.themeCodeInput = document.getElementById('theme-code-input');
+  els.themeCodeError = document.getElementById('theme-code-error');
+  els.themeCodeModalTitle = document.getElementById('themeCodeModalTitle');
+  els.themeCodeInputLabel = document.getElementById('themeCodeInputLabel');
+  els.themeCodeHint = document.getElementById('themeCodeHint');
+  els.themeToastEl = document.getElementById('themeToast');
+  els.themeToastBody = document.getElementById('themeToastBody');
+  els.wandEffectEl = document.getElementById('wandEffect');
+  els.spellFlashEl = document.getElementById('spellFlash');
+
   let gameModal;
-  let loginModal, registerModal;
+  let loginModal, registerModal, themeCodeModal, themeToast;
+  let themeCodeModalTransitioning = false;
+  let spellEffectTimeout;
   let currentUser = null;
+
+  const THEME_CODES = {
+    nox: 'dark',
+    dark: 'dark',
+    lumos: 'light',
+    light: 'light',
+    liquidglass: 'liquid',
+    glassmorphism: 'glassmorphism'
+  };
+  const THEME_CODES_SETTING_KEY = 'themeCodesEnabled';
+  const THEME_CODE_SESSION_KEY = 'themeCodeTheme';
+
+  function isThemeCodesEnabled() {
+    const saved = localStorage.getItem(THEME_CODES_SETTING_KEY);
+    return saved === null ? true : saved !== 'false';
+  }
+
+  function resolveThemeCode(rawCode) {
+    const code = String(rawCode || '').trim().toLowerCase();
+    return THEME_CODES[code] || null;
+  }
+
+  function isTypingTarget(target) {
+    if (!target) return false;
+    const tag = target.tagName;
+    return target.isContentEditable || tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT';
+  }
+
+  function openThemeCodeModal() {
+    if (els.themeCodeError) els.themeCodeError.classList.add('d-none');
+    if (els.themeCodeInput) els.themeCodeInput.value = '';
+    themeCodeModal.show();
+    if (els.themeCodeInput) els.themeCodeInput.focus();
+  }
+
+  function closeThemeCodeModal() {
+    // Bootstrap ignores hide() while the show transition is still in-flight
+    // (e.g. code typed and submitted right after opening the modal via 'c').
+    if (themeCodeModalTransitioning) {
+      els.themeCodeModalEl.addEventListener('shown.bs.modal', () => themeCodeModal.hide(), { once: true });
+      return;
+    }
+    themeCodeModal.hide();
+  }
+
+  function toggleThemeCodeModal() {
+    const isOpen = els.themeCodeModalEl && els.themeCodeModalEl.classList.contains('show');
+    if (isOpen) {
+      closeThemeCodeModal();
+    } else {
+      openThemeCodeModal();
+    }
+  }
+
+  function submitThemeCode() {
+    const rawCode = els.themeCodeInput && els.themeCodeInput.value;
+    const theme = resolveThemeCode(rawCode);
+    if (!theme) {
+      if (els.themeCodeError) {
+        els.themeCodeError.textContent = translations.invalidThemeCode || 'Unknown theme code.';
+        els.themeCodeError.classList.remove('d-none');
+      }
+      showThemeToast(translations.invalidThemeCode || 'Unknown theme code.', false);
+      return;
+    }
+    castThemeSpell(rawCode);
+    setTheme(theme);
+    if (els.themeSelect) els.themeSelect.value = theme;
+    sessionStorage.setItem(THEME_CODE_SESSION_KEY, theme);
+    closeThemeCodeModal();
+    showThemeToast(getThemeActivatedMessage(theme), true);
+  }
+
+  /** Play the wand spell animation for the classic "lumos"/"nox" incantations. */
+  function castThemeSpell(rawCode) {
+    const code = String(rawCode || '').trim().toLowerCase();
+    if (code === 'lumos') playSpellEffect('lumos');
+    else if (code === 'nox') playSpellEffect('nox');
+  }
+
+  function playSpellEffect(kind) {
+    if (!els.wandEffectEl) return;
+    const wandClass = kind === 'lumos' ? 'lumos-cast' : 'nox-cast';
+    const flashClass = kind === 'lumos' ? 'lumos-flash' : 'nox-flash';
+
+    els.wandEffectEl.classList.remove('lumos-cast', 'nox-cast');
+    if (els.spellFlashEl) els.spellFlashEl.classList.remove('lumos-flash', 'nox-flash');
+    // Force reflow so the animation restarts even if the same spell is cast again quickly.
+    void els.wandEffectEl.offsetWidth;
+    els.wandEffectEl.classList.add(wandClass);
+    if (els.spellFlashEl) els.spellFlashEl.classList.add(flashClass);
+
+    clearTimeout(spellEffectTimeout);
+    spellEffectTimeout = setTimeout(() => {
+      els.wandEffectEl.classList.remove(wandClass);
+      if (els.spellFlashEl) els.spellFlashEl.classList.remove(flashClass);
+    }, 1400);
+  }
+
+  function getThemeActivatedMessage(theme) {
+    const themeLabel = translations[theme] || theme;
+    const template = translations.themeActivated || '{theme} theme activated!';
+    return template.replace('{theme}', themeLabel);
+  }
+
+  function showThemeToast(message, success = true) {
+    if (!els.themeToastBody) return;
+    els.themeToastBody.textContent = message;
+    if (els.themeToastEl) els.themeToastEl.classList.toggle('text-danger', !success);
+    if (themeToast) {
+      themeToast.show();
+    }
+  }
 
   function getDefaultFetchOptions(overrides = {}) {
     return {
@@ -641,8 +771,22 @@ import { fetchTranslations, getVideoStuff } from './functions.js';
     state.lang = lang;
     translations = await fetchTranslations(state.lang);
     updateInterfaceLanguage();
+    updateLangSelectorUI(lang);
     renderGames();
     saveSettings();
+  }
+
+  /** Sync the language dropdown's active item, flag, and label with the current language. */
+  function updateLangSelectorUI(lang) {
+    if (!els.langSelectItems) return;
+    els.langSelectItems.forEach((item) => {
+      const isActive = item.dataset.lang === lang;
+      item.classList.toggle('active', isActive);
+      if (isActive) {
+        if (els.langSelectFlag) els.langSelectFlag.src = `/node_modules/country-flag-icons/3x2/${item.dataset.flag}.svg`;
+        if (els.langSelectLabel) els.langSelectLabel.textContent = item.textContent.trim();
+      }
+    });
   }
 
   function setProvider(provider) {
@@ -686,6 +830,9 @@ import { fetchTranslations, getVideoStuff } from './functions.js';
     els.labelRecentGames.textContent = t.playedRecently || 'Played Recently';
     els.labelTopGame.textContent = t.mostPlayed || 'Most Played';
     els.modalStoreLink.textContent = t.viewMore || 'View more';
+    if (els.themeCodeModalTitle) els.themeCodeModalTitle.textContent = t.themeCodeModalTitle || 'Theme Codes';
+    if (els.themeCodeInputLabel) els.themeCodeInputLabel.textContent = t.themeCodeInputLabel || 'Enter a theme code';
+    if (els.themeCodeHint) els.themeCodeHint.textContent = t.themeCodeHint || 'Try: nox / dark, lumos / light, liquidglass, glassmorphism';
 
     if (els.empty.classList.contains('d-none') === false) {
       const message = els.searchInput.value.trim()
@@ -832,6 +979,12 @@ import { fetchTranslations, getVideoStuff } from './functions.js';
     gameModal = new bootstrap.Modal(document.getElementById('gameModal'));
     loginModal = new bootstrap.Modal(els.loginModalEl);
     registerModal = new bootstrap.Modal(els.registerModalEl);
+    if (els.themeCodeModalEl) {
+      themeCodeModal = new bootstrap.Modal(els.themeCodeModalEl);
+      els.themeCodeModalEl.addEventListener('show.bs.modal', () => { themeCodeModalTransitioning = true; });
+      els.themeCodeModalEl.addEventListener('shown.bs.modal', () => { themeCodeModalTransitioning = false; });
+    }
+    if (els.themeToastEl) themeToast = new bootstrap.Toast(els.themeToastEl);
 
     // Load saved settings from localStorage
     loadSettings();
@@ -841,7 +994,9 @@ import { fetchTranslations, getVideoStuff } from './functions.js';
     els.providerSelect.addEventListener('change', (event) => setProvider(event.target.value));
     els.pageSizeSelect.addEventListener('change', (event) => setPageSizeChange(event));
     els.themeSelect.addEventListener('change', (event) => setTheme(event.target.value));
-    els.langSelect.addEventListener('change', (event) => setLanguage(event.target.value));
+    els.langSelectItems.forEach((item) => {
+      item.addEventListener('click', () => setLanguage(item.dataset.lang));
+    });
     if (els.applyBgBtn && els.bgImageInput) {
       els.applyBgBtn.addEventListener('click', () => setBackgroundImage(els.bgImageInput.value));
     }
@@ -962,19 +1117,43 @@ import { fetchTranslations, getVideoStuff } from './functions.js';
       renderAchievementsList();
     });
 
+    if (els.themeCodeForm) {
+      els.themeCodeForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        submitThemeCode();
+      });
+    }
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key !== 'c' && e.key !== 'C') return;
+      if (e.ctrlKey || e.altKey || e.metaKey) return;
+      if (isTypingTarget(e.target)) return;
+      if (!themeCodeModal) return;
+
+      const openModalEl = document.querySelector('.modal.show');
+      if (openModalEl && openModalEl !== els.themeCodeModalEl) return;
+      if (!openModalEl && !isThemeCodesEnabled()) return;
+
+      toggleThemeCodeModal();
+    });
+
     const bkgimg = state.backgroundImage || 'images/cool_gaming_bkg.png';
     if (els.bgImageInput) els.bgImageInput.value = bkgimg;
 
     els.providerSelect.value = state.provider;
     els.pageSizeSelect.value = String(state.pageSize);
     els.themeSelect.value = state.theme;
-    els.langSelect.value = state.lang;
     els.searchInput.value = state.search;
     els.sortSelect.value = state.sortBy;
 
     await fetchCurrentUser();
 
     setTheme(state.theme);
+    const sessionThemeCode = sessionStorage.getItem(THEME_CODE_SESSION_KEY);
+    if (sessionThemeCode && isThemeCodesEnabled()) {
+      setTheme(sessionThemeCode);
+      if (els.themeSelect) els.themeSelect.value = sessionThemeCode;
+    }
     setBackgroundImage(bkgimg);
     await setLanguage(state.lang);
     setView(state.view || "grid");
