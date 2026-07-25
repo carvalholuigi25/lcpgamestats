@@ -4,6 +4,7 @@
 @use 'base/reset';
 @use 'base/animations';
 
+@use 'components/dropdowns';
 @use 'components/buttons';
 @use 'components/header';
 @use 'components/footer';
@@ -14,6 +15,7 @@
 @use 'components/toast';
 @use 'components/spell-effects';
 @use 'components/states';
+@use 'components/tables';
 
 @use 'layout/custom-bg';
 @use 'layout/responsive';
@@ -24,3 +26,4 @@
 @use 'themes/liquid';
 
 @use 'vendor/player';
+@use 'layout/medias';

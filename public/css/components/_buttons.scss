@@ -5,6 +5,7 @@
   border-radius: calc(16px + 8px);
   background-color: var(--bs-body-bg);
   border-color: var(--bs-border-color);
+  padding: 0.5rem 1rem;
 }
 
 .btn-login, .btn-logout, .btn-register,
@@ -32,4 +33,19 @@
 
 .btnsearchicogrp {
   background: var(--bs-body-bg) !important;
+}
+
+#lang-select-btn {
+  padding: 0.5rem 1rem;
+}
+
+#view-grid, #view-list, #view-table {
+  width: 3rem;
+  height: 3rem;
+  max-width: 100%;
+  max-height: 100%;
+  line-height: 3rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }

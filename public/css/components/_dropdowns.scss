@@ -1,0 +1,18 @@
+// ==========================================================================
+// Dropdowns
+// ==========================================================================
+.dropdown {
+  $bradius: calc(16px + 8px);
+  border-radius: $bradius;
+
+  .dropdown-menu {
+    border-radius: $bradius;
+
+    .dropdown-item {
+      $paddingx: 1rem;
+      $paddingy: 0.50rem;
+      border-radius: $bradius;
+      padding: $paddingy $paddingx;
+    }
+  }
+}

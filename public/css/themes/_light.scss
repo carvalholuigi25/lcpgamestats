@@ -44,7 +44,13 @@ body.theme-light #error-state {
   color: #842029;
 }
 
-body.light .btnsearchicogrp {
+body.theme-light .btnsearchicogrp {
   background: rgb(255, 255, 255) !important;
   color: rgb(0, 0, 0) !important;
+}
+
+body.theme-light #page-info,
+body.theme-light #provider-info-text,
+body.theme-light .text-muted {
+  color: white !important;
 }

@@ -72,12 +72,15 @@ html[data-bs-theme="glassmorphism"], body.theme-glassmorphism, .glassmorphism {
 
   #pagination-controls, .pagination-controls,
   #pagination, .pagination {
-    @include applyGlass($color, 0.08);
     border: 1px solid rgba(255, 255, 255, 0.08) !important;
     color: $color;
 
+    .page-link {
+      @include applyGlass($color, 0.08);
+    }
+
     .page-link, .page-item {
-      background: inherit !important;
+      background: inherit;  
       border: none !important;
       color: inherit !important;
 
@@ -108,7 +111,14 @@ html[data-bs-theme="glassmorphism"], body.theme-glassmorphism, .glassmorphism {
     border-radius: calc(16px + 4px) !important;
   }
 
-  #view-grid, #view-list {
+  .table {
+    th, td {
+      border: 1px solid rgba(255,255,255,0.08) !important;
+      @include applyGlass($color, 0.06);
+    }
+  }
+
+  #view-grid, #view-list, #view-table {
     @include applyGlass($color, 0.04);
     border: 1px solid rgba(255, 255, 255, 0.08) !important;
     -webkit-backdrop-filter: blur(8px);

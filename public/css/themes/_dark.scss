@@ -23,3 +23,15 @@ body.theme-dark .form-select {
 body.dark .btnsearchicogrp {
   background: var(--bs-body-bg) !important;
 }
+
+
+body.theme-dark .btnsearchicogrp {
+  background: rgb(0, 0, 0) !important;
+  color: rgb(255, 255, 255) !important;
+}
+
+body.theme-dark #page-info,
+body.theme-dark #provider-info-text,
+body.theme-dark .text-muted {
+  color: white !important;
+}

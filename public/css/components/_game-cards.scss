@@ -139,3 +139,54 @@
     font-size: 1rem;
   }
 }
+
+// ==========================================================================
+// Game cards — table view
+// ==========================================================================
+#games-container.table-view {
+  display: block;
+}
+
+.games-table {
+  color: inherit;
+  margin-bottom: 0;
+
+  thead th {
+    border-bottom: 1px solid rgba($steam-accent, 0.3);
+    color: $steam-accent;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    white-space: nowrap;
+  }
+
+  tbody tr {
+    cursor: pointer;
+    transition: background-color $transition-fast;
+  }
+
+  td {
+    vertical-align: middle;
+    border-color: rgba($steam-accent, 0.1);
+  }
+}
+
+.games-table__image {
+  width: 92px;
+
+  img {
+    width: 80px;
+    height: 37px;
+    object-fit: cover;
+    border-radius: 0.3rem;
+    display: block;
+  }
+}
+
+.games-table__title {
+  font-weight: 600;
+  max-width: 320px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

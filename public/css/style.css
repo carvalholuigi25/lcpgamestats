@@ -36,10 +36,22 @@ body {
     transform: translateY(0);
   }
 }
+.dropdown {
+  border-radius: 24px;
+}
+.dropdown .dropdown-menu {
+  border-radius: 24px;
+}
+.dropdown .dropdown-menu .dropdown-item {
+  border-radius: 24px;
+  padding: 0.5rem 1rem;
+}
+
 .btn {
   border-radius: 24px;
   background-color: var(--bs-body-bg);
   border-color: var(--bs-border-color);
+  padding: 0.5rem 1rem;
 }
 
 .btn-login, .btn-logout, .btn-register,
@@ -67,6 +79,21 @@ body {
 
 .btnsearchicogrp {
   background: var(--bs-body-bg) !important;
+}
+
+#lang-select-btn {
+  padding: 0.5rem 1rem;
+}
+
+#view-grid, #view-list, #view-table {
+  width: 3rem;
+  height: 3rem;
+  max-width: 100%;
+  max-height: 100%;
+  line-height: 3rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .app-header {
@@ -190,6 +217,11 @@ body {
   border-radius: 999px;
   background: linear-gradient(90deg, #66c0f4, rgb(173.368902439, 221.387195122, 249.131097561));
   transition: width 0.35s ease;
+}
+
+#pagination-controls .page-link {
+  padding: 0.5rem 0.85rem;
+  border-radius: 24px;
 }
 
 #search-input,
@@ -356,6 +388,50 @@ body {
 }
 #games-container.list-view .game-card__title {
   font-size: 1rem;
+}
+
+#games-container.table-view {
+  display: block;
+}
+
+.games-table {
+  color: inherit;
+  margin-bottom: 0;
+}
+.games-table thead th {
+  border-bottom: 1px solid rgba(102, 192, 244, 0.3);
+  color: #66c0f4;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  white-space: nowrap;
+}
+.games-table tbody tr {
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+.games-table td {
+  vertical-align: middle;
+  border-color: rgba(102, 192, 244, 0.1);
+}
+
+.games-table__image {
+  width: 92px;
+}
+.games-table__image img {
+  width: 80px;
+  height: 37px;
+  object-fit: cover;
+  border-radius: 0.3rem;
+  display: block;
+}
+
+.games-table__title {
+  font-weight: 600;
+  max-width: 320px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .modal-content {
@@ -559,6 +635,12 @@ body {
   color: #ff8b97;
 }
 
+.table {
+  overflow: auto;
+  max-width: 100%;
+  table-layout: fixed;
+}
+
 body.has-custom-bg {
   background-size: cover !important;
   background-position: center center !important;
@@ -649,6 +731,17 @@ body.dark .btnsearchicogrp {
   background: var(--bs-body-bg) !important;
 }
 
+body.theme-dark .btnsearchicogrp {
+  background: rgb(0, 0, 0) !important;
+  color: rgb(255, 255, 255) !important;
+}
+
+body.theme-dark #page-info,
+body.theme-dark #provider-info-text,
+body.theme-dark .text-muted {
+  color: white !important;
+}
+
 body.theme-light {
   background: linear-gradient(180deg, #f7f8fb 0%, #e2e6ed 100%);
   color: #1f2937;
@@ -692,9 +785,15 @@ body.theme-light #error-state {
   color: #842029;
 }
 
-body.light .btnsearchicogrp {
+body.theme-light .btnsearchicogrp {
   background: rgb(255, 255, 255) !important;
   color: rgb(0, 0, 0) !important;
+}
+
+body.theme-light #page-info,
+body.theme-light #provider-info-text,
+body.theme-light .text-muted {
+  color: white !important;
 }
 
 :root {
@@ -766,13 +865,18 @@ html[data-bs-theme=glassmorphism] #pagination-controls, html[data-bs-theme=glass
 html[data-bs-theme=glassmorphism] #pagination, html[data-bs-theme=glassmorphism] .pagination, body.theme-glassmorphism #pagination-controls, body.theme-glassmorphism .pagination-controls,
 body.theme-glassmorphism #pagination, body.theme-glassmorphism .pagination, .glassmorphism #pagination-controls, .glassmorphism .pagination-controls,
 .glassmorphism #pagination, .glassmorphism .pagination {
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  color: white;
+}
+html[data-bs-theme=glassmorphism] #pagination-controls .page-link, html[data-bs-theme=glassmorphism] .pagination-controls .page-link,
+html[data-bs-theme=glassmorphism] #pagination .page-link, html[data-bs-theme=glassmorphism] .pagination .page-link, body.theme-glassmorphism #pagination-controls .page-link, body.theme-glassmorphism .pagination-controls .page-link,
+body.theme-glassmorphism #pagination .page-link, body.theme-glassmorphism .pagination .page-link, .glassmorphism #pagination-controls .page-link, .glassmorphism .pagination-controls .page-link,
+.glassmorphism #pagination .page-link, .glassmorphism .pagination .page-link {
   background: rgba(255, 255, 255, 0.08) !important;
   -webkit-backdrop-filter: blur(6px) saturate(120%) !important;
   backdrop-filter: blur(6px) saturate(120%) !important;
   border: none !important;
   color: white !important;
-  border: 1px solid rgba(255, 255, 255, 0.08) !important;
-  color: white;
 }
 html[data-bs-theme=glassmorphism] #pagination-controls .page-link, html[data-bs-theme=glassmorphism] #pagination-controls .page-item, html[data-bs-theme=glassmorphism] .pagination-controls .page-link, html[data-bs-theme=glassmorphism] .pagination-controls .page-item,
 html[data-bs-theme=glassmorphism] #pagination .page-link,
@@ -781,7 +885,7 @@ body.theme-glassmorphism #pagination .page-link,
 body.theme-glassmorphism #pagination .page-item, body.theme-glassmorphism .pagination .page-link, body.theme-glassmorphism .pagination .page-item, .glassmorphism #pagination-controls .page-link, .glassmorphism #pagination-controls .page-item, .glassmorphism .pagination-controls .page-link, .glassmorphism .pagination-controls .page-item,
 .glassmorphism #pagination .page-link,
 .glassmorphism #pagination .page-item, .glassmorphism .pagination .page-link, .glassmorphism .pagination .page-item {
-  background: inherit !important;
+  background: inherit;
   border: none !important;
   color: inherit !important;
 }
@@ -816,7 +920,15 @@ html[data-bs-theme=glassmorphism] .btn, body.theme-glassmorphism .btn, .glassmor
   color: white;
   border-radius: 20px !important;
 }
-html[data-bs-theme=glassmorphism] #view-grid, html[data-bs-theme=glassmorphism] #view-list, body.theme-glassmorphism #view-grid, body.theme-glassmorphism #view-list, .glassmorphism #view-grid, .glassmorphism #view-list {
+html[data-bs-theme=glassmorphism] .table th, html[data-bs-theme=glassmorphism] .table td, body.theme-glassmorphism .table th, body.theme-glassmorphism .table td, .glassmorphism .table th, .glassmorphism .table td {
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  background: rgba(255, 255, 255, 0.06) !important;
+  -webkit-backdrop-filter: blur(6px) saturate(120%) !important;
+  backdrop-filter: blur(6px) saturate(120%) !important;
+  border: none !important;
+  color: white !important;
+}
+html[data-bs-theme=glassmorphism] #view-grid, html[data-bs-theme=glassmorphism] #view-list, html[data-bs-theme=glassmorphism] #view-table, body.theme-glassmorphism #view-grid, body.theme-glassmorphism #view-list, body.theme-glassmorphism #view-table, .glassmorphism #view-grid, .glassmorphism #view-list, .glassmorphism #view-table {
   background: rgba(255, 255, 255, 0.04) !important;
   -webkit-backdrop-filter: blur(6px) saturate(120%) !important;
   backdrop-filter: blur(6px) saturate(120%) !important;
@@ -827,7 +939,7 @@ html[data-bs-theme=glassmorphism] #view-grid, html[data-bs-theme=glassmorphism] 
   backdrop-filter: blur(8px);
   color: white;
 }
-html[data-bs-theme=glassmorphism] #view-grid.active, html[data-bs-theme=glassmorphism] #view-list.active, body.theme-glassmorphism #view-grid.active, body.theme-glassmorphism #view-list.active, .glassmorphism #view-grid.active, .glassmorphism #view-list.active {
+html[data-bs-theme=glassmorphism] #view-grid.active, html[data-bs-theme=glassmorphism] #view-list.active, html[data-bs-theme=glassmorphism] #view-table.active, body.theme-glassmorphism #view-grid.active, body.theme-glassmorphism #view-list.active, body.theme-glassmorphism #view-table.active, .glassmorphism #view-grid.active, .glassmorphism #view-list.active, .glassmorphism #view-table.active {
   background: rgba(255, 255, 255, 0.06) !important;
   border: 1px solid rgba(255, 255, 255, 0.08) !important;
   -webkit-backdrop-filter: blur(8px);
@@ -902,12 +1014,17 @@ html[data-bs-theme=liquid] #pagination-controls, html[data-bs-theme=liquid] .pag
 html[data-bs-theme=liquid] #pagination, html[data-bs-theme=liquid] .pagination, body.theme-liquid #pagination-controls, body.theme-liquid .pagination-controls,
 body.theme-liquid #pagination, body.theme-liquid .pagination, .liquid #pagination-controls, .liquid .pagination-controls,
 .liquid #pagination, .liquid .pagination {
+  color: #e6f7ff;
+}
+html[data-bs-theme=liquid] #pagination-controls .page-link, html[data-bs-theme=liquid] .pagination-controls .page-link,
+html[data-bs-theme=liquid] #pagination .page-link, html[data-bs-theme=liquid] .pagination .page-link, body.theme-liquid #pagination-controls .page-link, body.theme-liquid .pagination-controls .page-link,
+body.theme-liquid #pagination .page-link, body.theme-liquid .pagination .page-link, .liquid #pagination-controls .page-link, .liquid .pagination-controls .page-link,
+.liquid #pagination .page-link, .liquid .pagination .page-link {
   background: linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.01)) !important;
   -webkit-backdrop-filter: blur(6px) saturate(120%) !important;
   backdrop-filter: blur(6px) saturate(120%) !important;
   border: none !important;
   color: #e6f7ff !important;
-  color: #e6f7ff;
 }
 html[data-bs-theme=liquid] #pagination-controls .page-link, html[data-bs-theme=liquid] #pagination-controls .page-item, html[data-bs-theme=liquid] .pagination-controls .page-link, html[data-bs-theme=liquid] .pagination-controls .page-item,
 html[data-bs-theme=liquid] #pagination .page-link,
@@ -916,7 +1033,7 @@ body.theme-liquid #pagination .page-link,
 body.theme-liquid #pagination .page-item, body.theme-liquid .pagination .page-link, body.theme-liquid .pagination .page-item, .liquid #pagination-controls .page-link, .liquid #pagination-controls .page-item, .liquid .pagination-controls .page-link, .liquid .pagination-controls .page-item,
 .liquid #pagination .page-link,
 .liquid #pagination .page-item, .liquid .pagination .page-link, .liquid .pagination .page-item {
-  background: inherit !important;
+  background: inherit;
   border: none !important;
   color: inherit !important;
 }
@@ -951,14 +1068,22 @@ html[data-bs-theme=liquid] .btn, body.theme-liquid .btn, .liquid .btn {
   color: #e6f7ff;
   border-radius: 20px !important;
 }
-html[data-bs-theme=liquid] #view-grid, html[data-bs-theme=liquid] #view-list, body.theme-liquid #view-grid, body.theme-liquid #view-list, .liquid #view-grid, .liquid #view-list {
+html[data-bs-theme=liquid] .table th, html[data-bs-theme=liquid] .table td, body.theme-liquid .table th, body.theme-liquid .table td, .liquid .table th, .liquid .table td {
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
   background: linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.01)) !important;
   -webkit-backdrop-filter: blur(6px) saturate(120%) !important;
   backdrop-filter: blur(6px) saturate(120%) !important;
   border: none !important;
   color: #e6f7ff !important;
 }
-html[data-bs-theme=liquid] #view-grid.active, html[data-bs-theme=liquid] #view-list.active, body.theme-liquid #view-grid.active, body.theme-liquid #view-list.active, .liquid #view-grid.active, .liquid #view-list.active {
+html[data-bs-theme=liquid] #view-grid, html[data-bs-theme=liquid] #view-list, html[data-bs-theme=liquid] #view-table, body.theme-liquid #view-grid, body.theme-liquid #view-list, body.theme-liquid #view-table, .liquid #view-grid, .liquid #view-list, .liquid #view-table {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.01)) !important;
+  -webkit-backdrop-filter: blur(6px) saturate(120%) !important;
+  backdrop-filter: blur(6px) saturate(120%) !important;
+  border: none !important;
+  color: #e6f7ff !important;
+}
+html[data-bs-theme=liquid] #view-grid.active, html[data-bs-theme=liquid] #view-list.active, html[data-bs-theme=liquid] #view-table.active, body.theme-liquid #view-grid.active, body.theme-liquid #view-list.active, body.theme-liquid #view-table.active, .liquid #view-grid.active, .liquid #view-list.active, .liquid #view-table.active {
   background: linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.01)) !important;
   -webkit-backdrop-filter: blur(6px) saturate(120%) !important;
   backdrop-filter: blur(6px) saturate(120%) !important;
@@ -2439,6 +2564,13 @@ media-tooltip-group {
   opacity: 1;
   filter: blur(0);
   scale: 1;
+}
+
+@media all and (max-width: 768px) {
+  .views-container, .pagination-container {
+    display: flex !important;
+    justify-content: center !important;
+  }
 }
 
 /*# sourceMappingURL=style.css.map */

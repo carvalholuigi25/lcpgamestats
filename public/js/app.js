@@ -10,7 +10,7 @@ import { fetchTranslations, getVideoStuff } from './functions.js';
   const state = {
     games: [],
     filtered: [],
-    view: 'grid', // 'grid' | 'list'
+    view: 'grid', // 'grid' | 'list' | 'table'
     theme: 'dark',
     lang: 'en',
     provider: 'steam',
@@ -27,6 +27,7 @@ import { fetchTranslations, getVideoStuff } from './functions.js';
     showAchievements: true,
     achievementsStatusFilter: 'all',
     achievementsDateSort: 'desc',
+    achievementsSearch: '',
     activeGame: null
   };
 
@@ -64,6 +65,7 @@ import { fetchTranslations, getVideoStuff } from './functions.js';
     modalAchievements: document.getElementById('modalAchievements'),
     achievementsStatusFilter: document.getElementById('achievements-status-filter'),
     achievementsDateSort: document.getElementById('achievements-date-sort'),
+    achievementsSearchInput: document.getElementById('achievements-search-input'),
     themeSelect: document.getElementById('theme-select'),
     langSelectBtn: document.getElementById('lang-select-btn'),
     langSelectFlag: document.getElementById('lang-select-flag'),
@@ -76,6 +78,7 @@ import { fetchTranslations, getVideoStuff } from './functions.js';
     labelTopGame: document.getElementById('label-top-game'),
     viewGridBtn: document.getElementById('view-grid'),
     viewListBtn: document.getElementById('view-list'),
+    viewTableBtn: document.getElementById('view-table'),
     statTotalGames: document.getElementById('stat-total-games'),
     statTotalHours: document.getElementById('stat-total-hours'),
     statRecentGames: document.getElementById('stat-recent-games'),
@@ -495,18 +498,18 @@ import { fetchTranslations, getVideoStuff } from './functions.js';
       return;
     }
 
-    const createPageItem = (pageNumber, label, active = false, disabled = false) => {
+    const createPageItem = (pageNumber, label, active = false, disabled = false, title = "prev") => {
       const li = document.createElement('li');
       li.className = `page-item${active ? ' active' : ''}${disabled ? ' disabled' : ''}`;
-      li.innerHTML = `<button class="page-link" type="button">${label}</button>`;
+      li.innerHTML = `<button class="page-link" type="button" alt="${title}" title="${title}">${label}</button>`;
       if (!disabled) {
         li.querySelector('button').addEventListener('click', () => changePage(pageNumber));
       }
       return li;
     };
 
-    els.paginationControls.appendChild(createPageItem(1, '« First', state.page === 1, state.page === 1));
-    els.paginationControls.appendChild(createPageItem(state.page - 1, '‹ Prev', false, state.page === 1));
+    els.paginationControls.appendChild(createPageItem(1, '&#60;&#60;', state.page === 1, state.page === 1, "first"));
+    els.paginationControls.appendChild(createPageItem(state.page - 1, '&#60;', false, state.page === 1, "prev"));
 
     const startPage = Math.max(1, state.page - 2);
     const endPage = Math.min(state.totalPages, state.page + 2);
@@ -515,8 +518,8 @@ import { fetchTranslations, getVideoStuff } from './functions.js';
       els.paginationControls.appendChild(createPageItem(page, page, state.page === page));
     }
 
-    els.paginationControls.appendChild(createPageItem(state.page + 1, 'Next ›', false, state.page === state.totalPages));
-    els.paginationControls.appendChild(createPageItem(state.totalPages, 'Last »', false, state.page === state.totalPages));
+    els.paginationControls.appendChild(createPageItem(state.page + 1, '&#62;', false, state.page === state.totalPages, "next"));
+    els.paginationControls.appendChild(createPageItem(state.totalPages, '&#62;&#62;', false, state.page === state.totalPages, "last"));
 
     const firstResult = (state.page - 1) * state.pageSize + 1;
     const lastResult = Math.min(state.page * state.pageSize, state.totalGames);
@@ -548,6 +551,11 @@ import { fetchTranslations, getVideoStuff } from './functions.js';
       return;
     }
     showEmpty(false);
+
+    if (state.view === 'table') {
+      renderGamesTable();
+      return;
+    }
 
     const fragment = document.createDocumentFragment();
 
@@ -604,6 +612,57 @@ import { fetchTranslations, getVideoStuff } from './functions.js';
     els.container.appendChild(fragment);
   }
 
+  /** Render the games list as a sortable-looking table */
+  function renderGamesTable() {
+    const t = translations;
+    const table = document.createElement('table');
+    table.className = 'table table-hover games-table';
+    table.innerHTML = `
+      <thead>
+        <tr>
+          <th scope="col"></th>
+          <th scope="col">${t.gameName || 'Name'}</th>
+          <th scope="col">${t.totalPlaytime || 'Total Playtime'}</th>
+          <th scope="col">${t.last2Weeks || 'Last 2 Weeks'}</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    `;
+
+    const tbody = table.querySelector('tbody');
+    const fragment = document.createDocumentFragment();
+
+    state.games.forEach((game) => {
+      const row = document.createElement('tr');
+      row.className = 'games-table__row';
+      row.setAttribute('tabindex', '0');
+      row.innerHTML = `
+        <td class="games-table__image">
+          <img
+            src="${game.header_image || '/images/notfound.jpg'}"
+            alt="${escapeHtml(game.name)}"
+            loading="lazy"
+            onerror="this.onerror=null;this.src='/images/notfound.jpg';"
+          />
+        </td>
+        <td class="games-table__title" title="${escapeHtml(game.name)}">${escapeHtml(game.name)}</td>
+        <td><i class="fa-solid fa-clock me-1"></i>${formatPlaytime(game.playtime_forever)}</td>
+        <td>${game.playtime_2weeks > 0 ? `<span class="text-success">+${formatPlaytime(game.playtime_2weeks)}</span>` : '--'}</td>
+      `;
+      row.addEventListener('click', () => openModal(game));
+      row.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          openModal(game);
+        }
+      });
+      fragment.appendChild(row);
+    });
+
+    tbody.appendChild(fragment);
+    els.container.appendChild(table);
+  }
+
   /** Show/hide the "no results" empty state */
   function showEmpty(show, message) {
     if (show) {
@@ -639,8 +698,10 @@ import { fetchTranslations, getVideoStuff } from './functions.js';
 
     state.achievementsStatusFilter = 'all';
     state.achievementsDateSort = 'desc';
+    state.achievementsSearch = '';
     if (els.achievementsStatusFilter) els.achievementsStatusFilter.value = 'all';
     if (els.achievementsDateSort) els.achievementsDateSort.value = 'desc';
+    if (els.achievementsSearchInput) els.achievementsSearchInput.value = '';
 
     els.modalAchievementsTitle.textContent = translations.achievements || 'Achievements';
     els.modalAchievementsStatus.textContent = translations.loadingAchievements || 'Loading achievements...';
@@ -703,15 +764,20 @@ import { fetchTranslations, getVideoStuff } from './functions.js';
 
     const statusFilter = state.achievementsStatusFilter;
     const dateSort = state.achievementsDateSort;
+    const searchTerm = (state.achievementsSearch || '').trim().toLowerCase();
 
     const filteredAchievements = currentAchievements.filter((achievement) => {
-      if (statusFilter === 'unlocked') return achievement.achieved;
-      if (statusFilter === 'locked') return !achievement.achieved;
+      if (statusFilter === 'unlocked' && !achievement.achieved) return false;
+      if (statusFilter === 'locked' && achievement.achieved) return false;
+      if (searchTerm && !(achievement.name || '').toLowerCase().includes(searchTerm)) return false;
       return true;
     });
 
     if (filteredAchievements.length === 0) {
-      els.modalAchievements.innerHTML = `<div class="text-center text-muted small">${translations.noAchievementsFilter || 'No achievements match the selected filter.'}</div>`;
+      const message = searchTerm
+        ? (translations.noAchievementsSearch || 'No achievements match your search.')
+        : (translations.noAchievementsFilter || 'No achievements match the selected filter.');
+      els.modalAchievements.innerHTML = `<div class="text-center text-muted small">${message}</div>`;
       return;
     }
 
@@ -847,6 +913,11 @@ import { fetchTranslations, getVideoStuff } from './functions.js';
   function updateAchievementsFilterLabels() {
     const t = translations;
 
+    if (els.achievementsSearchInput) {
+      els.achievementsSearchInput.placeholder = t.achievementsSearchPlaceholder || 'Search achievements...';
+      els.achievementsSearchInput.setAttribute('aria-label', t.achievementsSearchLabel || 'Search achievements by title');
+    }
+
     if (els.achievementsStatusFilter) {
       els.achievementsStatusFilter.title = t.achievementsFilterLabel || 'Filter achievements';
       els.achievementsStatusFilter.setAttribute('aria-label', t.achievementsFilterLabel || 'Filter achievements by status');
@@ -868,8 +939,10 @@ import { fetchTranslations, getVideoStuff } from './functions.js';
   function setView(view) {
     state.view = view;
     els.container.classList.toggle('list-view', state.view === 'list');
+    els.container.classList.toggle('table-view', state.view === 'table');
     els.viewGridBtn.classList.toggle('active', state.view === 'grid');
     els.viewListBtn.classList.toggle('active', state.view === 'list');
+    if (els.viewTableBtn) els.viewTableBtn.classList.toggle('active', state.view === 'table');
     renderGames();
     saveSettings();
   }
@@ -893,19 +966,9 @@ import { fetchTranslations, getVideoStuff } from './functions.js';
   }
 
   function setActiveViewType() {
-    if(state.view === "grid") {
-      if(els.viewListBtn.classList.contains("active")) {
-        els.viewListBtn.classList.remove("active");
-      }
-
-      els.viewGridBtn.classList.add("active");
-    } else {
-      if(els.viewGridBtn.classList.contains("active")) {
-        els.viewGridBtn.classList.remove("active");
-      }
-      
-      els.viewListBtn.classList.add("active");
-    }
+    els.viewGridBtn.classList.toggle("active", state.view === "grid");
+    els.viewListBtn.classList.toggle("active", state.view === "list");
+    if (els.viewTableBtn) els.viewTableBtn.classList.toggle("active", state.view === "table");
   }
 
   function setPageSizeChange(event) {
@@ -1106,6 +1169,7 @@ import { fetchTranslations, getVideoStuff } from './functions.js';
     els.exportXmlBtn.addEventListener('click', () => downloadExport('xml'));
     els.viewGridBtn.addEventListener('click', () => setView('grid'));
     els.viewListBtn.addEventListener('click', () => setView('list'));
+    if (els.viewTableBtn) els.viewTableBtn.addEventListener('click', () => setView('table'));
     if (els.toggleVideoBtn) els.toggleVideoBtn.addEventListener('click', toggleVideo);
     if (els.toggleAchievementsBtn) els.toggleAchievementsBtn.addEventListener('click', toggleAchievements);
     if (els.achievementsStatusFilter) els.achievementsStatusFilter.addEventListener('change', (e) => {
@@ -1116,6 +1180,10 @@ import { fetchTranslations, getVideoStuff } from './functions.js';
       state.achievementsDateSort = e.target.value;
       renderAchievementsList();
     });
+    if (els.achievementsSearchInput) els.achievementsSearchInput.addEventListener('input', debounce((e) => {
+      state.achievementsSearch = e.target.value.trim();
+      renderAchievementsList();
+    }, 200));
 
     if (els.themeCodeForm) {
       els.themeCodeForm.addEventListener('submit', (e) => {

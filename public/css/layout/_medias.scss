@@ -1,0 +1,6 @@
+@media all and (max-width: 768px) {
+  .views-container, .pagination-container {
+    display: flex !important;
+    justify-content: center !important;
+  }
+}

@@ -65,11 +65,14 @@ html[data-bs-theme="liquid"], body.theme-liquid, .liquid {
 
   #pagination-controls, .pagination-controls,
   #pagination, .pagination {
-    @include applyLiqGlass($color, 0.04);
     color: $color;
 
+    .page-link {
+      @include applyLiqGlass($color, 0.04);
+    }
+
     .page-link, .page-item {
-      background: inherit !important;
+      background: inherit;
       border: none !important;
       color: inherit !important;
 
@@ -96,7 +99,14 @@ html[data-bs-theme="liquid"], body.theme-liquid, .liquid {
     border-radius: calc(16px + 4px) !important;
   }
 
-  #view-grid, #view-list {
+  .table {
+    th, td {
+      border: 1px solid rgba(255,255,255,0.08) !important;
+      @include applyLiqGlass($color, 0.04);
+    }
+  }
+
+  #view-grid, #view-list, #view-table {
     @include applyLiqGlass($color, 0.04);
 
     &.active {

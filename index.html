@@ -151,12 +151,15 @@
           <option value="recent">Recently Played</option>
         </select>
       </div>
-      <div class="col-12 col-md-2 d-flex justify-content-end">
+      <div class="col-12 col-md-2 d-flex justify-content-end views-container">
         <button class="btn btn-outline-secondary" id="view-grid" type="button" title="View grid">
           <i class="fa-solid fa-th-large"></i>
         </button>
         <button class="btn btn-outline-secondary ms-1" id="view-list" type="button" title="View list">
           <i class="fa-solid fa-list"></i>
+        </button>
+        <button class="btn btn-outline-secondary ms-1" id="view-table" type="button" title="View table">
+          <i class="fa-solid fa-table"></i>
         </button>
       </div>
     </div>
@@ -185,7 +188,7 @@
       <div class="col-12 col-md-4 d-flex align-items-end">
         <div id="page-info" class="text-muted small">Showing results...</div>
       </div>
-      <div class="col-12 col-md-4 d-flex justify-content-md-end">
+      <div class="col-12 col-md-4 d-flex justify-content-md-end pagination-container">
         <nav aria-label="Pagination">
           <ul id="pagination-controls" class="pagination pagination-sm mb-0"></ul>
         </nav>
@@ -209,6 +212,7 @@
             <li><button type="button" class="dropdown-item d-flex align-items-center gap-2" data-lang="es" data-flag="ES"><img class="lang-flag" src="/node_modules/country-flag-icons/3x2/ES.svg" alt="" /> Español</button></li>
             <li><button type="button" class="dropdown-item d-flex align-items-center gap-2" data-lang="de" data-flag="DE"><img class="lang-flag" src="/node_modules/country-flag-icons/3x2/DE.svg" alt="" /> Deutsch</button></li>
             <li><button type="button" class="dropdown-item d-flex align-items-center gap-2" data-lang="pt" data-flag="PT"><img class="lang-flag" src="/node_modules/country-flag-icons/3x2/PT.svg" alt="" /> Português</button></li>
+            <li><button type="button" class="dropdown-item d-flex align-items-center gap-2" data-lang="fr" data-flag="FR"><img class="lang-flag" src="/node_modules/country-flag-icons/3x2/FR.svg" alt="" /> Français</button></li>
           </ul>
         </div>
       </div>
@@ -287,6 +291,13 @@
               <h6 id="modalAchievementsTitle" class="mb-0">Achievements</h6>
               <div class="d-flex align-items-center gap-2 flex-wrap">
                 <span id="modalAchievementsStatus" class="small text-muted">--</span>
+                <input
+                  type="text"
+                  id="achievements-search-input"
+                  class="form-control form-control-sm w-auto"
+                  placeholder="Search achievements..."
+                  aria-label="Search achievements by title"
+                />
                 <select id="achievements-status-filter" class="form-select form-select-sm w-auto" title="Filter achievements" aria-label="Filter achievements by status">
                   <option value="all">All</option>
                   <option value="unlocked">Unlocked</option>
