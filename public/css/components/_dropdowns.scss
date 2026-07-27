@@ -1,8 +1,9 @@
 // ==========================================================================
 // Dropdowns
 // ==========================================================================
+$bradius: calc(16px + 8px);
+
 .dropdown {
-  $bradius: calc(16px + 8px);
   border-radius: $bradius;
 
   .dropdown-menu {
@@ -14,5 +15,21 @@
       border-radius: $bradius;
       padding: $paddingy $paddingx;
     }
+  }
+}
+
+select, .form-select {
+  border-radius: $bradius !important;
+  padding: 0.5rem 1rem;
+  width: auto !important;
+
+  option {
+    border-radius: $bradius !important;
+  }
+}
+
+.form-select {
+  select {
+    padding: 0.5rem 1rem;
   }
 }

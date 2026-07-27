@@ -49,3 +49,18 @@
   justify-content: center;
   align-items: center;
 }
+
+.input-group:not(:first-child) {
+  margin-top: 15px;
+}
+
+.input-group {
+  .btnsearchicogrp {
+    border-radius: calc(16px + 8px);
+  }
+
+  #search-input {
+    border-top-right-radius: calc(16px + 8px);
+    border-bottom-right-radius: calc(16px + 8px);
+  }
+}

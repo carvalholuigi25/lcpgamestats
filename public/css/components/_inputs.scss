@@ -1,0 +1,13 @@
+// ==========================================================================
+// Inputs
+// ==========================================================================
+$bradius: calc(16px + 8px);
+
+input[type="text"] {
+  width: auto;
+}
+
+input[type="text"]:not([id="search-input"]) {
+  border-radius: $bradius !important;
+  padding: 0.5rem 1rem;
+}
