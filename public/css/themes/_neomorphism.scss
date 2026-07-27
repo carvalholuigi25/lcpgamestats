@@ -1,0 +1,138 @@
+@use 'sass:color';
+@use '../base/variables' as *;
+
+// ==========================================================================
+// Neomorphism theme — soft UI: flat, monochrome surfaces with paired
+// light/dark box-shadows instead of borders, blur, or gradients.
+// ==========================================================================
+$neo-bg:          #e6e9ef;
+$neo-text:        #3a3f4b;
+$neo-muted:       #6b7280;
+$neo-shadow-dark:  rgba(163, 177, 198, 0.6);
+$neo-shadow-light: rgba(255, 255, 255, 0.85);
+$neo-radius:      1.1rem;
+
+@mixin neo-raised($radius: $neo-radius) {
+  background: $neo-bg;
+  border: none !important;
+  border-radius: $radius;
+  box-shadow: 6px 6px 12px $neo-shadow-dark, -6px -6px 12px $neo-shadow-light;
+}
+
+@mixin neo-inset($radius: $neo-radius) {
+  background: $neo-bg;
+  border: none !important;
+  border-radius: $radius;
+  box-shadow: inset 3px 3px 6px $neo-shadow-dark, inset -3px -3px 6px $neo-shadow-light;
+}
+
+html[data-bs-theme="neomorphism"], body.theme-neomorphism, .neomorphism {
+  background: $neo-bg;
+  color: $neo-text;
+
+  label, span, p, h1, h2, h3, h4, h5, h6, .small, .form-label, .form-text, .form-check-label, .form-check-input {
+    color: $neo-text !important;
+  }
+
+  .text-muted {
+    color: $neo-muted !important;
+  }
+
+  .app-header, .app-footer {
+    background: $neo-bg;
+    border: none;
+    box-shadow: 0 6px 16px rgba(163, 177, 198, 0.35);
+  }
+
+  .player-card, .stat-box, .game-card, .modal-content, .machievementlist {
+    @include neo-raised;
+    color: $neo-text !important;
+  }
+
+  .game-card__body {
+    background: transparent;
+  }
+
+  .game-card__image {
+    background-color: color.adjust($neo-bg, $lightness: -4%);
+  }
+
+  select, .form-select, input, .form-control, .input-group-text {
+    @include neo-inset;
+    color: $neo-text !important;
+
+    &::placeholder {
+      color: $neo-muted !important;
+    }
+
+    &:focus {
+      color: $neo-text !important;
+      box-shadow: inset 2px 2px 5px $neo-shadow-dark, inset -2px -2px 5px $neo-shadow-light;
+    }
+  }
+
+  select option {
+    background: $neo-bg;
+    color: $neo-text;
+  }
+
+  #pagination-controls, .pagination-controls,
+  #pagination, .pagination {
+    color: $neo-text;
+
+    .page-link {
+      @include neo-raised(0.6rem);
+      border: none !important;
+      color: $neo-text !important;
+    }
+
+    .page-item.active .page-link {
+      @include neo-inset(0.6rem);
+      color: $steam-accent !important;
+    }
+  }
+
+  .bg-body, .bg-body-secondary, .bg-body-tertiary {
+    background: $neo-bg !important;
+  }
+
+  .btn {
+    @include neo-raised(999px);
+    color: $neo-text;
+
+    &:hover {
+      box-shadow: 4px 4px 8px $neo-shadow-dark, -4px -4px 8px $neo-shadow-light;
+    }
+
+    &:active {
+      @include neo-inset(999px);
+    }
+  }
+
+  .table {
+    th, td {
+      border: none !important;
+      background: transparent;
+      color: $neo-text;
+    }
+  }
+
+  #view-grid, #view-list, #view-table {
+    @include neo-raised(0.75rem);
+    color: $neo-text;
+
+    &.active {
+      @include neo-inset(0.75rem);
+      color: $steam-accent !important;
+    }
+  }
+
+  .modal-header, .modal-footer {
+    border-color: rgba(163, 177, 198, 0.35) !important;
+  }
+
+  .toast, .toast-body {
+    @include neo-raised;
+    color: $neo-text !important;
+  }
+}

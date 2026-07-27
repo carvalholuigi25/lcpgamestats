@@ -39,6 +39,7 @@ import { fetchTranslations, getVideoStuff } from './functions.js';
   const els = {
     loading: document.getElementById('loading-state'),
     loadingText: document.getElementById('loading-text'),
+    loadingSpinnerText: document.getElementById('loading-spinner-text'),
     error: document.getElementById('error-state'),
     errorMessage: document.getElementById('error-message'),
     empty: document.getElementById('empty-state'),
@@ -97,7 +98,35 @@ import { fetchTranslations, getVideoStuff } from './functions.js';
     bkgControls: document.getElementById('background-controls'),
     videoContainer: document.getElementById('video-container'),
     toggleVideoBtn: document.getElementById('toggle-video-btn'),
-    toggleAchievementsBtn: document.getElementById('toggle-achievements-btn')
+    toggleAchievementsBtn: document.getElementById('toggle-achievements-btn'),
+    clearfilterBtn: document.getElementById('clearfilter'),
+    exportInfoText: document.getElementById('export-info-text'),
+    pageSizeLabel: document.getElementById('page-size-label'),
+    langNameToggle: document.getElementById('lang-name-toggle'),
+    footerText: document.getElementById('footer-text'),
+    modalPlaytimeLabel: document.getElementById('modalPlaytimeLabel'),
+    modalRecentLabel: document.getElementById('modalRecentLabel'),
+    modalStoreLinkLabel: document.getElementById('modalStoreLinkLabel'),
+    loginModalTitle: document.getElementById('loginModalTitle'),
+    loginUsernameLabel: document.getElementById('loginUsernameLabel'),
+    loginPasswordLabel: document.getElementById('loginPasswordLabel'),
+    loginSubmitBtn: document.getElementById('loginSubmitBtn'),
+    loginGoogleLabel: document.getElementById('loginGoogleLabel'),
+    registerModalTitle: document.getElementById('registerModalTitle'),
+    regUsernameLabel: document.getElementById('regUsernameLabel'),
+    regPasswordLabel: document.getElementById('regPasswordLabel'),
+    regDisplayNameLabel: document.getElementById('regDisplayNameLabel'),
+    registerSubmitBtn: document.getElementById('registerSubmitBtn'),
+    navHomeLabel: document.getElementById('nav-home-label'),
+    navFeedbackLabel: document.getElementById('nav-feedback-label'),
+    navAboutLabel: document.getElementById('nav-about-label'),
+    navAdminLabel: document.getElementById('nav-admin-label'),
+    navHome: document.getElementById('nav-home'),
+    navFeedback: document.getElementById('nav-feedback'),
+    navAbout: document.getElementById('nav-about'),
+    appClock: document.getElementById('app-clock'),
+    appClockTime: document.getElementById('app-clock-time'),
+    appClockDate: document.getElementById('app-clock-date')
   };
 
   // Auth-related elements
@@ -137,14 +166,41 @@ import { fetchTranslations, getVideoStuff } from './functions.js';
     lumos: 'light',
     light: 'light',
     liquidglass: 'liquid',
-    glassmorphism: 'glassmorphism'
+    glassmorphism: 'glassmorphism',
+    neomorphism: 'neomorphism',
+    softui: 'neomorphism'
   };
+  const LANG_NAME_SETTING_KEY = 'showLanguageName';
   const THEME_CODES_SETTING_KEY = 'themeCodesEnabled';
   const THEME_CODE_SESSION_KEY = 'themeCodeTheme';
 
   function isThemeCodesEnabled() {
     const saved = localStorage.getItem(THEME_CODES_SETTING_KEY);
     return saved === null ? true : saved !== 'false';
+  }
+
+  function isLangNameVisible() {
+    const saved = localStorage.getItem(LANG_NAME_SETTING_KEY);
+    return saved === null ? true : saved !== 'false';
+  }
+
+  function updateLangNameToggleUI() {
+    if (!els.langNameToggle) return;
+    const visible = isLangNameVisible();
+    document.body.classList.toggle('lang-name-hidden', !visible);
+    const icon = els.langNameToggle.querySelector('i');
+    if (icon) icon.className = visible ? 'fa-regular fa-eye' : 'fa-regular fa-eye-slash';
+    const label = visible
+      ? (translations.hideLanguageName || 'Hide language name')
+      : (translations.showLanguageName || 'Show language name');
+    els.langNameToggle.title = label;
+    els.langNameToggle.setAttribute('aria-label', label);
+    els.langNameToggle.setAttribute('aria-pressed', String(!visible));
+  }
+
+  function toggleLangName() {
+    localStorage.setItem(LANG_NAME_SETTING_KEY, String(!isLangNameVisible()));
+    updateLangNameToggleUI();
   }
 
   function resolveThemeCode(rawCode) {
@@ -442,7 +498,7 @@ import { fetchTranslations, getVideoStuff } from './functions.js';
     } catch (err) {
       els.loading.classList.add('d-none');
       els.error.classList.remove('d-none');
-      els.errorMessage.textContent = err.message || 'Unable to load games.';
+      els.errorMessage.textContent = err.message || translations.unableToLoadGames || 'Unable to load games.';
     }
   }
 
@@ -494,7 +550,10 @@ import { fetchTranslations, getVideoStuff } from './functions.js';
     els.paginationControls.innerHTML = '';
 
     if (state.totalPages <= 1) {
-      els.pageInfo.textContent = `Showing ${state.games.length} of ${state.totalGames} games`;
+      const template = translations.showingGamesTotal || 'Showing {count} of {total} games';
+      els.pageInfo.textContent = template
+        .replace('{count}', state.games.length)
+        .replace('{total}', state.totalGames);
       return;
     }
 
@@ -523,7 +582,11 @@ import { fetchTranslations, getVideoStuff } from './functions.js';
 
     const firstResult = (state.page - 1) * state.pageSize + 1;
     const lastResult = Math.min(state.page * state.pageSize, state.totalGames);
-    els.pageInfo.textContent = `Showing ${firstResult}–${lastResult} of ${state.totalGames} games`;
+    const rangeTemplate = translations.showingGamesRange || 'Showing {first}–{last} of {total} games';
+    els.pageInfo.textContent = rangeTemplate
+      .replace('{first}', firstResult)
+      .replace('{last}', lastResult)
+      .replace('{total}', state.totalGames);
   }
 
   /** Apply current search + sort settings and reload page data */
@@ -806,7 +869,7 @@ import { fetchTranslations, getVideoStuff } from './functions.js';
               <div class="small text-muted">${escapeHtml(achievement.description || '')}</div>
             </div>
             <span class="badge rounded-pill ${achievement.achieved ? 'bg-success' : 'bg-secondary'}">
-              ${achievement.achieved ? 'Unlocked' : 'Locked'}
+              ${achievement.achieved ? (translations.unlockedLabel || 'Unlocked') : (translations.lockedLabel || 'Locked')}
             </span>
           </div>
         </div>
@@ -838,6 +901,8 @@ import { fetchTranslations, getVideoStuff } from './functions.js';
     translations = await fetchTranslations(state.lang);
     updateInterfaceLanguage();
     updateLangSelectorUI(lang);
+    updateLangNameToggleUI();
+    updateClock();
     renderGames();
     saveSettings();
   }
@@ -853,6 +918,36 @@ import { fetchTranslations, getVideoStuff } from './functions.js';
         if (els.langSelectLabel) els.langSelectLabel.textContent = item.textContent.trim();
       }
     });
+  }
+
+  let clockInterval;
+
+  /** Update the digital clock's time and (when there's room) date text. */
+  function updateClock() {
+    if (!els.appClockTime) return;
+    const now = new Date();
+    const hh = String(now.getHours()).padStart(2, '0');
+    const mm = String(now.getMinutes()).padStart(2, '0');
+    const ss = String(now.getSeconds()).padStart(2, '0');
+    els.appClockTime.textContent = `${hh}:${mm}:${ss}`;
+    if (els.appClockDate) {
+      try {
+        els.appClockDate.textContent = now.toLocaleDateString(state.lang || undefined, {
+          weekday: 'short',
+          month: 'short',
+          day: 'numeric'
+        });
+      } catch (err) {
+        els.appClockDate.textContent = now.toDateString();
+      }
+    }
+  }
+
+  function startClock() {
+    if (!els.appClock) return;
+    updateClock();
+    clearInterval(clockInterval);
+    clockInterval = setInterval(updateClock, 1000);
   }
 
   function setProvider(provider) {
@@ -890,15 +985,107 @@ import { fetchTranslations, getVideoStuff } from './functions.js';
     document.title = t.appTitle || 'LCPGameStats';
     document.getElementById('app-title').textContent = t.appTitle || 'LCPGameStats';
     els.loadingText.textContent = t.loadingLibrary || 'Fetching your game library...';
+    if (els.loadingSpinnerText) els.loadingSpinnerText.textContent = t.loadingSpinnerText || 'Loading...';
     els.providerInfoText.textContent = t.providerInfo || 'Use provider switcher to preview non-Steam sample libraries.';
     els.labelTotalGames.textContent = t.totalGames || 'Total Games';
     els.labelTotalHours.textContent = t.totalHours || 'Total Hours';
     els.labelRecentGames.textContent = t.playedRecently || 'Played Recently';
     els.labelTopGame.textContent = t.mostPlayed || 'Most Played';
-    els.modalStoreLink.textContent = t.viewMore || 'View more';
+    if (els.modalStoreLinkLabel) els.modalStoreLinkLabel.textContent = t.viewOnSteamStore || 'View on Steam Store';
     if (els.themeCodeModalTitle) els.themeCodeModalTitle.textContent = t.themeCodeModalTitle || 'Theme Codes';
     if (els.themeCodeInputLabel) els.themeCodeInputLabel.textContent = t.themeCodeInputLabel || 'Enter a theme code';
     if (els.themeCodeHint) els.themeCodeHint.textContent = t.themeCodeHint || 'Try: nox / dark, lumos / light, liquidglass, glassmorphism';
+
+    // Navigation
+    if (els.navHomeLabel) els.navHomeLabel.textContent = t.navHome || 'Home';
+    if (els.navFeedbackLabel) els.navFeedbackLabel.textContent = t.navFeedback || 'Feedback';
+    if (els.navAboutLabel) els.navAboutLabel.textContent = t.navAbout || 'About';
+    if (els.navAdminLabel) els.navAdminLabel.textContent = t.navAdmin || 'Admin';
+    if (els.navHome) els.navHome.title = t.navHome || 'Home';
+    if (els.navFeedback) els.navFeedback.title = t.navFeedback || 'Feedback';
+    if (els.navAbout) els.navAbout.title = t.navAbout || 'About';
+    if (els.btnAdmin) els.btnAdmin.title = t.navAdmin || 'Admin';
+    if (els.appClock) els.appClock.title = t.currentTimeLabel || 'Current time';
+
+    // Search / filter controls
+    if (els.searchInput) {
+      els.searchInput.placeholder = t.searchPlaceholder || 'Search your library...';
+      els.searchInput.setAttribute('aria-label', t.searchAria || 'Search games');
+    }
+    if (els.clearfilterBtn) els.clearfilterBtn.title = t.clearFilterTitle || 'Clear filter';
+    if (els.providerSelect) {
+      els.providerSelect.title = t.providerTitle || 'Provider';
+      els.providerSelect.setAttribute('aria-label', t.providerAria || 'Game provider');
+    }
+    if (els.sortSelect) {
+      els.sortSelect.title = t.sortTitle || 'Sort';
+      const opt = (id, fallback, key) => {
+        const el = document.getElementById(id);
+        if (el) el.textContent = t[key] || fallback;
+      };
+      opt('sort-opt-playtime-desc', 'Playtime: High to Low', 'sortPlaytimeDesc');
+      opt('sort-opt-playtime-asc', 'Playtime: Low to High', 'sortPlaytimeAsc');
+      opt('sort-opt-name-asc', 'Name: A-Z', 'sortNameAsc');
+      opt('sort-opt-name-desc', 'Name: Z-A', 'sortNameDesc');
+      opt('sort-opt-recent', 'Recently Played', 'sortRecent');
+    }
+    if (els.viewGridBtn) els.viewGridBtn.title = t.viewGridTitle || 'View grid';
+    if (els.viewListBtn) els.viewListBtn.title = t.viewListTitle || 'View list';
+    if (els.viewTableBtn) els.viewTableBtn.title = t.viewTableTitle || 'View table';
+
+    // Export controls
+    if (els.exportJsonBtn) els.exportJsonBtn.textContent = t.exportJson || 'Export JSON';
+    if (els.exportXmlBtn) els.exportXmlBtn.textContent = t.exportXml || 'Export XML';
+    if (els.exportInfoText) els.exportInfoText.textContent = t.exportInfo || 'Export the current filtered game report for reuse.';
+
+    // Pagination / page size
+    if (els.pageSizeLabel) els.pageSizeLabel.textContent = t.resultsPerPage || 'Results per page';
+    if (els.pageSizeSelect) {
+      els.pageSizeSelect.setAttribute('aria-label', t.resultsPerPage || 'Results per page');
+      Array.from(els.pageSizeSelect.options).forEach((option) => {
+        const perPage = option.dataset.perPage || option.value;
+        option.textContent = `${perPage} ${t.perPageSuffix || 'per page'}`;
+      });
+    }
+
+    // Theme / language controls
+    if (els.themeSelect) {
+      els.themeSelect.title = t.theme || 'Theme';
+      Array.from(els.themeSelect.options).forEach((option) => {
+        if (t[option.value]) option.textContent = t[option.value];
+      });
+    }
+    if (els.langNameToggle) updateLangNameToggleUI();
+
+    // Background controls
+    if (els.bgImageInput) {
+      els.bgImageInput.placeholder = t.bgImagePlaceholder || 'Custom background image URL';
+      els.bgImageInput.setAttribute('aria-label', t.bgImageAria || 'Background image URL');
+    }
+    if (els.applyBgBtn) els.applyBgBtn.textContent = t.apply || 'Apply';
+    if (els.clearBgBtn) {
+      els.clearBgBtn.textContent = t.clear || 'Clear';
+      els.clearBgBtn.title = t.clearBackground || 'Clear background';
+    }
+    if (els.bgFileInput) els.bgFileInput.setAttribute('aria-label', t.uploadBgAria || 'Upload background image');
+    if (els.uploadBgBtn) els.uploadBgBtn.textContent = t.upload || 'Upload';
+
+    // Modals
+    if (els.modalPlaytimeLabel) els.modalPlaytimeLabel.textContent = t.totalPlaytime || 'Total Playtime';
+    if (els.modalRecentLabel) els.modalRecentLabel.textContent = t.last2Weeks || 'Last 2 Weeks';
+    if (els.loginModalTitle) els.loginModalTitle.textContent = t.loginTitle || 'Login';
+    if (els.loginUsernameLabel) els.loginUsernameLabel.textContent = t.usernameLabel || 'Username';
+    if (els.loginPasswordLabel) els.loginPasswordLabel.textContent = t.passwordLabel || 'Password';
+    if (els.loginSubmitBtn) els.loginSubmitBtn.textContent = t.loginButton || 'Login';
+    if (els.loginGoogleLabel) els.loginGoogleLabel.textContent = t.continueWithGoogle || 'Continue with Google';
+    if (els.registerModalTitle) els.registerModalTitle.textContent = t.registerTitle || 'Register';
+    if (els.regUsernameLabel) els.regUsernameLabel.textContent = t.usernameLabel || 'Username';
+    if (els.regPasswordLabel) els.regPasswordLabel.textContent = t.passwordLabel || 'Password';
+    if (els.regDisplayNameLabel) els.regDisplayNameLabel.textContent = t.displayNameLabel || 'Display name';
+    if (els.registerSubmitBtn) els.registerSubmitBtn.textContent = t.registerButton || 'Register';
+
+    // Footer
+    if (els.footerText) els.footerText.textContent = t.footerText || 'Powered by the LCP - Created by Luis Carvalho - @2026';
 
     if (els.empty.classList.contains('d-none') === false) {
       const message = els.searchInput.value.trim()
@@ -908,6 +1095,9 @@ import { fetchTranslations, getVideoStuff } from './functions.js';
     }
 
     updateAchievementsFilterLabels();
+    updateToggleVideoButton();
+    updateToggleAchievementsButton();
+    renderPagination();
   }
 
   function updateAchievementsFilterLabels() {
@@ -1003,7 +1193,9 @@ import { fetchTranslations, getVideoStuff } from './functions.js';
 
   function updateToggleVideoButton() {
     if (!els.toggleVideoBtn || !els.videoContainer) return;
-    els.toggleVideoBtn.textContent = state.showVideo ? 'Hide Video' : 'Show Video';
+    const hideLabel = translations.hideVideo || 'Hide Video';
+    const showLabel = translations.showVideo || 'Show Video';
+    els.toggleVideoBtn.textContent = state.showVideo ? hideLabel : showLabel;
     els.toggleVideoBtn.setAttribute('aria-pressed', String(state.showVideo));
     els.videoContainer.classList.toggle('d-none', !state.showVideo);
     if (!state.showVideo) {
@@ -1060,6 +1252,7 @@ import { fetchTranslations, getVideoStuff } from './functions.js';
     els.langSelectItems.forEach((item) => {
       item.addEventListener('click', () => setLanguage(item.dataset.lang));
     });
+    if (els.langNameToggle) els.langNameToggle.addEventListener('click', toggleLangName);
     if (els.applyBgBtn && els.bgImageInput) {
       els.applyBgBtn.addEventListener('click', () => setBackgroundImage(els.bgImageInput.value));
     }
@@ -1072,7 +1265,7 @@ import { fetchTranslations, getVideoStuff } from './functions.js';
     if (els.uploadBgBtn && els.bgFileInput) {
       els.uploadBgBtn.addEventListener('click', () => {
         const file = els.bgFileInput.files && els.bgFileInput.files[0];
-        if (!file) return alert('Select an image file to upload');
+        if (!file) return alert(translations.selectImageAlert || 'Select an image file to upload');
         const reader = new FileReader();
         reader.onload = async () => {
           try {
@@ -1092,7 +1285,7 @@ import { fetchTranslations, getVideoStuff } from './functions.js';
             }
           } catch (err) {
             console.error('Upload error:', err.message);
-            alert('Upload failed: ' + err.message);
+            alert(`${translations.uploadFailedPrefix || 'Upload failed:'} ${err.message}`);
           }
         };
         reader.readAsDataURL(file);
@@ -1125,14 +1318,14 @@ import { fetchTranslations, getVideoStuff } from './functions.js';
           });
           const data = await res.json();
           if (!res.ok) {
-            els.loginError.textContent = data.error || 'Login failed';
+            els.loginError.textContent = data.error || translations.loginFailed || 'Login failed';
             els.loginError.classList.remove('d-none');
             return;
           }
           await fetchCurrentUser();
           loginModal.hide();
         } catch (err) {
-          els.loginError.textContent = err.message || 'Login error';
+          els.loginError.textContent = err.message || translations.loginErrorGeneric || 'Login error';
           els.loginError.classList.remove('d-none');
         }
       });
@@ -1153,14 +1346,14 @@ import { fetchTranslations, getVideoStuff } from './functions.js';
           });
           const data = await res.json();
           if (!res.ok) {
-            els.registerError.textContent = data.error || 'Registration failed';
+            els.registerError.textContent = data.error || translations.registrationFailed || 'Registration failed';
             els.registerError.classList.remove('d-none');
             return;
           }
           await fetchCurrentUser();
           registerModal.hide();
         } catch (err) {
-          els.registerError.textContent = err.message || 'Registration error';
+          els.registerError.textContent = err.message || translations.registrationErrorGeneric || 'Registration error';
           els.registerError.classList.remove('d-none');
         }
       });
@@ -1223,6 +1416,8 @@ import { fetchTranslations, getVideoStuff } from './functions.js';
       if (els.themeSelect) els.themeSelect.value = sessionThemeCode;
     }
     setBackgroundImage(bkgimg);
+    updateLangNameToggleUI();
+    startClock();
     await setLanguage(state.lang);
     setView(state.view || "grid");
     setActiveViewType();

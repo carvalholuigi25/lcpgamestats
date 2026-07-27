@@ -58,3 +58,14 @@
   min-width: 10rem;
 }
 
+.lang-name-toggle {
+  padding-left: 0.6rem;
+  padding-right: 0.6rem;
+}
+
+// Hides only the language name next to the flag on the trigger button;
+// the dropdown menu keeps its labels for accessibility when opened.
+body.lang-name-hidden #lang-select-btn .lang-select-label {
+  display: none;
+}
+

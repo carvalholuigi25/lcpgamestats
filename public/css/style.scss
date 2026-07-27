@@ -7,6 +7,8 @@
 @use 'components/dropdowns';
 @use 'components/buttons';
 @use 'components/header';
+@use 'components/nav';
+@use 'components/clock';
 @use 'components/footer';
 @use 'components/stats';
 @use 'components/controls';
@@ -17,6 +19,7 @@
 @use 'components/spell-effects';
 @use 'components/states';
 @use 'components/tables';
+@use 'components/feedback';
 
 @use 'layout/custom-bg';
 @use 'layout/responsive';
@@ -25,6 +28,7 @@
 @use 'themes/light';
 @use 'themes/glassmorphism';
 @use 'themes/liquid';
+@use 'themes/neomorphism';
 
 @use 'vendor/player';
 @use 'layout/medias';

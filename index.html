@@ -54,6 +54,33 @@
     <header class="app-header py-4 mb-4">
       <div class="container">
         <div
+          class="d-flex flex-wrap align-items-center justify-content-between gap-2 app-nav-row mb-3"
+        >
+          <nav class="app-nav" aria-label="Site">
+            <a href="/" id="nav-home" class="app-nav-link active" title="Home">
+              <i class="fa-solid fa-house"></i>
+              <span class="app-nav-link__label" id="nav-home-label">Home</span>
+            </a>
+            <a href="/feedback" id="nav-feedback" class="app-nav-link" title="Feedback">
+              <i class="fa-solid fa-comment-dots"></i>
+              <span class="app-nav-link__label" id="nav-feedback-label">Feedback</span>
+            </a>
+            <a href="/about" id="nav-about" class="app-nav-link" title="About">
+              <i class="fa-solid fa-circle-info"></i>
+              <span class="app-nav-link__label" id="nav-about-label">About</span>
+            </a>
+            <a href="/admin" id="btn-admin" class="app-nav-link d-none" title="Admin">
+              <i class="fa-solid fa-user-shield"></i>
+              <span class="app-nav-link__label" id="nav-admin-label">Admin</span>
+            </a>
+          </nav>
+          <div id="app-clock" class="app-clock" aria-live="off">
+            <i class="fa-regular fa-clock app-clock__icon"></i>
+            <span id="app-clock-time" class="app-clock__time">00:00:00</span>
+            <span id="app-clock-date" class="app-clock__date">--</span>
+          </div>
+        </div>
+        <div
           class="d-flex flex-column flex-md-row align-items-center justify-content-between gap-3"
         >
           <div class="d-flex align-items-center gap-3">
@@ -75,7 +102,6 @@
             <button id="btn-register" class="btn btn-sm btn-outline-secondary">
               Register
             </button>
-            <!-- <a id="btn-admin" href="/admin" class="btn btn-sm btn-outline-warning d-none">Admin</a> -->
             <button
               id="btn-logout"
               class="btn btn-sm btn-outline-danger d-none"
@@ -208,11 +234,11 @@
         </div>
         <div class="col-6 col-md-3">
           <select id="sort-select" class="form-select" title="Sort">
-            <option value="playtime-desc">Playtime: High to Low</option>
-            <option value="playtime-asc">Playtime: Low to High</option>
-            <option value="name-asc">Name: A-Z</option>
-            <option value="name-desc">Name: Z-A</option>
-            <option value="recent">Recently Played</option>
+            <option value="playtime-desc" id="sort-opt-playtime-desc">Playtime: High to Low</option>
+            <option value="playtime-asc" id="sort-opt-playtime-asc">Playtime: Low to High</option>
+            <option value="name-asc" id="sort-opt-name-asc">Name: A-Z</option>
+            <option value="name-desc" id="sort-opt-name-desc">Name: Z-A</option>
+            <option value="recent" id="sort-opt-recent">Recently Played</option>
           </select>
         </div>
         <div class="col-12 col-md-2 d-flex justify-content-end views-container">
@@ -262,14 +288,14 @@
         <div
           class="col-12 col-md-6 d-flex justify-content-md-end align-items-center"
         >
-          <span class="text-muted small"
+          <span class="text-muted small" id="export-info-text"
             >Export the current filtered game report for reuse.</span
           >
         </div>
       </div>
       <div class="row g-3 align-items-center mb-3">
         <div class="col-12 col-md-4">
-          <label class="form-label small text-muted mb-1" for="page-size-select"
+          <label class="form-label small text-muted mb-1" for="page-size-select" id="page-size-label"
             >Results per page</label
           >
           <select
@@ -277,13 +303,13 @@
             class="form-select"
             aria-label="Results per page"
           >
-            <option value="8" selected>8 per page</option>
-            <option value="12">12 per page</option>
-            <option value="24">24 per page</option>
-            <option value="32">32 per page</option>
-            <option value="48">48 per page</option>
-            <option value="64">64 per page</option>
-            <option value="128">128 per page</option>
+            <option value="8" selected data-per-page="8">8 per page</option>
+            <option value="12" data-per-page="12">12 per page</option>
+            <option value="24" data-per-page="24">24 per page</option>
+            <option value="32" data-per-page="32">32 per page</option>
+            <option value="48" data-per-page="48">48 per page</option>
+            <option value="64" data-per-page="64">64 per page</option>
+            <option value="128" data-per-page="128">128 per page</option>
           </select>
         </div>
         <div class="col-12 col-md-4 d-flex align-items-end">
@@ -312,6 +338,7 @@
             <option value="light">Light</option>
             <option value="liquid">Liquid Glass</option>
             <option value="glassmorphism">Glassmorphism</option>
+            <option value="neomorphism">Neomorphism</option>
           </select>
           <div class="dropdown lang-dropdown">
             <button
@@ -346,7 +373,7 @@
                     src="/node_modules/country-flag-icons/3x2/US.svg"
                     alt="English"
                   />
-                  <span id="lang-select-label" class="lang-select-label">
+                  <span class="lang-select-label">
                     English
                   </span>
                 </button>
@@ -363,7 +390,7 @@
                     src="/node_modules/country-flag-icons/3x2/ES.svg"
                     alt="Español"
                   />
-                  <span id="lang-select-label" class="lang-select-label">
+                  <span class="lang-select-label">
                     Español
                   </span>
                 </button>
@@ -380,7 +407,7 @@
                     src="/node_modules/country-flag-icons/3x2/DE.svg"
                     alt="Deutsch"
                   />
-                  <span id="lang-select-label" class="lang-select-label">
+                  <span class="lang-select-label">
                     Deutsch
                   </span>
                 </button>
@@ -397,7 +424,7 @@
                     src="/node_modules/country-flag-icons/3x2/PT.svg"
                     alt="Português"
                   />
-                  <span id="lang-select-label" class="lang-select-label">
+                  <span class="lang-select-label">
                     Português
                   </span>
                 </button>
@@ -414,13 +441,23 @@
                     src="/node_modules/country-flag-icons/3x2/FR.svg"
                     alt="Français"
                   />
-                  <span id="lang-select-label" class="lang-select-label">
+                  <span class="lang-select-label">
                     Français
                   </span>
                 </button>
               </li>
             </ul>
           </div>
+          <button
+            id="lang-name-toggle"
+            type="button"
+            class="btn btn-outline-secondary lang-name-toggle"
+            title="Hide language name"
+            aria-label="Hide language name"
+            aria-pressed="false"
+          >
+            <i class="fa-regular fa-eye"></i>
+          </button>
         </div>
         <div
           class="col-12 col-md-6 d-flex justify-content-md-end align-items-center"
@@ -479,7 +516,7 @@
       <!-- Loading state -->
       <div id="loading-state" class="text-center py-5">
         <div class="spinner-border text-primary loadingblk" role="status">
-          <span class="visually-hidden">Loading...</span>
+          <span class="visually-hidden" id="loading-spinner-text">Loading...</span>
         </div>
         <p id="loading-text" class="mt-3 text-muted" aria-live="polite">
           Fetching your game library from Steam...
@@ -505,7 +542,7 @@
     </main>
 
     <footer class="app-footer text-center text-muted py-4 small">
-      <p class="mb-0">Powered by the LCP - Created by Luis Carvalho - @2026</p>
+      <p class="mb-0" id="footer-text">Powered by the LCP - Created by Luis Carvalho - @2026</p>
     </footer>
 
     <!-- Game detail modal -->
@@ -540,13 +577,13 @@
               <div class="col-6">
                 <div class="stat-box p-3">
                   <div class="stat-value" id="modalPlaytime">--</div>
-                  <div class="stat-label">Total Playtime</div>
+                  <div class="stat-label" id="modalPlaytimeLabel">Total Playtime</div>
                 </div>
               </div>
               <div class="col-6">
                 <div class="stat-box p-3">
                   <div class="stat-value" id="modalRecent">--</div>
-                  <div class="stat-label">Last 2 Weeks</div>
+                  <div class="stat-label" id="modalRecentLabel">Last 2 Weeks</div>
                 </div>
               </div>
             </div>
@@ -625,7 +662,8 @@
               rel="noopener"
               class="btn btn-primary"
             >
-              <i class="fa-brands fa-steam me-1"></i> View on Steam Store
+              <i class="fa-brands fa-steam me-1"></i>
+              <span id="modalStoreLinkLabel">View on Steam Store</span>
             </a>
           </div>
         </div>
@@ -637,7 +675,7 @@
       <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title">Login</h5>
+            <h5 class="modal-title" id="loginModalTitle">Login</h5>
             <button
               type="button"
               class="btn-close"
@@ -648,11 +686,11 @@
           <div class="modal-body">
             <form id="login-form">
               <div class="mb-3">
-                <label for="login-username" class="form-label">Username</label>
+                <label for="login-username" class="form-label" id="loginUsernameLabel">Username</label>
                 <input id="login-username" class="form-control" required />
               </div>
               <div class="mb-3">
-                <label for="login-password" class="form-label">Password</label>
+                <label for="login-password" class="form-label" id="loginPasswordLabel">Password</label>
                 <input
                   id="login-password"
                   type="password"
@@ -662,12 +700,13 @@
               </div>
               <div id="login-error" class="text-danger small mb-2 d-none"></div>
               <div class="d-flex flex-column gap-2">
-                <button type="submit" class="btn btn-primary">Login</button>
+                <button type="submit" class="btn btn-primary" id="loginSubmitBtn">Login</button>
                 <a
                   href="/auth/google"
                   class="btn btn-outline-secondary d-flex align-items-center justify-content-center"
                 >
-                  <i class="fa-brands fa-google me-2"></i> Continue with Google
+                  <i class="fa-brands fa-google me-2"></i>
+                  <span id="loginGoogleLabel">Continue with Google</span>
                 </a>
               </div>
             </form>
@@ -681,7 +720,7 @@
       <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title">Register</h5>
+            <h5 class="modal-title" id="registerModalTitle">Register</h5>
             <button
               type="button"
               class="btn-close"
@@ -692,11 +731,11 @@
           <div class="modal-body">
             <form id="register-form">
               <div class="mb-3">
-                <label for="reg-username" class="form-label">Username</label>
+                <label for="reg-username" class="form-label" id="regUsernameLabel">Username</label>
                 <input id="reg-username" class="form-control" required />
               </div>
               <div class="mb-3">
-                <label for="reg-password" class="form-label">Password</label>
+                <label for="reg-password" class="form-label" id="regPasswordLabel">Password</label>
                 <input
                   id="reg-password"
                   type="password"
@@ -705,7 +744,7 @@
                 />
               </div>
               <div class="mb-3">
-                <label for="reg-displayName" class="form-label"
+                <label for="reg-displayName" class="form-label" id="regDisplayNameLabel"
                   >Display name</label
                 >
                 <input id="reg-displayName" class="form-control" />
@@ -715,7 +754,7 @@
                 class="text-danger small mb-2 d-none"
               ></div>
               <div class="d-flex justify-content-end">
-                <button type="submit" class="btn btn-primary">Register</button>
+                <button type="submit" class="btn btn-primary" id="registerSubmitBtn">Register</button>
               </div>
             </form>
           </div>

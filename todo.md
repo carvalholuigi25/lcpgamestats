@@ -17,7 +17,6 @@
 - [ ] Add a group by for achievement status and date unlocked in modal of game details
 - [ ] Add a counter of views and reactions (like, dislike) for game details
 - [ ] Add analytics charts for playtime trends and provider breakdowns
-- [ ] Add feedback page
 
 ### Engineering
 
@@ -65,8 +64,14 @@
 - [x] Top 5 playtime chart for current library data
 - [x] LocalStorage persistence for user settings (theme, language, provider, sort, search, page size, pagination)
 - [x] Add a couple of cool themes (like liquid glass, glassmorphism) to frontend
+- [x] Add a Neomorphism (soft UI) theme, and refactor glassmorphism/liquid to share a common SCSS mixin
 - [x] Add custom background image support
 - [x] Enhance localization and background settings
+- [x] Complete translation coverage across all 5 languages for the remaining hardcoded UI strings
+- [x] Add a toggle to hide/show the language name next to the flag in the language switcher
+- [x] Add a responsive digital clock to the header
+- [x] Add feedback page (with backend `/api/feedback` endpoint, stored to `data/feedback.json`)
+- [x] Add about page
 
 ### Engineering (done so far)
 

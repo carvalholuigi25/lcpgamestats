@@ -16,19 +16,29 @@
           <p class="mb-0 text-muted small">Manage users and review administration data.</p>
         </div>
         <div class="d-flex align-items-center gap-2">
+          <div id="app-clock" class="app-clock app-clock--sm" aria-live="off">
+            <i class="fa-regular fa-clock app-clock__icon"></i>
+            <span id="app-clock-time" class="app-clock__time">00:00:00</span>
+          </div>
           <div class="dropdown lang-dropdown">
             <button id="lang-select-btn" class="btn btn-outline-secondary btn-sm dropdown-toggle d-flex align-items-center gap-2" type="button" data-bs-toggle="dropdown" aria-expanded="false" title="Language" aria-label="Language">
               <img id="lang-select-flag" class="lang-flag" src="/node_modules/country-flag-icons/3x2/US.svg" alt="" />
-              <span id="lang-select-label">English</span>
+              <span id="lang-select-label" class="lang-select-label">English</span>
             </button>
             <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="lang-select-btn">
               <li><button type="button" class="dropdown-item d-flex align-items-center gap-2 active" data-lang="en" data-flag="US"><img class="lang-flag" src="/node_modules/country-flag-icons/3x2/US.svg" alt="" /> English</button></li>
               <li><button type="button" class="dropdown-item d-flex align-items-center gap-2" data-lang="es" data-flag="ES"><img class="lang-flag" src="/node_modules/country-flag-icons/3x2/ES.svg" alt="" /> Español</button></li>
               <li><button type="button" class="dropdown-item d-flex align-items-center gap-2" data-lang="de" data-flag="DE"><img class="lang-flag" src="/node_modules/country-flag-icons/3x2/DE.svg" alt="" /> Deutsch</button></li>
               <li><button type="button" class="dropdown-item d-flex align-items-center gap-2" data-lang="pt" data-flag="PT"><img class="lang-flag" src="/node_modules/country-flag-icons/3x2/PT.svg" alt="" /> Português</button></li>
+              <li><button type="button" class="dropdown-item d-flex align-items-center gap-2" data-lang="fr" data-flag="FR"><img class="lang-flag" src="/node_modules/country-flag-icons/3x2/FR.svg" alt="" /> Français</button></li>
             </ul>
           </div>
-          <a href="/" class="btn btn-sm btn-outline-secondary">Back to library</a>
+          <button id="lang-name-toggle" type="button" class="btn btn-outline-secondary btn-sm lang-name-toggle" title="Hide language name" aria-label="Hide language name" aria-pressed="false">
+            <i class="fa-regular fa-eye"></i>
+          </button>
+          <a href="/feedback" class="btn btn-sm btn-outline-secondary" id="nav-feedback">Feedback</a>
+          <a href="/about" class="btn btn-sm btn-outline-secondary" id="nav-about">About</a>
+          <a href="/" class="btn btn-sm btn-outline-secondary" id="back-to-library">Back to library</a>
           <button id="btn-logout" class="btn btn-sm btn-outline-danger">Logout</button>
         </div>
       </div>

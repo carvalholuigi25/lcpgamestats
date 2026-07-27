@@ -1,0 +1,177 @@
+// ==========================================================================
+// Shared helpers for the frosted-glass family of themes (glassmorphism,
+// liquid glass). Both themes apply the same tiers of translucency to the
+// same set of elements — this file exists so that shape only needs to be
+// described once and each theme only supplies its own colors/background.
+// ==========================================================================
+@use 'variables' as *;
+
+$theme-pill-radius: calc(16px + 4px);
+
+// Close-icon glyph reused by every frosted theme's modal close button.
+$theme-btn-close-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath fill='none' stroke='%23e6f7ff' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M1 1l14 14M15 1L1 15'/%3E%3C/svg%3E") !important;
+
+:root {
+  --btnbg2: #{$theme-btn-close-icon};
+}
+
+// Renders a translucent, blurred surface.
+// $gradient: false -> flat rgba(255,255,255,$alpha) fill (glassmorphism)
+// $gradient: true  -> soft vertical fade toward transparent (liquid glass)
+@mixin frosted-surface($color, $alpha, $gradient: false) {
+  @if $gradient {
+    background: linear-gradient(180deg, rgba(255, 255, 255, $alpha), rgba(255, 255, 255, 0.01)) !important;
+  } @else {
+    background: rgba(255, 255, 255, $alpha) !important;
+  }
+  -webkit-backdrop-filter: blur(6px) saturate(120%) !important;
+  backdrop-filter: blur(6px) saturate(120%) !important;
+  border: none !important;
+  color: $color !important;
+}
+
+// Full rule set shared by every frosted-glass theme. Each caller only
+// supplies its own text color, page background, and whether surfaces use
+// the flat or gradient variant of frosted-surface().
+@mixin frosted-glass-theme($color, $page-background, $gradient: false) {
+  // Gradient (liquid) surfaces use a lighter touch than flat (glassmorphism) ones.
+  $surface-tier: 0.08;
+  $active-tier: 0.06;
+  $hairline: 1px solid rgba(255, 255, 255, 0.08);
+  @if $gradient {
+    $surface-tier: 0.04;
+    $active-tier: 0.04;
+    $hairline: none;
+  }
+
+  background: $page-background;
+  color: $color;
+
+  label, span, p, h1, h2, h3, h4, h5, h6, .small, .form-label, .form-text, .form-check-label, .form-check-input {
+    color: $color !important;
+  }
+
+  .app-header, .app-footer {
+    @include frosted-surface($color, 0.02, $gradient);
+  }
+
+  .player-card, .stat-box, .game-card, .modal-content {
+    @include frosted-surface($color, $active-tier, $gradient);
+  }
+
+  .game-card__body {
+    @include frosted-surface($color, 0.04, $gradient);
+  }
+
+  .game-card__image {
+    background-color: rgba(255, 255, 255, 0.03);
+  }
+
+  select {
+    @include frosted-surface($color, $surface-tier, $gradient);
+    color: $color;
+
+    option {
+      background: rgba(6, 18, 48, 0.6) !important;
+    }
+  }
+
+  .input, input, .input-group-text, .form-control {
+    @include frosted-surface($color, $surface-tier, $gradient);
+    @if not $gradient {
+      border: 1px solid rgba(255, 255, 255, 0.08) !important;
+    }
+    color: $color !important;
+
+    ::placeholder {
+      color: $color !important;
+    }
+
+    :focus {
+      color: $color !important;
+    }
+  }
+
+  #search-input:focus, #sort-select:focus {
+    color: $color !important;
+  }
+
+  #pagination-controls, .pagination-controls,
+  #pagination, .pagination {
+    border: $hairline !important;
+    color: $color;
+
+    .page-link {
+      @include frosted-surface($color, $surface-tier, $gradient);
+    }
+
+    .page-link, .page-item {
+      background: inherit;
+      border: none !important;
+      color: inherit !important;
+
+      &.active {
+        @include frosted-surface($color, $active-tier, $gradient);
+        border: $hairline !important;
+        color: $steam-accent !important;
+      }
+    }
+  }
+
+  .bg-body, .bg-body-secondary, .bg-body-tertiary {
+    @if $gradient {
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.02)) !important;
+    } @else {
+      background-color: rgba(255, 255, 255, 0.03) !important;
+    }
+  }
+
+  .machievementlist {
+    @include frosted-surface($color, 0.04, $gradient);
+  }
+
+  .btn {
+    @if $gradient {
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.02)) !important;
+      border: 1px solid rgba(200, 230, 255, 0.06) !important;
+      box-shadow: 0 6px 24px rgba(6, 18, 48, 0.6);
+    } @else {
+      background: rgba(255, 255, 255, 0.06) !important;
+      border: 1px solid rgba(255, 255, 255, 0.08) !important;
+      -webkit-backdrop-filter: blur(8px);
+      backdrop-filter: blur(8px);
+    }
+    color: $color;
+    border-radius: $theme-pill-radius !important;
+  }
+
+  .table {
+    th, td {
+      border: 1px solid rgba(255, 255, 255, 0.08) !important;
+      @include frosted-surface($color, $active-tier, $gradient);
+    }
+  }
+
+  #view-grid, #view-list, #view-table {
+    @include frosted-surface($color, 0.04, $gradient);
+    border: $hairline !important;
+    -webkit-backdrop-filter: blur(8px);
+    backdrop-filter: blur(8px);
+    color: $color;
+
+    &.active {
+      @include frosted-surface($color, $active-tier, $gradient);
+      border: $hairline !important;
+      -webkit-backdrop-filter: blur(8px);
+      backdrop-filter: blur(8px);
+      color: $steam-accent !important;
+    }
+  }
+
+  .modal {
+    .btn-close {
+      background: transparent var(--btnbg2) center / 1em auto no-repeat !important;
+      color: $color !important;
+    }
+  }
+}

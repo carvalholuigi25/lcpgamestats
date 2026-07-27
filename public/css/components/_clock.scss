@@ -1,0 +1,66 @@
+@use '../base/variables' as *;
+
+// ==========================================================================
+// Digital clock (header)
+// ==========================================================================
+.app-clock {
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+  padding: 0.35rem 0.85rem;
+  border-radius: calc(16px + 4px);
+  background: rgba(0, 0, 0, 0.35);
+  border: 1px solid rgba($steam-accent, 0.2);
+  font-family: 'Courier New', Consolas, Menlo, monospace;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.app-clock__icon {
+  color: $steam-accent;
+  font-size: 0.85rem;
+  align-self: center;
+}
+
+.app-clock__time {
+  font-size: 1.05rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  color: $steam-accent;
+  text-shadow: 0 0 8px rgba($steam-accent, 0.55);
+  font-variant-numeric: tabular-nums;
+}
+
+.app-clock__date {
+  font-size: 0.7rem;
+  color: rgba(#e9eef2, 0.65);
+  text-transform: capitalize;
+}
+
+.app-clock--sm {
+  padding: 0.2rem 0.6rem;
+
+  .app-clock__time {
+    font-size: 0.85rem;
+  }
+}
+
+@media (max-width: 767.98px) {
+  .app-clock__date {
+    display: none;
+  }
+
+  .app-clock {
+    padding: 0.3rem 0.6rem;
+  }
+
+  .app-clock__time {
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 420px) {
+  .app-clock__icon {
+    display: none;
+  }
+}

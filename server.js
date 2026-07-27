@@ -13,6 +13,7 @@ import { randomBytes } from 'node:crypto';
 import { getHeaderImage, getStoreGameLink, normalizeEpicAchievement, getVideoTrailerData, resolveAchievementBadgeImage } from './lib/utils.js';
 import multer from 'multer';
 import auth from './lib/auth.js';
+import feedbackStore from './lib/feedback.js';
 dotenv.config();
 
 const app = express();
@@ -957,8 +958,16 @@ app.get('/admin', (req, res) => {
   res.sendFile(path.join(__dirname, 'public/pages/admin.html'));
 });
 
+app.get('/feedback', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public/pages/feedback.html'));
+});
+
+app.get('/about', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public/pages/about.html'));
+});
+
 app.get('/api', (req, res) => {
-  res.json({ message: 'Welcome to the Game Library API', endpoints: ['/api/health', '/api/providers', '/api/player', '/api/games', '/api/achievements'] });
+  res.json({ message: 'Welcome to the Game Library API', endpoints: ['/api/health', '/api/providers', '/api/player', '/api/games', '/api/achievements', '/api/feedback'] });
 });
 
 app.get('/api/health', (req, res) => {
@@ -967,6 +976,40 @@ app.get('/api/health', (req, res) => {
 
 app.get('/api/providers', (req, res) => {
   res.json({ providers: Object.values(PROVIDERS).map(({ id, label }) => ({ id, label })) });
+});
+
+const FEEDBACK_CATEGORIES = ['bug', 'feature', 'general'];
+
+app.post('/api/feedback', (req, res) => {
+  const { name, email, category, message } = req.body || {};
+  const rating = Number(req.body && req.body.rating);
+
+  if (!name || !String(name).trim()) {
+    return res.status(400).json({ error: 'Name is required' });
+  }
+  if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(email).trim())) {
+    return res.status(400).json({ error: 'A valid email is required' });
+  }
+  if (!message || !String(message).trim()) {
+    return res.status(400).json({ error: 'Message is required' });
+  }
+
+  const entry = {
+    name: String(name).trim().slice(0, 200),
+    email: String(email).trim().slice(0, 200),
+    category: FEEDBACK_CATEGORIES.includes(category) ? category : 'general',
+    message: String(message).trim().slice(0, 5000),
+    rating: Number.isFinite(rating) ? Math.min(5, Math.max(1, Math.round(rating))) : null,
+    createdAt: Math.floor(Date.now() / 1000)
+  };
+
+  try {
+    feedbackStore.save(entry);
+    res.json({ success: true });
+  } catch (err) {
+    console.error('Failed to save feedback:', err.message);
+    res.status(500).json({ error: 'Unable to save feedback' });
+  }
 });
 app.get('/api/player', async (req, res) => {
   await getApiPlayer(req, res);

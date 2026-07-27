@@ -13,19 +13,65 @@ const els = {
   langSelectItems: document.querySelectorAll('#lang-select-btn + .dropdown-menu [data-lang]'),
   toggleThemeCodesBtn: document.getElementById('toggle-theme-codes-btn'),
   themeCodesTitle: document.getElementById('theme-codes-title'),
-  themeCodesDesc: document.getElementById('theme-codes-desc')
+  themeCodesDesc: document.getElementById('theme-codes-desc'),
+  langNameToggle: document.getElementById('lang-name-toggle'),
+  navFeedback: document.getElementById('nav-feedback'),
+  navAbout: document.getElementById('nav-about'),
+  backToLibrary: document.getElementById('back-to-library'),
+  appClockTime: document.getElementById('app-clock-time')
 };
 
 const THEME_CODES_SETTING_KEY = 'themeCodesEnabled';
 const SETTINGS_STORAGE_KEY = 'settings';
+const LANG_NAME_SETTING_KEY = 'showLanguageName';
 
 let currentUser = null;
 let translations = {};
 let lastUsers = [];
+let clockInterval;
 
 function isThemeCodesEnabled() {
   const saved = localStorage.getItem(THEME_CODES_SETTING_KEY);
   return saved === null ? true : saved !== 'false';
+}
+
+function isLangNameVisible() {
+  const saved = localStorage.getItem(LANG_NAME_SETTING_KEY);
+  return saved === null ? true : saved !== 'false';
+}
+
+function updateLangNameToggleUI() {
+  if (!els.langNameToggle) return;
+  const visible = isLangNameVisible();
+  document.body.classList.toggle('lang-name-hidden', !visible);
+  const icon = els.langNameToggle.querySelector('i');
+  if (icon) icon.className = visible ? 'fa-regular fa-eye' : 'fa-regular fa-eye-slash';
+  const label = visible
+    ? (translations.hideLanguageName || 'Hide language name')
+    : (translations.showLanguageName || 'Show language name');
+  els.langNameToggle.title = label;
+  els.langNameToggle.setAttribute('aria-label', label);
+  els.langNameToggle.setAttribute('aria-pressed', String(!visible));
+}
+
+function toggleLangName() {
+  localStorage.setItem(LANG_NAME_SETTING_KEY, String(!isLangNameVisible()));
+  updateLangNameToggleUI();
+}
+
+function updateClock() {
+  if (!els.appClockTime) return;
+  const now = new Date();
+  const hh = String(now.getHours()).padStart(2, '0');
+  const mm = String(now.getMinutes()).padStart(2, '0');
+  const ss = String(now.getSeconds()).padStart(2, '0');
+  els.appClockTime.textContent = `${hh}:${mm}:${ss}`;
+}
+
+function startClock() {
+  updateClock();
+  clearInterval(clockInterval);
+  clockInterval = setInterval(updateClock, 1000);
 }
 
 function updateToggleThemeCodesButton() {
@@ -91,6 +137,10 @@ function updateInterfaceLanguage() {
   if (els.themeCodesTitle) els.themeCodesTitle.textContent = t.themeCodesTitle || 'Theme codes';
   if (els.themeCodesDesc) els.themeCodesDesc.textContent = t.themeCodesDesc || 'Allow users to press "C" and type a secret code to unlock a theme.';
   updateToggleThemeCodesButton();
+  updateLangNameToggleUI();
+  if (els.navFeedback) els.navFeedback.textContent = t.navFeedback || 'Feedback';
+  if (els.navAbout) els.navAbout.textContent = t.navAbout || 'About';
+  if (els.backToLibrary) els.backToLibrary.textContent = t.backToLibrary || 'Back to library';
 
   const totalLabel = document.getElementById('admin-summary-total-label');
   const adminsLabel = document.getElementById('admin-summary-admins-label');
@@ -257,6 +307,9 @@ async function init() {
   els.langSelectItems.forEach((item) => {
     item.addEventListener('click', () => setLanguage(item.dataset.lang));
   });
+  if (els.langNameToggle) els.langNameToggle.addEventListener('click', toggleLangName);
+  updateLangNameToggleUI();
+  startClock();
   await setLanguage(getSavedLanguage());
 
   if (els.toggleThemeCodesBtn) {

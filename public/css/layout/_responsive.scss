@@ -32,6 +32,20 @@
   }
 }
 
+@media (max-width: 575.98px) {
+  .app-nav-row {
+    justify-content: center !important;
+  }
+
+  .app-nav-link__label {
+    display: none;
+  }
+
+  .app-nav-link {
+    padding: 0.35rem 0.55rem;
+  }
+}
+
 @media all and (max-width: 768px) {
   .machievementlist {
     text-align: center;

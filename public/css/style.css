@@ -153,6 +153,97 @@ select option, .form-select option {
   text-decoration: underline !important;
 }
 
+.app-nav {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.app-nav-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.3rem 0.75rem;
+  border-radius: 20px;
+  color: rgba(233, 238, 242, 0.8);
+  background: rgba(0, 0, 0, 0.15);
+  border: 1px solid rgba(102, 192, 244, 0.15);
+  text-decoration: none;
+  font-size: 0.8rem;
+  transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+}
+.app-nav-link i {
+  font-size: 0.85em;
+}
+.app-nav-link:hover, .app-nav-link:focus-visible {
+  background: rgba(102, 192, 244, 0.15);
+  color: #fff;
+  border-color: rgba(102, 192, 244, 0.35);
+}
+.app-nav-link.active {
+  background: rgba(102, 192, 244, 0.2);
+  color: #66c0f4;
+  border-color: rgba(102, 192, 244, 0.4);
+}
+
+.app-clock {
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+  padding: 0.35rem 0.85rem;
+  border-radius: 20px;
+  background: rgba(0, 0, 0, 0.35);
+  border: 1px solid rgba(102, 192, 244, 0.2);
+  font-family: "Courier New", Consolas, Menlo, monospace;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.app-clock__icon {
+  color: #66c0f4;
+  font-size: 0.85rem;
+  align-self: center;
+}
+
+.app-clock__time {
+  font-size: 1.05rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  color: #66c0f4;
+  text-shadow: 0 0 8px rgba(102, 192, 244, 0.55);
+  font-variant-numeric: tabular-nums;
+}
+
+.app-clock__date {
+  font-size: 0.7rem;
+  color: rgba(233, 238, 242, 0.65);
+  text-transform: capitalize;
+}
+
+.app-clock--sm {
+  padding: 0.2rem 0.6rem;
+}
+.app-clock--sm .app-clock__time {
+  font-size: 0.85rem;
+}
+
+@media (max-width: 767.98px) {
+  .app-clock__date {
+    display: none;
+  }
+  .app-clock {
+    padding: 0.3rem 0.6rem;
+  }
+  .app-clock__time {
+    font-size: 0.9rem;
+  }
+}
+@media (max-width: 420px) {
+  .app-clock__icon {
+    display: none;
+  }
+}
 .app-footer {
   background: linear-gradient(135deg, #1b2838 0%, #2a475e 100%);
   border-bottom: 1px solid rgba(102, 192, 244, 0.2);
@@ -290,6 +381,15 @@ select option, .form-select option {
 
 .lang-dropdown .dropdown-menu {
   min-width: 10rem;
+}
+
+.lang-name-toggle {
+  padding-left: 0.6rem;
+  padding-right: 0.6rem;
+}
+
+body.lang-name-hidden #lang-select-btn .lang-select-label {
+  display: none;
 }
 
 .game-card {
@@ -675,6 +775,35 @@ input[type=text]:not([id=search-input]) {
   table-layout: fixed;
 }
 
+.feedback-rating {
+  display: flex;
+  flex-direction: row-reverse;
+  justify-content: flex-end;
+  gap: 0.15rem;
+}
+.feedback-rating input {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+.feedback-rating label {
+  cursor: pointer;
+  font-size: 1.5rem;
+  color: rgba(233, 238, 242, 0.25);
+  transition: color 0.2s ease, transform 0.2s ease;
+}
+.feedback-rating input:checked ~ label,
+.feedback-rating label:hover,
+.feedback-rating label:hover ~ label {
+  color: #66c0f4;
+}
+.feedback-rating input:focus-visible + label {
+  outline: 2px solid #66c0f4;
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
 body.has-custom-bg {
   background-size: cover !important;
   background-position: center center !important;
@@ -732,6 +861,17 @@ main, .app-footer {
   .player-card {
     width: 100%;
     justify-content: center;
+  }
+}
+@media (max-width: 575.98px) {
+  .app-nav-row {
+    justify-content: center !important;
+  }
+  .app-nav-link__label {
+    display: none;
+  }
+  .app-nav-link {
+    padding: 0.35rem 0.55rem;
   }
 }
 @media all and (max-width: 768px) {
@@ -849,7 +989,6 @@ html[data-bs-theme=glassmorphism] .app-header, html[data-bs-theme=glassmorphism]
   color: white !important;
 }
 html[data-bs-theme=glassmorphism] .player-card, html[data-bs-theme=glassmorphism] .stat-box, html[data-bs-theme=glassmorphism] .game-card, html[data-bs-theme=glassmorphism] .modal-content, body.theme-glassmorphism .player-card, body.theme-glassmorphism .stat-box, body.theme-glassmorphism .game-card, body.theme-glassmorphism .modal-content, .glassmorphism .player-card, .glassmorphism .stat-box, .glassmorphism .game-card, .glassmorphism .modal-content {
-  border: 1px solid rgba(255, 255, 255, 0.08) !important;
   background: rgba(255, 255, 255, 0.06) !important;
   -webkit-backdrop-filter: blur(6px) saturate(120%) !important;
   backdrop-filter: blur(6px) saturate(120%) !important;
@@ -877,7 +1016,7 @@ html[data-bs-theme=glassmorphism] select, body.theme-glassmorphism select, .glas
 html[data-bs-theme=glassmorphism] select option, body.theme-glassmorphism select option, .glassmorphism select option {
   background: rgba(6, 18, 48, 0.6) !important;
 }
-html[data-bs-theme=glassmorphism] .input, html[data-bs-theme=glassmorphism] .input-group-text, html[data-bs-theme=glassmorphism] .form-control, body.theme-glassmorphism .input, body.theme-glassmorphism .input-group-text, body.theme-glassmorphism .form-control, .glassmorphism .input, .glassmorphism .input-group-text, .glassmorphism .form-control {
+html[data-bs-theme=glassmorphism] .input, html[data-bs-theme=glassmorphism] input, html[data-bs-theme=glassmorphism] .input-group-text, html[data-bs-theme=glassmorphism] .form-control, body.theme-glassmorphism .input, body.theme-glassmorphism input, body.theme-glassmorphism .input-group-text, body.theme-glassmorphism .form-control, .glassmorphism .input, .glassmorphism input, .glassmorphism .input-group-text, .glassmorphism .form-control {
   background: rgba(255, 255, 255, 0.08) !important;
   -webkit-backdrop-filter: blur(6px) saturate(120%) !important;
   backdrop-filter: blur(6px) saturate(120%) !important;
@@ -886,10 +1025,10 @@ html[data-bs-theme=glassmorphism] .input, html[data-bs-theme=glassmorphism] .inp
   border: 1px solid rgba(255, 255, 255, 0.08) !important;
   color: white !important;
 }
-html[data-bs-theme=glassmorphism] .input ::placeholder, html[data-bs-theme=glassmorphism] .input-group-text ::placeholder, html[data-bs-theme=glassmorphism] .form-control ::placeholder, body.theme-glassmorphism .input ::placeholder, body.theme-glassmorphism .input-group-text ::placeholder, body.theme-glassmorphism .form-control ::placeholder, .glassmorphism .input ::placeholder, .glassmorphism .input-group-text ::placeholder, .glassmorphism .form-control ::placeholder {
+html[data-bs-theme=glassmorphism] .input ::placeholder, html[data-bs-theme=glassmorphism] input ::placeholder, html[data-bs-theme=glassmorphism] .input-group-text ::placeholder, html[data-bs-theme=glassmorphism] .form-control ::placeholder, body.theme-glassmorphism .input ::placeholder, body.theme-glassmorphism input ::placeholder, body.theme-glassmorphism .input-group-text ::placeholder, body.theme-glassmorphism .form-control ::placeholder, .glassmorphism .input ::placeholder, .glassmorphism input ::placeholder, .glassmorphism .input-group-text ::placeholder, .glassmorphism .form-control ::placeholder {
   color: white !important;
 }
-html[data-bs-theme=glassmorphism] .input :focus, html[data-bs-theme=glassmorphism] .input-group-text :focus, html[data-bs-theme=glassmorphism] .form-control :focus, body.theme-glassmorphism .input :focus, body.theme-glassmorphism .input-group-text :focus, body.theme-glassmorphism .form-control :focus, .glassmorphism .input :focus, .glassmorphism .input-group-text :focus, .glassmorphism .form-control :focus {
+html[data-bs-theme=glassmorphism] .input :focus, html[data-bs-theme=glassmorphism] input :focus, html[data-bs-theme=glassmorphism] .input-group-text :focus, html[data-bs-theme=glassmorphism] .form-control :focus, body.theme-glassmorphism .input :focus, body.theme-glassmorphism input :focus, body.theme-glassmorphism .input-group-text :focus, body.theme-glassmorphism .form-control :focus, .glassmorphism .input :focus, .glassmorphism input :focus, .glassmorphism .input-group-text :focus, .glassmorphism .form-control :focus {
   color: white !important;
 }
 html[data-bs-theme=glassmorphism] #search-input:focus, html[data-bs-theme=glassmorphism] #sort-select:focus, body.theme-glassmorphism #search-input:focus, body.theme-glassmorphism #sort-select:focus, .glassmorphism #search-input:focus, .glassmorphism #sort-select:focus {
@@ -931,9 +1070,11 @@ body.theme-glassmorphism #pagination .page-item.active, body.theme-glassmorphism
 .glassmorphism #pagination .page-link.active,
 .glassmorphism #pagination .page-item.active, .glassmorphism .pagination .page-link.active, .glassmorphism .pagination .page-item.active {
   background: rgba(255, 255, 255, 0.06) !important;
+  -webkit-backdrop-filter: blur(6px) saturate(120%) !important;
+  backdrop-filter: blur(6px) saturate(120%) !important;
+  border: none !important;
+  color: white !important;
   border: 1px solid rgba(255, 255, 255, 0.08) !important;
-  -webkit-backdrop-filter: blur(8px);
-  backdrop-filter: blur(8px);
   color: #66c0f4 !important;
 }
 html[data-bs-theme=glassmorphism] .bg-body, html[data-bs-theme=glassmorphism] .bg-body-secondary, html[data-bs-theme=glassmorphism] .bg-body-tertiary, body.theme-glassmorphism .bg-body, body.theme-glassmorphism .bg-body-secondary, body.theme-glassmorphism .bg-body-tertiary, .glassmorphism .bg-body, .glassmorphism .bg-body-secondary, .glassmorphism .bg-body-tertiary {
@@ -975,6 +1116,10 @@ html[data-bs-theme=glassmorphism] #view-grid, html[data-bs-theme=glassmorphism] 
 }
 html[data-bs-theme=glassmorphism] #view-grid.active, html[data-bs-theme=glassmorphism] #view-list.active, html[data-bs-theme=glassmorphism] #view-table.active, body.theme-glassmorphism #view-grid.active, body.theme-glassmorphism #view-list.active, body.theme-glassmorphism #view-table.active, .glassmorphism #view-grid.active, .glassmorphism #view-list.active, .glassmorphism #view-table.active {
   background: rgba(255, 255, 255, 0.06) !important;
+  -webkit-backdrop-filter: blur(6px) saturate(120%) !important;
+  backdrop-filter: blur(6px) saturate(120%) !important;
+  border: none !important;
+  color: white !important;
   border: 1px solid rgba(255, 255, 255, 0.08) !important;
   -webkit-backdrop-filter: blur(8px);
   backdrop-filter: blur(8px);
@@ -983,10 +1128,6 @@ html[data-bs-theme=glassmorphism] #view-grid.active, html[data-bs-theme=glassmor
 html[data-bs-theme=glassmorphism] .modal .btn-close, body.theme-glassmorphism .modal .btn-close, .glassmorphism .modal .btn-close {
   background: transparent var(--btnbg2) center/1em auto no-repeat !important;
   color: white !important;
-}
-
-:root {
-  --btnbg2: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath fill='none' stroke='%23e6f7ff' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M1 1l14 14M15 1L1 15'/%3E%3C/svg%3E") !important;
 }
 
 html[data-bs-theme=liquid], body.theme-liquid, .liquid {
@@ -1017,17 +1158,21 @@ html[data-bs-theme=liquid] .game-card__body, body.theme-liquid .game-card__body,
   border: none !important;
   color: #e6f7ff !important;
 }
+html[data-bs-theme=liquid] .game-card__image, body.theme-liquid .game-card__image, .liquid .game-card__image {
+  background-color: rgba(255, 255, 255, 0.03);
+}
 html[data-bs-theme=liquid] select, body.theme-liquid select, .liquid select {
   background: linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.01)) !important;
   -webkit-backdrop-filter: blur(6px) saturate(120%) !important;
   backdrop-filter: blur(6px) saturate(120%) !important;
   border: none !important;
   color: #e6f7ff !important;
+  color: #e6f7ff;
 }
 html[data-bs-theme=liquid] select option, body.theme-liquid select option, .liquid select option {
   background: rgba(6, 18, 48, 0.6) !important;
 }
-html[data-bs-theme=liquid] input, html[data-bs-theme=liquid] .input-group-text, html[data-bs-theme=liquid] .form-control, body.theme-liquid input, body.theme-liquid .input-group-text, body.theme-liquid .form-control, .liquid input, .liquid .input-group-text, .liquid .form-control {
+html[data-bs-theme=liquid] .input, html[data-bs-theme=liquid] input, html[data-bs-theme=liquid] .input-group-text, html[data-bs-theme=liquid] .form-control, body.theme-liquid .input, body.theme-liquid input, body.theme-liquid .input-group-text, body.theme-liquid .form-control, .liquid .input, .liquid input, .liquid .input-group-text, .liquid .form-control {
   background: linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.01)) !important;
   -webkit-backdrop-filter: blur(6px) saturate(120%) !important;
   backdrop-filter: blur(6px) saturate(120%) !important;
@@ -1035,10 +1180,10 @@ html[data-bs-theme=liquid] input, html[data-bs-theme=liquid] .input-group-text, 
   color: #e6f7ff !important;
   color: #e6f7ff !important;
 }
-html[data-bs-theme=liquid] input ::placeholder, html[data-bs-theme=liquid] .input-group-text ::placeholder, html[data-bs-theme=liquid] .form-control ::placeholder, body.theme-liquid input ::placeholder, body.theme-liquid .input-group-text ::placeholder, body.theme-liquid .form-control ::placeholder, .liquid input ::placeholder, .liquid .input-group-text ::placeholder, .liquid .form-control ::placeholder {
+html[data-bs-theme=liquid] .input ::placeholder, html[data-bs-theme=liquid] input ::placeholder, html[data-bs-theme=liquid] .input-group-text ::placeholder, html[data-bs-theme=liquid] .form-control ::placeholder, body.theme-liquid .input ::placeholder, body.theme-liquid input ::placeholder, body.theme-liquid .input-group-text ::placeholder, body.theme-liquid .form-control ::placeholder, .liquid .input ::placeholder, .liquid input ::placeholder, .liquid .input-group-text ::placeholder, .liquid .form-control ::placeholder {
   color: #e6f7ff !important;
 }
-html[data-bs-theme=liquid] input :focus, html[data-bs-theme=liquid] .input-group-text :focus, html[data-bs-theme=liquid] .form-control :focus, body.theme-liquid input :focus, body.theme-liquid .input-group-text :focus, body.theme-liquid .form-control :focus, .liquid input :focus, .liquid .input-group-text :focus, .liquid .form-control :focus {
+html[data-bs-theme=liquid] .input :focus, html[data-bs-theme=liquid] input :focus, html[data-bs-theme=liquid] .input-group-text :focus, html[data-bs-theme=liquid] .form-control :focus, body.theme-liquid .input :focus, body.theme-liquid input :focus, body.theme-liquid .input-group-text :focus, body.theme-liquid .form-control :focus, .liquid .input :focus, .liquid input :focus, .liquid .input-group-text :focus, .liquid .form-control :focus {
   color: #e6f7ff !important;
 }
 html[data-bs-theme=liquid] #search-input:focus, html[data-bs-theme=liquid] #sort-select:focus, body.theme-liquid #search-input:focus, body.theme-liquid #sort-select:focus, .liquid #search-input:focus, .liquid #sort-select:focus {
@@ -1048,6 +1193,7 @@ html[data-bs-theme=liquid] #pagination-controls, html[data-bs-theme=liquid] .pag
 html[data-bs-theme=liquid] #pagination, html[data-bs-theme=liquid] .pagination, body.theme-liquid #pagination-controls, body.theme-liquid .pagination-controls,
 body.theme-liquid #pagination, body.theme-liquid .pagination, .liquid #pagination-controls, .liquid .pagination-controls,
 .liquid #pagination, .liquid .pagination {
+  border: none !important;
   color: #e6f7ff;
 }
 html[data-bs-theme=liquid] #pagination-controls .page-link, html[data-bs-theme=liquid] .pagination-controls .page-link,
@@ -1083,6 +1229,7 @@ body.theme-liquid #pagination .page-item.active, body.theme-liquid .pagination .
   backdrop-filter: blur(6px) saturate(120%) !important;
   border: none !important;
   color: #e6f7ff !important;
+  border: none !important;
   color: #66c0f4 !important;
 }
 html[data-bs-theme=liquid] .bg-body, html[data-bs-theme=liquid] .bg-body-secondary, html[data-bs-theme=liquid] .bg-body-tertiary, body.theme-liquid .bg-body, body.theme-liquid .bg-body-secondary, body.theme-liquid .bg-body-tertiary, .liquid .bg-body, .liquid .bg-body-secondary, .liquid .bg-body-tertiary {
@@ -1116,6 +1263,10 @@ html[data-bs-theme=liquid] #view-grid, html[data-bs-theme=liquid] #view-list, ht
   backdrop-filter: blur(6px) saturate(120%) !important;
   border: none !important;
   color: #e6f7ff !important;
+  border: none !important;
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+  color: #e6f7ff;
 }
 html[data-bs-theme=liquid] #view-grid.active, html[data-bs-theme=liquid] #view-list.active, html[data-bs-theme=liquid] #view-table.active, body.theme-liquid #view-grid.active, body.theme-liquid #view-list.active, body.theme-liquid #view-table.active, .liquid #view-grid.active, .liquid #view-list.active, .liquid #view-table.active {
   background: linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.01)) !important;
@@ -1123,11 +1274,136 @@ html[data-bs-theme=liquid] #view-grid.active, html[data-bs-theme=liquid] #view-l
   backdrop-filter: blur(6px) saturate(120%) !important;
   border: none !important;
   color: #e6f7ff !important;
+  border: none !important;
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
   color: #66c0f4 !important;
 }
 html[data-bs-theme=liquid] .modal .btn-close, body.theme-liquid .modal .btn-close, .liquid .modal .btn-close {
   background: transparent var(--btnbg2) center/1em auto no-repeat !important;
   color: #e6f7ff !important;
+}
+
+html[data-bs-theme=neomorphism], body.theme-neomorphism, .neomorphism {
+  background: #e6e9ef;
+  color: #3a3f4b;
+}
+html[data-bs-theme=neomorphism] label, html[data-bs-theme=neomorphism] span, html[data-bs-theme=neomorphism] p, html[data-bs-theme=neomorphism] h1, html[data-bs-theme=neomorphism] h2, html[data-bs-theme=neomorphism] h3, html[data-bs-theme=neomorphism] h4, html[data-bs-theme=neomorphism] h5, html[data-bs-theme=neomorphism] h6, html[data-bs-theme=neomorphism] .small, html[data-bs-theme=neomorphism] .form-label, html[data-bs-theme=neomorphism] .form-text, html[data-bs-theme=neomorphism] .form-check-label, html[data-bs-theme=neomorphism] .form-check-input, body.theme-neomorphism label, body.theme-neomorphism span, body.theme-neomorphism p, body.theme-neomorphism h1, body.theme-neomorphism h2, body.theme-neomorphism h3, body.theme-neomorphism h4, body.theme-neomorphism h5, body.theme-neomorphism h6, body.theme-neomorphism .small, body.theme-neomorphism .form-label, body.theme-neomorphism .form-text, body.theme-neomorphism .form-check-label, body.theme-neomorphism .form-check-input, .neomorphism label, .neomorphism span, .neomorphism p, .neomorphism h1, .neomorphism h2, .neomorphism h3, .neomorphism h4, .neomorphism h5, .neomorphism h6, .neomorphism .small, .neomorphism .form-label, .neomorphism .form-text, .neomorphism .form-check-label, .neomorphism .form-check-input {
+  color: #3a3f4b !important;
+}
+html[data-bs-theme=neomorphism] .text-muted, body.theme-neomorphism .text-muted, .neomorphism .text-muted {
+  color: #6b7280 !important;
+}
+html[data-bs-theme=neomorphism] .app-header, html[data-bs-theme=neomorphism] .app-footer, body.theme-neomorphism .app-header, body.theme-neomorphism .app-footer, .neomorphism .app-header, .neomorphism .app-footer {
+  background: #e6e9ef;
+  border: none;
+  box-shadow: 0 6px 16px rgba(163, 177, 198, 0.35);
+}
+html[data-bs-theme=neomorphism] .player-card, html[data-bs-theme=neomorphism] .stat-box, html[data-bs-theme=neomorphism] .game-card, html[data-bs-theme=neomorphism] .modal-content, html[data-bs-theme=neomorphism] .machievementlist, body.theme-neomorphism .player-card, body.theme-neomorphism .stat-box, body.theme-neomorphism .game-card, body.theme-neomorphism .modal-content, body.theme-neomorphism .machievementlist, .neomorphism .player-card, .neomorphism .stat-box, .neomorphism .game-card, .neomorphism .modal-content, .neomorphism .machievementlist {
+  background: #e6e9ef;
+  border: none !important;
+  border-radius: 1.1rem;
+  box-shadow: 6px 6px 12px rgba(163, 177, 198, 0.6), -6px -6px 12px rgba(255, 255, 255, 0.85);
+  color: #3a3f4b !important;
+}
+html[data-bs-theme=neomorphism] .game-card__body, body.theme-neomorphism .game-card__body, .neomorphism .game-card__body {
+  background: transparent;
+}
+html[data-bs-theme=neomorphism] .game-card__image, body.theme-neomorphism .game-card__image, .neomorphism .game-card__image {
+  background-color: rgb(217.5609756098, 222.0536585366, 231.0390243902);
+}
+html[data-bs-theme=neomorphism] select, html[data-bs-theme=neomorphism] .form-select, html[data-bs-theme=neomorphism] input, html[data-bs-theme=neomorphism] .form-control, html[data-bs-theme=neomorphism] .input-group-text, body.theme-neomorphism select, body.theme-neomorphism .form-select, body.theme-neomorphism input, body.theme-neomorphism .form-control, body.theme-neomorphism .input-group-text, .neomorphism select, .neomorphism .form-select, .neomorphism input, .neomorphism .form-control, .neomorphism .input-group-text {
+  background: #e6e9ef;
+  border: none !important;
+  border-radius: 1.1rem;
+  box-shadow: inset 3px 3px 6px rgba(163, 177, 198, 0.6), inset -3px -3px 6px rgba(255, 255, 255, 0.85);
+  color: #3a3f4b !important;
+}
+html[data-bs-theme=neomorphism] select::placeholder, html[data-bs-theme=neomorphism] .form-select::placeholder, html[data-bs-theme=neomorphism] input::placeholder, html[data-bs-theme=neomorphism] .form-control::placeholder, html[data-bs-theme=neomorphism] .input-group-text::placeholder, body.theme-neomorphism select::placeholder, body.theme-neomorphism .form-select::placeholder, body.theme-neomorphism input::placeholder, body.theme-neomorphism .form-control::placeholder, body.theme-neomorphism .input-group-text::placeholder, .neomorphism select::placeholder, .neomorphism .form-select::placeholder, .neomorphism input::placeholder, .neomorphism .form-control::placeholder, .neomorphism .input-group-text::placeholder {
+  color: #6b7280 !important;
+}
+html[data-bs-theme=neomorphism] select:focus, html[data-bs-theme=neomorphism] .form-select:focus, html[data-bs-theme=neomorphism] input:focus, html[data-bs-theme=neomorphism] .form-control:focus, html[data-bs-theme=neomorphism] .input-group-text:focus, body.theme-neomorphism select:focus, body.theme-neomorphism .form-select:focus, body.theme-neomorphism input:focus, body.theme-neomorphism .form-control:focus, body.theme-neomorphism .input-group-text:focus, .neomorphism select:focus, .neomorphism .form-select:focus, .neomorphism input:focus, .neomorphism .form-control:focus, .neomorphism .input-group-text:focus {
+  color: #3a3f4b !important;
+  box-shadow: inset 2px 2px 5px rgba(163, 177, 198, 0.6), inset -2px -2px 5px rgba(255, 255, 255, 0.85);
+}
+html[data-bs-theme=neomorphism] select option, body.theme-neomorphism select option, .neomorphism select option {
+  background: #e6e9ef;
+  color: #3a3f4b;
+}
+html[data-bs-theme=neomorphism] #pagination-controls, html[data-bs-theme=neomorphism] .pagination-controls,
+html[data-bs-theme=neomorphism] #pagination, html[data-bs-theme=neomorphism] .pagination, body.theme-neomorphism #pagination-controls, body.theme-neomorphism .pagination-controls,
+body.theme-neomorphism #pagination, body.theme-neomorphism .pagination, .neomorphism #pagination-controls, .neomorphism .pagination-controls,
+.neomorphism #pagination, .neomorphism .pagination {
+  color: #3a3f4b;
+}
+html[data-bs-theme=neomorphism] #pagination-controls .page-link, html[data-bs-theme=neomorphism] .pagination-controls .page-link,
+html[data-bs-theme=neomorphism] #pagination .page-link, html[data-bs-theme=neomorphism] .pagination .page-link, body.theme-neomorphism #pagination-controls .page-link, body.theme-neomorphism .pagination-controls .page-link,
+body.theme-neomorphism #pagination .page-link, body.theme-neomorphism .pagination .page-link, .neomorphism #pagination-controls .page-link, .neomorphism .pagination-controls .page-link,
+.neomorphism #pagination .page-link, .neomorphism .pagination .page-link {
+  background: #e6e9ef;
+  border: none !important;
+  border-radius: 0.6rem;
+  box-shadow: 6px 6px 12px rgba(163, 177, 198, 0.6), -6px -6px 12px rgba(255, 255, 255, 0.85);
+  border: none !important;
+  color: #3a3f4b !important;
+}
+html[data-bs-theme=neomorphism] #pagination-controls .page-item.active .page-link, html[data-bs-theme=neomorphism] .pagination-controls .page-item.active .page-link,
+html[data-bs-theme=neomorphism] #pagination .page-item.active .page-link, html[data-bs-theme=neomorphism] .pagination .page-item.active .page-link, body.theme-neomorphism #pagination-controls .page-item.active .page-link, body.theme-neomorphism .pagination-controls .page-item.active .page-link,
+body.theme-neomorphism #pagination .page-item.active .page-link, body.theme-neomorphism .pagination .page-item.active .page-link, .neomorphism #pagination-controls .page-item.active .page-link, .neomorphism .pagination-controls .page-item.active .page-link,
+.neomorphism #pagination .page-item.active .page-link, .neomorphism .pagination .page-item.active .page-link {
+  background: #e6e9ef;
+  border: none !important;
+  border-radius: 0.6rem;
+  box-shadow: inset 3px 3px 6px rgba(163, 177, 198, 0.6), inset -3px -3px 6px rgba(255, 255, 255, 0.85);
+  color: #66c0f4 !important;
+}
+html[data-bs-theme=neomorphism] .bg-body, html[data-bs-theme=neomorphism] .bg-body-secondary, html[data-bs-theme=neomorphism] .bg-body-tertiary, body.theme-neomorphism .bg-body, body.theme-neomorphism .bg-body-secondary, body.theme-neomorphism .bg-body-tertiary, .neomorphism .bg-body, .neomorphism .bg-body-secondary, .neomorphism .bg-body-tertiary {
+  background: #e6e9ef !important;
+}
+html[data-bs-theme=neomorphism] .btn, body.theme-neomorphism .btn, .neomorphism .btn {
+  background: #e6e9ef;
+  border: none !important;
+  border-radius: 999px;
+  box-shadow: 6px 6px 12px rgba(163, 177, 198, 0.6), -6px -6px 12px rgba(255, 255, 255, 0.85);
+  color: #3a3f4b;
+}
+html[data-bs-theme=neomorphism] .btn:hover, body.theme-neomorphism .btn:hover, .neomorphism .btn:hover {
+  box-shadow: 4px 4px 8px rgba(163, 177, 198, 0.6), -4px -4px 8px rgba(255, 255, 255, 0.85);
+}
+html[data-bs-theme=neomorphism] .btn:active, body.theme-neomorphism .btn:active, .neomorphism .btn:active {
+  background: #e6e9ef;
+  border: none !important;
+  border-radius: 999px;
+  box-shadow: inset 3px 3px 6px rgba(163, 177, 198, 0.6), inset -3px -3px 6px rgba(255, 255, 255, 0.85);
+}
+html[data-bs-theme=neomorphism] .table th, html[data-bs-theme=neomorphism] .table td, body.theme-neomorphism .table th, body.theme-neomorphism .table td, .neomorphism .table th, .neomorphism .table td {
+  border: none !important;
+  background: transparent;
+  color: #3a3f4b;
+}
+html[data-bs-theme=neomorphism] #view-grid, html[data-bs-theme=neomorphism] #view-list, html[data-bs-theme=neomorphism] #view-table, body.theme-neomorphism #view-grid, body.theme-neomorphism #view-list, body.theme-neomorphism #view-table, .neomorphism #view-grid, .neomorphism #view-list, .neomorphism #view-table {
+  background: #e6e9ef;
+  border: none !important;
+  border-radius: 0.75rem;
+  box-shadow: 6px 6px 12px rgba(163, 177, 198, 0.6), -6px -6px 12px rgba(255, 255, 255, 0.85);
+  color: #3a3f4b;
+}
+html[data-bs-theme=neomorphism] #view-grid.active, html[data-bs-theme=neomorphism] #view-list.active, html[data-bs-theme=neomorphism] #view-table.active, body.theme-neomorphism #view-grid.active, body.theme-neomorphism #view-list.active, body.theme-neomorphism #view-table.active, .neomorphism #view-grid.active, .neomorphism #view-list.active, .neomorphism #view-table.active {
+  background: #e6e9ef;
+  border: none !important;
+  border-radius: 0.75rem;
+  box-shadow: inset 3px 3px 6px rgba(163, 177, 198, 0.6), inset -3px -3px 6px rgba(255, 255, 255, 0.85);
+  color: #66c0f4 !important;
+}
+html[data-bs-theme=neomorphism] .modal-header, html[data-bs-theme=neomorphism] .modal-footer, body.theme-neomorphism .modal-header, body.theme-neomorphism .modal-footer, .neomorphism .modal-header, .neomorphism .modal-footer {
+  border-color: rgba(163, 177, 198, 0.35) !important;
+}
+html[data-bs-theme=neomorphism] .toast, html[data-bs-theme=neomorphism] .toast-body, body.theme-neomorphism .toast, body.theme-neomorphism .toast-body, .neomorphism .toast, .neomorphism .toast-body {
+  background: #e6e9ef;
+  border: none !important;
+  border-radius: 1.1rem;
+  box-shadow: 6px 6px 12px rgba(163, 177, 198, 0.6), -6px -6px 12px rgba(255, 255, 255, 0.85);
+  color: #3a3f4b !important;
 }
 
 /* -------------------------------------------------------------------------- */

@@ -1,0 +1,42 @@
+@use '../base/variables' as *;
+
+// ==========================================================================
+// Site navigation (Home / Feedback / About / Admin)
+// ==========================================================================
+.app-nav {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.app-nav-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.3rem 0.75rem;
+  border-radius: calc(16px + 4px);
+  color: rgba(#e9eef2, 0.8);
+  background: rgba(0, 0, 0, 0.15);
+  border: 1px solid rgba($steam-accent, 0.15);
+  text-decoration: none;
+  font-size: 0.8rem;
+  transition: background $transition-fast, color $transition-fast, border-color $transition-fast;
+
+  i {
+    font-size: 0.85em;
+  }
+
+  &:hover,
+  &:focus-visible {
+    background: rgba($steam-accent, 0.15);
+    color: #fff;
+    border-color: rgba($steam-accent, 0.35);
+  }
+
+  &.active {
+    background: rgba($steam-accent, 0.2);
+    color: $steam-accent;
+    border-color: rgba($steam-accent, 0.4);
+  }
+}
