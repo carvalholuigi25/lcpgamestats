@@ -14,7 +14,7 @@
   display: inline-flex;
   align-items: center;
   gap: 0.4rem;
-  padding: 0.3rem 0.75rem;
+  padding: 0.5rem 0.75rem;
   border-radius: calc(16px + 4px);
   color: rgba(#e9eef2, 0.8);
   background: rgba(0, 0, 0, 0.15);
@@ -38,5 +38,12 @@
     background: rgba($steam-accent, 0.2);
     color: $steam-accent;
     border-color: rgba($steam-accent, 0.4);
+  }
+}
+
+@media all and (max-width: 992px) {
+  .app-nav-row {
+    justify-content: center !important;
+    text-align: center !important;
   }
 }

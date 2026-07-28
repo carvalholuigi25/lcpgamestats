@@ -20,7 +20,7 @@ $bradius: calc(16px + 8px);
 
 select, .form-select {
   border-radius: $bradius !important;
-  padding: 0.5rem 1rem;
+  padding: 0.5rem 1.5rem;
   width: auto !important;
 
   option {
@@ -30,6 +30,6 @@ select, .form-select {
 
 .form-select {
   select {
-    padding: 0.5rem 1rem;
+    padding: 0.5rem 1.5rem;
   }
 }

@@ -49,7 +49,7 @@ body {
 
 select, .form-select {
   border-radius: 24px !important;
-  padding: 0.5rem 1rem;
+  padding: 0.5rem 1.5rem;
   width: auto !important;
 }
 select option, .form-select option {
@@ -57,7 +57,7 @@ select option, .form-select option {
 }
 
 .form-select select {
-  padding: 0.5rem 1rem;
+  padding: 0.5rem 1.5rem;
 }
 
 .btn {
@@ -142,7 +142,7 @@ select option, .form-select option {
 .player-avatar {
   width: 48px;
   height: 48px;
-  border-radius: 8px;
+  border-radius: 24px;
   border: 2px solid #66c0f4;
 }
 
@@ -164,7 +164,7 @@ select option, .form-select option {
   display: inline-flex;
   align-items: center;
   gap: 0.4rem;
-  padding: 0.3rem 0.75rem;
+  padding: 0.5rem 0.75rem;
   border-radius: 20px;
   color: rgba(233, 238, 242, 0.8);
   background: rgba(0, 0, 0, 0.15);
@@ -187,6 +187,12 @@ select option, .form-select option {
   border-color: rgba(102, 192, 244, 0.4);
 }
 
+@media all and (max-width: 992px) {
+  .app-nav-row {
+    justify-content: center !important;
+    text-align: center !important;
+  }
+}
 .app-clock {
   display: flex;
   align-items: baseline;
@@ -213,6 +219,8 @@ select option, .form-select option {
   color: #66c0f4;
   text-shadow: 0 0 8px rgba(102, 192, 244, 0.55);
   font-variant-numeric: tabular-nums;
+  padding: 0.6rem 0.5rem;
+  line-height: 0.6rem;
 }
 
 .app-clock__date {
@@ -226,6 +234,7 @@ select option, .form-select option {
 }
 .app-clock--sm .app-clock__time {
   font-size: 0.85rem;
+  line-height: 0.85rem;
 }
 
 @media (max-width: 767.98px) {
@@ -236,7 +245,8 @@ select option, .form-select option {
     padding: 0.3rem 0.6rem;
   }
   .app-clock__time {
-    font-size: 0.9rem;
+    font-size: 0.8rem;
+    line-height: 0.8rem;
   }
 }
 @media (max-width: 420px) {
@@ -338,6 +348,14 @@ select option, .form-select option {
 #pagination-controls .page-link {
   padding: 0.5rem 0.85rem;
   border-radius: 24px;
+  width: 2.5rem;
+  height: 2.5rem;
+  max-width: 100%;
+  max-height: 100%;
+  line-height: 2.5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 #search-input,
@@ -859,7 +877,7 @@ main, .app-footer {
 }
 @media (max-width: 575.98px) {
   .player-card {
-    width: 100%;
+    width: auto;
     justify-content: center;
   }
 }
@@ -871,7 +889,7 @@ main, .app-footer {
     display: none;
   }
   .app-nav-link {
-    padding: 0.35rem 0.55rem;
+    padding: 0.65rem 0.55rem;
   }
 }
 @media all and (max-width: 768px) {
@@ -882,6 +900,32 @@ main, .app-footer {
     justify-content: center !important;
     align-items: center !important;
     text-align: center !important;
+  }
+}
+@media all and (max-width: 992px) {
+  .mthemesel {
+    justify-content: center !important;
+  }
+  select, .form-select {
+    margin: 0;
+  }
+  #page-size-select {
+    width: auto !important;
+  }
+  #export-info-text, #page-size-label, #page-info, #page-size-select {
+    text-align: center !important;
+    margin: auto;
+    width: 100%;
+  }
+  #provider-info-text {
+    text-align: center !important;
+    margin: auto;
+  }
+  .btnshowstats {
+    display: block;
+    text-align: center;
+    margin: auto;
+    width: auto;
   }
 }
 body {

@@ -27,7 +27,7 @@
 
 @media (max-width: 575.98px) {
   .player-card {
-    width: 100%;
+    width: auto;
     justify-content: center;
   }
 }
@@ -42,7 +42,7 @@
   }
 
   .app-nav-link {
-    padding: 0.35rem 0.55rem;
+    padding: 0.65rem 0.55rem;
   }
 }
 
@@ -55,5 +55,37 @@
       align-items: center !important;
       text-align: center !important;
     }
+  }
+}
+
+@media all and (max-width: 992px) {
+  .mthemesel {
+    justify-content: center !important;
+  }
+
+  select, .form-select {
+    margin: 0;
+  }
+
+  #page-size-select {
+    width: auto !important;
+  }
+
+  #export-info-text, #page-size-label, #page-info, #page-size-select {
+    text-align: center !important;
+    margin: auto;
+    width: 100%;
+  }
+
+  #provider-info-text {
+    text-align: center !important;
+    margin: auto;
+  }
+
+  .btnshowstats {
+    display: block;
+    text-align: center;
+    margin: auto;
+    width: auto;
   }
 }
