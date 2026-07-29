@@ -184,6 +184,25 @@ function requireRole(role) {
   };
 }
 
+// Login/registration are disabled from midnight to 7am UTC (curfew window),
+// so the restriction is consistent regardless of where the server or client is located.
+const AUTH_CURFEW_START_HOUR_UTC = 0;
+const AUTH_CURFEW_END_HOUR_UTC = 7;
+
+function isWithinAuthCurfew(date = new Date()) {
+  const hour = date.getUTCHours();
+  return hour >= AUTH_CURFEW_START_HOUR_UTC && hour < AUTH_CURFEW_END_HOUR_UTC;
+}
+
+function blockDuringAuthCurfew(req, res, next) {
+  if (isWithinAuthCurfew()) {
+    return res.status(403).json({
+      error: `Login and registration are unavailable from midnight to 7am UTC. Please try again after ${String(AUTH_CURFEW_END_HOUR_UTC).padStart(2, '0')}:00 UTC.`
+    });
+  }
+  next();
+}
+
 function getProvider(providerId) {
   return PROVIDERS[providerId] || PROVIDERS.steam;
 }
@@ -1032,7 +1051,7 @@ app.get('/api/achievements', async (req, res) => {
 });
 
 // Authentication routes
-app.post('/api/auth/register', (req, res, next) => {
+app.post('/api/auth/register', blockDuringAuthCurfew, (req, res, next) => {
   try {
     const { username, password, displayName, email } = req.body || {};
     if (!username || !password) return res.status(400).json({ error: 'username and password are required' });
@@ -1049,7 +1068,7 @@ app.post('/api/auth/register', (req, res, next) => {
   }
 });
 
-app.post('/api/auth/login', (req, res, next) => {
+app.post('/api/auth/login', blockDuringAuthCurfew, (req, res, next) => {
   passport.authenticate('local', (err, user, info) => {
     if (err) {
       console.error('Login error:', err.message);
@@ -1144,6 +1163,9 @@ app.patch('/api/admin/users/:id/role', requireLogin, requireRole('admin'), (req,
 app.get('/auth/google', (req, res, next) => {
   if (!hasGoogleOAuth) {
     return res.status(501).send('Google OAuth is not configured.');
+  }
+  if (isWithinAuthCurfew()) {
+    return res.redirect('/?auth=curfew');
   }
   passport.authenticate('google', { scope: ['profile', 'email'] })(req, res, next);
 });

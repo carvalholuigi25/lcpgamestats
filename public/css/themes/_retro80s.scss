@@ -1,0 +1,164 @@
+@use 'sass:color';
+@use '../base/variables' as *;
+
+// ==========================================================================
+// Retro 80s Gaming theme — synthwave sunset gradient with neon grid horizon
+// ==========================================================================
+$retro-sky-top: #2b0f54;
+$retro-sky-mid: #7b2a8a;
+$retro-sky-low: #ff5f7e;
+$retro-grid:    #ff2d95;
+$retro-cyan:    #01cdfe;
+$retro-yellow:  #fffb96;
+$retro-purple:  #b967ff;
+$retro-text:    #fdf6ff;
+$retro-muted:   #d9a9e6;
+
+@mixin retro-glow($color: $retro-cyan) {
+  text-shadow: 0 0 5px rgba($color, 0.9), 0 0 12px rgba($color, 0.45);
+}
+
+@mixin retro-panel($radius: $card-radius) {
+  background: rgba(43, 15, 84, 0.55);
+  border: 2px solid rgba($retro-grid, 0.5);
+  border-radius: $radius;
+  box-shadow: 0 0 16px rgba($retro-grid, 0.3), inset 0 0 20px rgba($retro-cyan, 0.06);
+}
+
+html[data-bs-theme="retro80s"], body.theme-retro80s, .retro80s {
+  background:
+    repeating-linear-gradient(180deg, rgba($retro-cyan, 0.05) 0px, rgba($retro-cyan, 0.05) 1px, transparent 1px, transparent 26px),
+    linear-gradient(180deg, $retro-sky-top 0%, $retro-sky-mid 55%, $retro-sky-low 100%);
+  color: $retro-text;
+  letter-spacing: 0.02em;
+
+  label, span, p, h1, h2, h3, h4, h5, h6, .small, .form-label, .form-text, .form-check-label, .form-check-input {
+    color: $retro-text !important;
+  }
+
+  h1, h2, h3, h4, h5, h6, .game-card__title, #player-profile-link {
+    @include retro-glow($retro-cyan);
+    text-transform: uppercase;
+  }
+
+  .text-muted {
+    color: $retro-muted !important;
+  }
+
+  .app-header, .app-footer {
+    background: linear-gradient(90deg, rgba(1, 205, 254, 0.15), rgba(255, 45, 149, 0.15));
+    border-bottom: 2px solid rgba($retro-grid, 0.5);
+    box-shadow: 0 4px 22px rgba(255, 45, 149, 0.3);
+  }
+
+  .player-card, .stat-box, .game-card, .modal-content, .machievementlist {
+    @include retro-panel;
+    color: $retro-text !important;
+  }
+
+  .game-card__body {
+    background: transparent;
+  }
+
+  .game-card__image {
+    background-color: rgba(185, 103, 255, 0.15);
+  }
+
+  .stat-value {
+    @include retro-glow($retro-yellow);
+  }
+
+  select, .form-select, input, .form-control, .input-group-text {
+    background: rgba(43, 15, 84, 0.75) !important;
+    border: 2px solid rgba($retro-purple, 0.5) !important;
+    color: $retro-text !important;
+
+    &::placeholder {
+      color: $retro-muted !important;
+    }
+
+    &:focus {
+      border-color: $retro-cyan !important;
+      box-shadow: 0 0 10px rgba($retro-cyan, 0.6) !important;
+      color: $retro-text !important;
+    }
+  }
+
+  select option {
+    background: $retro-sky-top;
+    color: $retro-text;
+  }
+
+  .btnsearchicogrp {
+    background: rgba(43, 15, 84, 0.75) !important;
+    color: $retro-text !important;
+  }
+
+  #pagination-controls, .pagination-controls,
+  #pagination, .pagination {
+    color: $retro-text;
+
+    .page-link {
+      background: rgba(43, 15, 84, 0.7);
+      border: 2px solid rgba($retro-purple, 0.4) !important;
+      color: $retro-text !important;
+    }
+
+    .page-item.active .page-link {
+      background: rgba($retro-grid, 0.25);
+      box-shadow: 0 0 10px rgba($retro-grid, 0.6);
+      color: $retro-yellow !important;
+    }
+  }
+
+  .bg-body, .bg-body-secondary, .bg-body-tertiary {
+    background: rgba(43, 15, 84, 0.45) !important;
+  }
+
+  .btn {
+    background: linear-gradient(90deg, $retro-grid, $retro-purple) !important;
+    border: none !important;
+    border-radius: 999px !important;
+    color: $retro-text;
+    text-transform: uppercase;
+
+    &:hover {
+      box-shadow: 0 0 20px rgba($retro-grid, 0.65);
+    }
+
+    &:active {
+      box-shadow: inset 0 0 12px rgba($retro-purple, 0.6);
+    }
+  }
+
+  .table {
+    th, td {
+      border-color: rgba($retro-purple, 0.35) !important;
+      background: transparent;
+      color: $retro-text;
+    }
+  }
+
+  #view-grid, #view-list, #view-table {
+    @include retro-panel(0.75rem);
+    color: $retro-text;
+
+    &.active {
+      box-shadow: 0 0 14px rgba($retro-grid, 0.6);
+      color: $retro-yellow !important;
+    }
+  }
+
+  .modal-header, .modal-footer {
+    border-color: rgba($retro-grid, 0.4) !important;
+  }
+
+  .toast, .toast-body {
+    @include retro-panel;
+    color: $retro-text !important;
+  }
+
+  #page-info, #provider-info-text {
+    color: $retro-text !important;
+  }
+}

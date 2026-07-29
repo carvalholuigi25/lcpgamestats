@@ -1,0 +1,161 @@
+@use 'sass:color';
+@use '../base/variables' as *;
+
+// ==========================================================================
+// Cyberpunk theme — neon magenta/cyan accents over a deep night-city gradient
+// ==========================================================================
+$cyber-bg-top:    #0d0221;
+$cyber-bg-bottom: #1a0b2e;
+$cyber-panel:     rgba(20, 10, 40, 0.55);
+$cyber-pink:      #ff2a6d;
+$cyber-cyan:      #05d9e8;
+$cyber-yellow:    #f9f871;
+$cyber-text:      #eafcff;
+$cyber-muted:     #9a8fc2;
+
+@mixin cyber-glow($color: $cyber-cyan) {
+  text-shadow: 0 0 6px rgba($color, 0.85), 0 0 14px rgba($color, 0.4);
+}
+
+@mixin cyber-panel($radius: $card-radius) {
+  background: $cyber-panel;
+  border: 1px solid rgba($cyber-cyan, 0.35);
+  border-radius: $radius;
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+  box-shadow: 0 0 14px rgba($cyber-pink, 0.18), inset 0 0 24px rgba($cyber-cyan, 0.05);
+}
+
+html[data-bs-theme="cyberpunk"], body.theme-cyberpunk, .cyberpunk {
+  background: linear-gradient(160deg, $cyber-bg-top 0%, $cyber-bg-bottom 55%, #2b0a3d 100%);
+  color: $cyber-text;
+
+  label, span, p, h1, h2, h3, h4, h5, h6, .small, .form-label, .form-text, .form-check-label, .form-check-input {
+    color: $cyber-text !important;
+  }
+
+  h1, h2, h3, h4, h5, h6, .game-card__title, #player-profile-link {
+    @include cyber-glow($cyber-pink);
+  }
+
+  .text-muted {
+    color: $cyber-muted !important;
+  }
+
+  .app-header, .app-footer {
+    background: linear-gradient(90deg, rgba(255, 42, 109, 0.12), rgba(5, 217, 232, 0.12));
+    border-bottom: 1px solid rgba($cyber-cyan, 0.3);
+    box-shadow: 0 4px 20px rgba(255, 42, 109, 0.2);
+  }
+
+  .player-card, .stat-box, .game-card, .modal-content, .machievementlist {
+    @include cyber-panel;
+    color: $cyber-text !important;
+  }
+
+  .game-card__body {
+    background: transparent;
+  }
+
+  .game-card__image {
+    background-color: rgba(255, 42, 109, 0.1);
+  }
+
+  .stat-value {
+    @include cyber-glow($cyber-cyan);
+  }
+
+  select, .form-select, input, .form-control, .input-group-text {
+    background: rgba(13, 2, 33, 0.75) !important;
+    border: 1px solid rgba($cyber-pink, 0.4) !important;
+    color: $cyber-text !important;
+
+    &::placeholder {
+      color: $cyber-muted !important;
+    }
+
+    &:focus {
+      border-color: $cyber-cyan !important;
+      box-shadow: 0 0 10px rgba($cyber-cyan, 0.5) !important;
+      color: $cyber-text !important;
+    }
+  }
+
+  select option {
+    background: $cyber-bg-top;
+    color: $cyber-text;
+  }
+
+  .btnsearchicogrp {
+    background: rgba(13, 2, 33, 0.75) !important;
+    color: $cyber-text !important;
+  }
+
+  #pagination-controls, .pagination-controls,
+  #pagination, .pagination {
+    color: $cyber-text;
+
+    .page-link {
+      background: rgba(20, 10, 40, 0.7);
+      border: 1px solid rgba($cyber-cyan, 0.3) !important;
+      color: $cyber-text !important;
+    }
+
+    .page-item.active .page-link {
+      background: rgba($cyber-pink, 0.22);
+      box-shadow: 0 0 10px rgba($cyber-pink, 0.6);
+      color: $cyber-yellow !important;
+    }
+  }
+
+  .bg-body, .bg-body-secondary, .bg-body-tertiary {
+    background: rgba(20, 10, 40, 0.45) !important;
+  }
+
+  .btn {
+    background: linear-gradient(90deg, rgba(255, 42, 109, 0.25), rgba(5, 217, 232, 0.25)) !important;
+    border: 1px solid rgba($cyber-cyan, 0.45) !important;
+    border-radius: 999px !important;
+    color: $cyber-text;
+
+    &:hover {
+      box-shadow: 0 0 18px rgba($cyber-pink, 0.55);
+      border-color: $cyber-pink !important;
+    }
+
+    &:active {
+      box-shadow: inset 0 0 12px rgba($cyber-cyan, 0.5);
+    }
+  }
+
+  .table {
+    th, td {
+      border-color: rgba($cyber-cyan, 0.25) !important;
+      background: transparent;
+      color: $cyber-text;
+    }
+  }
+
+  #view-grid, #view-list, #view-table {
+    @include cyber-panel(0.75rem);
+    color: $cyber-text;
+
+    &.active {
+      box-shadow: 0 0 14px rgba($cyber-pink, 0.55);
+      color: $cyber-yellow !important;
+    }
+  }
+
+  .modal-header, .modal-footer {
+    border-color: rgba($cyber-cyan, 0.3) !important;
+  }
+
+  .toast, .toast-body {
+    @include cyber-panel;
+    color: $cyber-text !important;
+  }
+
+  #page-info, #provider-info-text {
+    color: $cyber-text !important;
+  }
+}

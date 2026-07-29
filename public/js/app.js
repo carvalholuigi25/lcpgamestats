@@ -168,7 +168,12 @@ import { fetchTranslations, getVideoStuff } from './functions.js';
     liquidglass: 'liquid',
     glassmorphism: 'glassmorphism',
     neomorphism: 'neomorphism',
-    softui: 'neomorphism'
+    softui: 'neomorphism',
+    matrix: 'matrix',
+    cyberpunk: 'cyberpunk',
+    retro80s: 'retro80s',
+    retro: 'retro80s',
+    synthwave: 'retro80s'
   };
   const LANG_NAME_SETTING_KEY = 'showLanguageName';
   const THEME_CODES_SETTING_KEY = 'themeCodesEnabled';
@@ -882,18 +887,40 @@ import { fetchTranslations, getVideoStuff } from './functions.js';
     els.modalAchievements.appendChild(fragment);
   }
 
-  function setTheme(theme) {
-    state.theme = theme;
-    document.body.classList.toggle('theme-light', theme === 'light');
-    document.documentElement.dataset.bsTheme = theme;
+  const AUTO_THEME_DARK_FROM_HOUR = 18; // 6pm
+  const AUTO_THEME_DARK_UNTIL_HOUR = 6; // 6am
 
-    if(state.theme == 'glassmorphism' || state.theme == 'liquid') {
+  /** Resolve 'auto' to 'dark' (18:00-06:00 local time) or 'light' (06:00-18:00 local time). */
+  function getAutoTheme() {
+    const hour = new Date().getHours();
+    return (hour >= AUTO_THEME_DARK_FROM_HOUR || hour < AUTO_THEME_DARK_UNTIL_HOUR) ? 'dark' : 'light';
+  }
+
+  function applyThemeToDom(effectiveTheme) {
+    document.body.classList.toggle('theme-light', effectiveTheme === 'light');
+    document.documentElement.dataset.bsTheme = effectiveTheme;
+
+    if (effectiveTheme == 'glassmorphism' || effectiveTheme == 'liquid') {
       els.bkgControls.classList.remove('hidden');
     } else {
       els.bkgControls.classList.add('hidden');
     }
-    
+  }
+
+  function setTheme(theme) {
+    state.theme = theme;
+    applyThemeToDom(theme === 'auto' ? getAutoTheme() : theme);
     saveSettings();
+  }
+
+  let autoThemeInterval;
+
+  /** Re-evaluate the auto theme periodically so it flips at 6am/6pm without a page reload. */
+  function startAutoThemeWatcher() {
+    clearInterval(autoThemeInterval);
+    autoThemeInterval = setInterval(() => {
+      if (state.theme === 'auto') applyThemeToDom(getAutoTheme());
+    }, 60 * 1000);
   }
 
   async function setLanguage(lang) {
@@ -1418,6 +1445,7 @@ import { fetchTranslations, getVideoStuff } from './functions.js';
     setBackgroundImage(bkgimg);
     updateLangNameToggleUI();
     startClock();
+    startAutoThemeWatcher();
     await setLanguage(state.lang);
     setView(state.view || "grid");
     setActiveViewType();

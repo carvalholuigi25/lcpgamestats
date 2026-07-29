@@ -1,0 +1,155 @@
+@use 'sass:color';
+@use '../base/variables' as *;
+
+// ==========================================================================
+// Matrix theme — black terminal aesthetic with glowing green phosphor text
+// ==========================================================================
+$matrix-bg:      #000804;
+$matrix-panel:   rgba(4, 20, 10, 0.75);
+$matrix-green:   #39ff14;
+$matrix-green-2: #00ff41;
+$matrix-dim:     #0d3b1a;
+$matrix-muted:   #5fae6f;
+
+@mixin matrix-glow($color: $matrix-green) {
+  text-shadow: 0 0 4px rgba($color, 0.8), 0 0 10px rgba($color, 0.35);
+}
+
+@mixin matrix-panel($radius: $card-radius) {
+  background: $matrix-panel;
+  border: 1px solid rgba($matrix-green, 0.35);
+  border-radius: $radius;
+  box-shadow: 0 0 12px rgba($matrix-green, 0.15), inset 0 0 20px rgba($matrix-green, 0.04);
+}
+
+html[data-bs-theme="matrix"], body.theme-matrix, .matrix {
+  background:
+    repeating-linear-gradient(0deg, rgba($matrix-green, 0.03) 0px, rgba($matrix-green, 0.03) 1px, transparent 1px, transparent 3px),
+    linear-gradient(180deg, $matrix-bg 0%, #001a08 100%);
+  color: $matrix-green;
+  font-family: 'Courier New', Consolas, Monaco, monospace;
+
+  label, span, p, h1, h2, h3, h4, h5, h6, .small, .form-label, .form-text, .form-check-label, .form-check-input {
+    color: $matrix-green !important;
+  }
+
+  h1, h2, h3, h4, h5, h6, .game-card__title, #player-profile-link {
+    @include matrix-glow;
+  }
+
+  .text-muted {
+    color: $matrix-muted !important;
+  }
+
+  .app-header, .app-footer {
+    background: rgba(0, 8, 4, 0.9);
+    border-color: rgba($matrix-green, 0.25);
+    box-shadow: 0 0 16px rgba($matrix-green, 0.12);
+  }
+
+  .player-card, .stat-box, .game-card, .modal-content, .machievementlist {
+    @include matrix-panel;
+    color: $matrix-green !important;
+  }
+
+  .game-card__body {
+    background: transparent;
+  }
+
+  .game-card__image {
+    background-color: $matrix-dim;
+    filter: grayscale(0.4) sepia(1) hue-rotate(70deg) saturate(3);
+  }
+
+  select, .form-select, input, .form-control, .input-group-text {
+    background: rgba(0, 10, 5, 0.85) !important;
+    border: 1px solid rgba($matrix-green, 0.4) !important;
+    color: $matrix-green !important;
+
+    &::placeholder {
+      color: $matrix-muted !important;
+    }
+
+    &:focus {
+      border-color: $matrix-green-2 !important;
+      box-shadow: 0 0 8px rgba($matrix-green, 0.5) !important;
+      color: $matrix-green !important;
+    }
+  }
+
+  select option {
+    background: $matrix-bg;
+    color: $matrix-green;
+  }
+
+  .btnsearchicogrp {
+    background: rgba(0, 10, 5, 0.85) !important;
+    color: $matrix-green !important;
+  }
+
+  #pagination-controls, .pagination-controls,
+  #pagination, .pagination {
+    color: $matrix-green;
+
+    .page-link {
+      background: rgba(0, 10, 5, 0.85);
+      border: 1px solid rgba($matrix-green, 0.35) !important;
+      color: $matrix-green !important;
+    }
+
+    .page-item.active .page-link {
+      background: rgba($matrix-green, 0.18);
+      box-shadow: 0 0 10px rgba($matrix-green, 0.5);
+      color: $matrix-green-2 !important;
+    }
+  }
+
+  .bg-body, .bg-body-secondary, .bg-body-tertiary {
+    background: rgba(4, 20, 10, 0.6) !important;
+  }
+
+  .btn {
+    @include matrix-panel(999px);
+    color: $matrix-green;
+
+    &:hover {
+      box-shadow: 0 0 16px rgba($matrix-green, 0.45);
+      color: $matrix-green-2;
+    }
+
+    &:active {
+      box-shadow: inset 0 0 10px rgba($matrix-green, 0.5);
+    }
+  }
+
+  .table {
+    th, td {
+      border-color: rgba($matrix-green, 0.25) !important;
+      background: transparent;
+      color: $matrix-green;
+    }
+  }
+
+  #view-grid, #view-list, #view-table {
+    @include matrix-panel(0.75rem);
+    color: $matrix-green;
+
+    &.active {
+      box-shadow: 0 0 12px rgba($matrix-green, 0.5);
+      color: $matrix-green-2 !important;
+    }
+  }
+
+  .modal-header, .modal-footer {
+    border-color: rgba($matrix-green, 0.3) !important;
+  }
+
+  .toast, .toast-body {
+    @include matrix-panel;
+    color: $matrix-green !important;
+  }
+
+  #page-info, #provider-info-text {
+    color: $matrix-green !important;
+  }
+}

@@ -98,6 +98,17 @@ select option, .form-select option {
   padding: 0.5rem 1rem;
 }
 
+.clearfilter, #clearfilter {
+  width: 3rem !important;
+  height: 3rem !important;
+  max-width: 100%;
+  max-height: 100%;
+  line-height: 3rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 #view-grid, #view-list, #view-table {
   width: 3rem;
   height: 3rem;
@@ -1448,6 +1459,383 @@ html[data-bs-theme=neomorphism] .toast, html[data-bs-theme=neomorphism] .toast-b
   border-radius: 1.1rem;
   box-shadow: 6px 6px 12px rgba(163, 177, 198, 0.6), -6px -6px 12px rgba(255, 255, 255, 0.85);
   color: #3a3f4b !important;
+}
+
+html[data-bs-theme=matrix], body.theme-matrix, .matrix {
+  background: repeating-linear-gradient(0deg, rgba(57, 255, 20, 0.03) 0px, rgba(57, 255, 20, 0.03) 1px, transparent 1px, transparent 3px), linear-gradient(180deg, #000804 0%, #001a08 100%);
+  color: #39ff14;
+  font-family: "Courier New", Consolas, Monaco, monospace;
+}
+html[data-bs-theme=matrix] label, html[data-bs-theme=matrix] span, html[data-bs-theme=matrix] p, html[data-bs-theme=matrix] h1, html[data-bs-theme=matrix] h2, html[data-bs-theme=matrix] h3, html[data-bs-theme=matrix] h4, html[data-bs-theme=matrix] h5, html[data-bs-theme=matrix] h6, html[data-bs-theme=matrix] .small, html[data-bs-theme=matrix] .form-label, html[data-bs-theme=matrix] .form-text, html[data-bs-theme=matrix] .form-check-label, html[data-bs-theme=matrix] .form-check-input, body.theme-matrix label, body.theme-matrix span, body.theme-matrix p, body.theme-matrix h1, body.theme-matrix h2, body.theme-matrix h3, body.theme-matrix h4, body.theme-matrix h5, body.theme-matrix h6, body.theme-matrix .small, body.theme-matrix .form-label, body.theme-matrix .form-text, body.theme-matrix .form-check-label, body.theme-matrix .form-check-input, .matrix label, .matrix span, .matrix p, .matrix h1, .matrix h2, .matrix h3, .matrix h4, .matrix h5, .matrix h6, .matrix .small, .matrix .form-label, .matrix .form-text, .matrix .form-check-label, .matrix .form-check-input {
+  color: #39ff14 !important;
+}
+html[data-bs-theme=matrix] h1, html[data-bs-theme=matrix] h2, html[data-bs-theme=matrix] h3, html[data-bs-theme=matrix] h4, html[data-bs-theme=matrix] h5, html[data-bs-theme=matrix] h6, html[data-bs-theme=matrix] .game-card__title, html[data-bs-theme=matrix] #player-profile-link, body.theme-matrix h1, body.theme-matrix h2, body.theme-matrix h3, body.theme-matrix h4, body.theme-matrix h5, body.theme-matrix h6, body.theme-matrix .game-card__title, body.theme-matrix #player-profile-link, .matrix h1, .matrix h2, .matrix h3, .matrix h4, .matrix h5, .matrix h6, .matrix .game-card__title, .matrix #player-profile-link {
+  text-shadow: 0 0 4px rgba(57, 255, 20, 0.8), 0 0 10px rgba(57, 255, 20, 0.35);
+}
+html[data-bs-theme=matrix] .text-muted, body.theme-matrix .text-muted, .matrix .text-muted {
+  color: #5fae6f !important;
+}
+html[data-bs-theme=matrix] .app-header, html[data-bs-theme=matrix] .app-footer, body.theme-matrix .app-header, body.theme-matrix .app-footer, .matrix .app-header, .matrix .app-footer {
+  background: rgba(0, 8, 4, 0.9);
+  border-color: rgba(57, 255, 20, 0.25);
+  box-shadow: 0 0 16px rgba(57, 255, 20, 0.12);
+}
+html[data-bs-theme=matrix] .player-card, html[data-bs-theme=matrix] .stat-box, html[data-bs-theme=matrix] .game-card, html[data-bs-theme=matrix] .modal-content, html[data-bs-theme=matrix] .machievementlist, body.theme-matrix .player-card, body.theme-matrix .stat-box, body.theme-matrix .game-card, body.theme-matrix .modal-content, body.theme-matrix .machievementlist, .matrix .player-card, .matrix .stat-box, .matrix .game-card, .matrix .modal-content, .matrix .machievementlist {
+  background: rgba(4, 20, 10, 0.75);
+  border: 1px solid rgba(57, 255, 20, 0.35);
+  border-radius: 0.75rem;
+  box-shadow: 0 0 12px rgba(57, 255, 20, 0.15), inset 0 0 20px rgba(57, 255, 20, 0.04);
+  color: #39ff14 !important;
+}
+html[data-bs-theme=matrix] .game-card__body, body.theme-matrix .game-card__body, .matrix .game-card__body {
+  background: transparent;
+}
+html[data-bs-theme=matrix] .game-card__image, body.theme-matrix .game-card__image, .matrix .game-card__image {
+  background-color: #0d3b1a;
+  filter: grayscale(0.4) sepia(1) hue-rotate(70deg) saturate(3);
+}
+html[data-bs-theme=matrix] select, html[data-bs-theme=matrix] .form-select, html[data-bs-theme=matrix] input, html[data-bs-theme=matrix] .form-control, html[data-bs-theme=matrix] .input-group-text, body.theme-matrix select, body.theme-matrix .form-select, body.theme-matrix input, body.theme-matrix .form-control, body.theme-matrix .input-group-text, .matrix select, .matrix .form-select, .matrix input, .matrix .form-control, .matrix .input-group-text {
+  background: rgba(0, 10, 5, 0.85) !important;
+  border: 1px solid rgba(57, 255, 20, 0.4) !important;
+  color: #39ff14 !important;
+}
+html[data-bs-theme=matrix] select::placeholder, html[data-bs-theme=matrix] .form-select::placeholder, html[data-bs-theme=matrix] input::placeholder, html[data-bs-theme=matrix] .form-control::placeholder, html[data-bs-theme=matrix] .input-group-text::placeholder, body.theme-matrix select::placeholder, body.theme-matrix .form-select::placeholder, body.theme-matrix input::placeholder, body.theme-matrix .form-control::placeholder, body.theme-matrix .input-group-text::placeholder, .matrix select::placeholder, .matrix .form-select::placeholder, .matrix input::placeholder, .matrix .form-control::placeholder, .matrix .input-group-text::placeholder {
+  color: #5fae6f !important;
+}
+html[data-bs-theme=matrix] select:focus, html[data-bs-theme=matrix] .form-select:focus, html[data-bs-theme=matrix] input:focus, html[data-bs-theme=matrix] .form-control:focus, html[data-bs-theme=matrix] .input-group-text:focus, body.theme-matrix select:focus, body.theme-matrix .form-select:focus, body.theme-matrix input:focus, body.theme-matrix .form-control:focus, body.theme-matrix .input-group-text:focus, .matrix select:focus, .matrix .form-select:focus, .matrix input:focus, .matrix .form-control:focus, .matrix .input-group-text:focus {
+  border-color: #00ff41 !important;
+  box-shadow: 0 0 8px rgba(57, 255, 20, 0.5) !important;
+  color: #39ff14 !important;
+}
+html[data-bs-theme=matrix] select option, body.theme-matrix select option, .matrix select option {
+  background: #000804;
+  color: #39ff14;
+}
+html[data-bs-theme=matrix] .btnsearchicogrp, body.theme-matrix .btnsearchicogrp, .matrix .btnsearchicogrp {
+  background: rgba(0, 10, 5, 0.85) !important;
+  color: #39ff14 !important;
+}
+html[data-bs-theme=matrix] #pagination-controls, html[data-bs-theme=matrix] .pagination-controls,
+html[data-bs-theme=matrix] #pagination, html[data-bs-theme=matrix] .pagination, body.theme-matrix #pagination-controls, body.theme-matrix .pagination-controls,
+body.theme-matrix #pagination, body.theme-matrix .pagination, .matrix #pagination-controls, .matrix .pagination-controls,
+.matrix #pagination, .matrix .pagination {
+  color: #39ff14;
+}
+html[data-bs-theme=matrix] #pagination-controls .page-link, html[data-bs-theme=matrix] .pagination-controls .page-link,
+html[data-bs-theme=matrix] #pagination .page-link, html[data-bs-theme=matrix] .pagination .page-link, body.theme-matrix #pagination-controls .page-link, body.theme-matrix .pagination-controls .page-link,
+body.theme-matrix #pagination .page-link, body.theme-matrix .pagination .page-link, .matrix #pagination-controls .page-link, .matrix .pagination-controls .page-link,
+.matrix #pagination .page-link, .matrix .pagination .page-link {
+  background: rgba(0, 10, 5, 0.85);
+  border: 1px solid rgba(57, 255, 20, 0.35) !important;
+  color: #39ff14 !important;
+}
+html[data-bs-theme=matrix] #pagination-controls .page-item.active .page-link, html[data-bs-theme=matrix] .pagination-controls .page-item.active .page-link,
+html[data-bs-theme=matrix] #pagination .page-item.active .page-link, html[data-bs-theme=matrix] .pagination .page-item.active .page-link, body.theme-matrix #pagination-controls .page-item.active .page-link, body.theme-matrix .pagination-controls .page-item.active .page-link,
+body.theme-matrix #pagination .page-item.active .page-link, body.theme-matrix .pagination .page-item.active .page-link, .matrix #pagination-controls .page-item.active .page-link, .matrix .pagination-controls .page-item.active .page-link,
+.matrix #pagination .page-item.active .page-link, .matrix .pagination .page-item.active .page-link {
+  background: rgba(57, 255, 20, 0.18);
+  box-shadow: 0 0 10px rgba(57, 255, 20, 0.5);
+  color: #00ff41 !important;
+}
+html[data-bs-theme=matrix] .bg-body, html[data-bs-theme=matrix] .bg-body-secondary, html[data-bs-theme=matrix] .bg-body-tertiary, body.theme-matrix .bg-body, body.theme-matrix .bg-body-secondary, body.theme-matrix .bg-body-tertiary, .matrix .bg-body, .matrix .bg-body-secondary, .matrix .bg-body-tertiary {
+  background: rgba(4, 20, 10, 0.6) !important;
+}
+html[data-bs-theme=matrix] .btn, body.theme-matrix .btn, .matrix .btn {
+  background: rgba(4, 20, 10, 0.75);
+  border: 1px solid rgba(57, 255, 20, 0.35);
+  border-radius: 999px;
+  box-shadow: 0 0 12px rgba(57, 255, 20, 0.15), inset 0 0 20px rgba(57, 255, 20, 0.04);
+  color: #39ff14;
+}
+html[data-bs-theme=matrix] .btn:hover, body.theme-matrix .btn:hover, .matrix .btn:hover {
+  box-shadow: 0 0 16px rgba(57, 255, 20, 0.45);
+  color: #00ff41;
+}
+html[data-bs-theme=matrix] .btn:active, body.theme-matrix .btn:active, .matrix .btn:active {
+  box-shadow: inset 0 0 10px rgba(57, 255, 20, 0.5);
+}
+html[data-bs-theme=matrix] .table th, html[data-bs-theme=matrix] .table td, body.theme-matrix .table th, body.theme-matrix .table td, .matrix .table th, .matrix .table td {
+  border-color: rgba(57, 255, 20, 0.25) !important;
+  background: transparent;
+  color: #39ff14;
+}
+html[data-bs-theme=matrix] #view-grid, html[data-bs-theme=matrix] #view-list, html[data-bs-theme=matrix] #view-table, body.theme-matrix #view-grid, body.theme-matrix #view-list, body.theme-matrix #view-table, .matrix #view-grid, .matrix #view-list, .matrix #view-table {
+  background: rgba(4, 20, 10, 0.75);
+  border: 1px solid rgba(57, 255, 20, 0.35);
+  border-radius: 0.75rem;
+  box-shadow: 0 0 12px rgba(57, 255, 20, 0.15), inset 0 0 20px rgba(57, 255, 20, 0.04);
+  color: #39ff14;
+}
+html[data-bs-theme=matrix] #view-grid.active, html[data-bs-theme=matrix] #view-list.active, html[data-bs-theme=matrix] #view-table.active, body.theme-matrix #view-grid.active, body.theme-matrix #view-list.active, body.theme-matrix #view-table.active, .matrix #view-grid.active, .matrix #view-list.active, .matrix #view-table.active {
+  box-shadow: 0 0 12px rgba(57, 255, 20, 0.5);
+  color: #00ff41 !important;
+}
+html[data-bs-theme=matrix] .modal-header, html[data-bs-theme=matrix] .modal-footer, body.theme-matrix .modal-header, body.theme-matrix .modal-footer, .matrix .modal-header, .matrix .modal-footer {
+  border-color: rgba(57, 255, 20, 0.3) !important;
+}
+html[data-bs-theme=matrix] .toast, html[data-bs-theme=matrix] .toast-body, body.theme-matrix .toast, body.theme-matrix .toast-body, .matrix .toast, .matrix .toast-body {
+  background: rgba(4, 20, 10, 0.75);
+  border: 1px solid rgba(57, 255, 20, 0.35);
+  border-radius: 0.75rem;
+  box-shadow: 0 0 12px rgba(57, 255, 20, 0.15), inset 0 0 20px rgba(57, 255, 20, 0.04);
+  color: #39ff14 !important;
+}
+html[data-bs-theme=matrix] #page-info, html[data-bs-theme=matrix] #provider-info-text, body.theme-matrix #page-info, body.theme-matrix #provider-info-text, .matrix #page-info, .matrix #provider-info-text {
+  color: #39ff14 !important;
+}
+
+html[data-bs-theme=cyberpunk], body.theme-cyberpunk, .cyberpunk {
+  background: linear-gradient(160deg, #0d0221 0%, #1a0b2e 55%, #2b0a3d 100%);
+  color: #eafcff;
+}
+html[data-bs-theme=cyberpunk] label, html[data-bs-theme=cyberpunk] span, html[data-bs-theme=cyberpunk] p, html[data-bs-theme=cyberpunk] h1, html[data-bs-theme=cyberpunk] h2, html[data-bs-theme=cyberpunk] h3, html[data-bs-theme=cyberpunk] h4, html[data-bs-theme=cyberpunk] h5, html[data-bs-theme=cyberpunk] h6, html[data-bs-theme=cyberpunk] .small, html[data-bs-theme=cyberpunk] .form-label, html[data-bs-theme=cyberpunk] .form-text, html[data-bs-theme=cyberpunk] .form-check-label, html[data-bs-theme=cyberpunk] .form-check-input, body.theme-cyberpunk label, body.theme-cyberpunk span, body.theme-cyberpunk p, body.theme-cyberpunk h1, body.theme-cyberpunk h2, body.theme-cyberpunk h3, body.theme-cyberpunk h4, body.theme-cyberpunk h5, body.theme-cyberpunk h6, body.theme-cyberpunk .small, body.theme-cyberpunk .form-label, body.theme-cyberpunk .form-text, body.theme-cyberpunk .form-check-label, body.theme-cyberpunk .form-check-input, .cyberpunk label, .cyberpunk span, .cyberpunk p, .cyberpunk h1, .cyberpunk h2, .cyberpunk h3, .cyberpunk h4, .cyberpunk h5, .cyberpunk h6, .cyberpunk .small, .cyberpunk .form-label, .cyberpunk .form-text, .cyberpunk .form-check-label, .cyberpunk .form-check-input {
+  color: #eafcff !important;
+}
+html[data-bs-theme=cyberpunk] h1, html[data-bs-theme=cyberpunk] h2, html[data-bs-theme=cyberpunk] h3, html[data-bs-theme=cyberpunk] h4, html[data-bs-theme=cyberpunk] h5, html[data-bs-theme=cyberpunk] h6, html[data-bs-theme=cyberpunk] .game-card__title, html[data-bs-theme=cyberpunk] #player-profile-link, body.theme-cyberpunk h1, body.theme-cyberpunk h2, body.theme-cyberpunk h3, body.theme-cyberpunk h4, body.theme-cyberpunk h5, body.theme-cyberpunk h6, body.theme-cyberpunk .game-card__title, body.theme-cyberpunk #player-profile-link, .cyberpunk h1, .cyberpunk h2, .cyberpunk h3, .cyberpunk h4, .cyberpunk h5, .cyberpunk h6, .cyberpunk .game-card__title, .cyberpunk #player-profile-link {
+  text-shadow: 0 0 6px rgba(255, 42, 109, 0.85), 0 0 14px rgba(255, 42, 109, 0.4);
+}
+html[data-bs-theme=cyberpunk] .text-muted, body.theme-cyberpunk .text-muted, .cyberpunk .text-muted {
+  color: #9a8fc2 !important;
+}
+html[data-bs-theme=cyberpunk] .app-header, html[data-bs-theme=cyberpunk] .app-footer, body.theme-cyberpunk .app-header, body.theme-cyberpunk .app-footer, .cyberpunk .app-header, .cyberpunk .app-footer {
+  background: linear-gradient(90deg, rgba(255, 42, 109, 0.12), rgba(5, 217, 232, 0.12));
+  border-bottom: 1px solid rgba(5, 217, 232, 0.3);
+  box-shadow: 0 4px 20px rgba(255, 42, 109, 0.2);
+}
+html[data-bs-theme=cyberpunk] .player-card, html[data-bs-theme=cyberpunk] .stat-box, html[data-bs-theme=cyberpunk] .game-card, html[data-bs-theme=cyberpunk] .modal-content, html[data-bs-theme=cyberpunk] .machievementlist, body.theme-cyberpunk .player-card, body.theme-cyberpunk .stat-box, body.theme-cyberpunk .game-card, body.theme-cyberpunk .modal-content, body.theme-cyberpunk .machievementlist, .cyberpunk .player-card, .cyberpunk .stat-box, .cyberpunk .game-card, .cyberpunk .modal-content, .cyberpunk .machievementlist {
+  background: rgba(20, 10, 40, 0.55);
+  border: 1px solid rgba(5, 217, 232, 0.35);
+  border-radius: 0.75rem;
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+  box-shadow: 0 0 14px rgba(255, 42, 109, 0.18), inset 0 0 24px rgba(5, 217, 232, 0.05);
+  color: #eafcff !important;
+}
+html[data-bs-theme=cyberpunk] .game-card__body, body.theme-cyberpunk .game-card__body, .cyberpunk .game-card__body {
+  background: transparent;
+}
+html[data-bs-theme=cyberpunk] .game-card__image, body.theme-cyberpunk .game-card__image, .cyberpunk .game-card__image {
+  background-color: rgba(255, 42, 109, 0.1);
+}
+html[data-bs-theme=cyberpunk] .stat-value, body.theme-cyberpunk .stat-value, .cyberpunk .stat-value {
+  text-shadow: 0 0 6px rgba(5, 217, 232, 0.85), 0 0 14px rgba(5, 217, 232, 0.4);
+}
+html[data-bs-theme=cyberpunk] select, html[data-bs-theme=cyberpunk] .form-select, html[data-bs-theme=cyberpunk] input, html[data-bs-theme=cyberpunk] .form-control, html[data-bs-theme=cyberpunk] .input-group-text, body.theme-cyberpunk select, body.theme-cyberpunk .form-select, body.theme-cyberpunk input, body.theme-cyberpunk .form-control, body.theme-cyberpunk .input-group-text, .cyberpunk select, .cyberpunk .form-select, .cyberpunk input, .cyberpunk .form-control, .cyberpunk .input-group-text {
+  background: rgba(13, 2, 33, 0.75) !important;
+  border: 1px solid rgba(255, 42, 109, 0.4) !important;
+  color: #eafcff !important;
+}
+html[data-bs-theme=cyberpunk] select::placeholder, html[data-bs-theme=cyberpunk] .form-select::placeholder, html[data-bs-theme=cyberpunk] input::placeholder, html[data-bs-theme=cyberpunk] .form-control::placeholder, html[data-bs-theme=cyberpunk] .input-group-text::placeholder, body.theme-cyberpunk select::placeholder, body.theme-cyberpunk .form-select::placeholder, body.theme-cyberpunk input::placeholder, body.theme-cyberpunk .form-control::placeholder, body.theme-cyberpunk .input-group-text::placeholder, .cyberpunk select::placeholder, .cyberpunk .form-select::placeholder, .cyberpunk input::placeholder, .cyberpunk .form-control::placeholder, .cyberpunk .input-group-text::placeholder {
+  color: #9a8fc2 !important;
+}
+html[data-bs-theme=cyberpunk] select:focus, html[data-bs-theme=cyberpunk] .form-select:focus, html[data-bs-theme=cyberpunk] input:focus, html[data-bs-theme=cyberpunk] .form-control:focus, html[data-bs-theme=cyberpunk] .input-group-text:focus, body.theme-cyberpunk select:focus, body.theme-cyberpunk .form-select:focus, body.theme-cyberpunk input:focus, body.theme-cyberpunk .form-control:focus, body.theme-cyberpunk .input-group-text:focus, .cyberpunk select:focus, .cyberpunk .form-select:focus, .cyberpunk input:focus, .cyberpunk .form-control:focus, .cyberpunk .input-group-text:focus {
+  border-color: #05d9e8 !important;
+  box-shadow: 0 0 10px rgba(5, 217, 232, 0.5) !important;
+  color: #eafcff !important;
+}
+html[data-bs-theme=cyberpunk] select option, body.theme-cyberpunk select option, .cyberpunk select option {
+  background: #0d0221;
+  color: #eafcff;
+}
+html[data-bs-theme=cyberpunk] .btnsearchicogrp, body.theme-cyberpunk .btnsearchicogrp, .cyberpunk .btnsearchicogrp {
+  background: rgba(13, 2, 33, 0.75) !important;
+  color: #eafcff !important;
+}
+html[data-bs-theme=cyberpunk] #pagination-controls, html[data-bs-theme=cyberpunk] .pagination-controls,
+html[data-bs-theme=cyberpunk] #pagination, html[data-bs-theme=cyberpunk] .pagination, body.theme-cyberpunk #pagination-controls, body.theme-cyberpunk .pagination-controls,
+body.theme-cyberpunk #pagination, body.theme-cyberpunk .pagination, .cyberpunk #pagination-controls, .cyberpunk .pagination-controls,
+.cyberpunk #pagination, .cyberpunk .pagination {
+  color: #eafcff;
+}
+html[data-bs-theme=cyberpunk] #pagination-controls .page-link, html[data-bs-theme=cyberpunk] .pagination-controls .page-link,
+html[data-bs-theme=cyberpunk] #pagination .page-link, html[data-bs-theme=cyberpunk] .pagination .page-link, body.theme-cyberpunk #pagination-controls .page-link, body.theme-cyberpunk .pagination-controls .page-link,
+body.theme-cyberpunk #pagination .page-link, body.theme-cyberpunk .pagination .page-link, .cyberpunk #pagination-controls .page-link, .cyberpunk .pagination-controls .page-link,
+.cyberpunk #pagination .page-link, .cyberpunk .pagination .page-link {
+  background: rgba(20, 10, 40, 0.7);
+  border: 1px solid rgba(5, 217, 232, 0.3) !important;
+  color: #eafcff !important;
+}
+html[data-bs-theme=cyberpunk] #pagination-controls .page-item.active .page-link, html[data-bs-theme=cyberpunk] .pagination-controls .page-item.active .page-link,
+html[data-bs-theme=cyberpunk] #pagination .page-item.active .page-link, html[data-bs-theme=cyberpunk] .pagination .page-item.active .page-link, body.theme-cyberpunk #pagination-controls .page-item.active .page-link, body.theme-cyberpunk .pagination-controls .page-item.active .page-link,
+body.theme-cyberpunk #pagination .page-item.active .page-link, body.theme-cyberpunk .pagination .page-item.active .page-link, .cyberpunk #pagination-controls .page-item.active .page-link, .cyberpunk .pagination-controls .page-item.active .page-link,
+.cyberpunk #pagination .page-item.active .page-link, .cyberpunk .pagination .page-item.active .page-link {
+  background: rgba(255, 42, 109, 0.22);
+  box-shadow: 0 0 10px rgba(255, 42, 109, 0.6);
+  color: #f9f871 !important;
+}
+html[data-bs-theme=cyberpunk] .bg-body, html[data-bs-theme=cyberpunk] .bg-body-secondary, html[data-bs-theme=cyberpunk] .bg-body-tertiary, body.theme-cyberpunk .bg-body, body.theme-cyberpunk .bg-body-secondary, body.theme-cyberpunk .bg-body-tertiary, .cyberpunk .bg-body, .cyberpunk .bg-body-secondary, .cyberpunk .bg-body-tertiary {
+  background: rgba(20, 10, 40, 0.45) !important;
+}
+html[data-bs-theme=cyberpunk] .btn, body.theme-cyberpunk .btn, .cyberpunk .btn {
+  background: linear-gradient(90deg, rgba(255, 42, 109, 0.25), rgba(5, 217, 232, 0.25)) !important;
+  border: 1px solid rgba(5, 217, 232, 0.45) !important;
+  border-radius: 999px !important;
+  color: #eafcff;
+}
+html[data-bs-theme=cyberpunk] .btn:hover, body.theme-cyberpunk .btn:hover, .cyberpunk .btn:hover {
+  box-shadow: 0 0 18px rgba(255, 42, 109, 0.55);
+  border-color: #ff2a6d !important;
+}
+html[data-bs-theme=cyberpunk] .btn:active, body.theme-cyberpunk .btn:active, .cyberpunk .btn:active {
+  box-shadow: inset 0 0 12px rgba(5, 217, 232, 0.5);
+}
+html[data-bs-theme=cyberpunk] .table th, html[data-bs-theme=cyberpunk] .table td, body.theme-cyberpunk .table th, body.theme-cyberpunk .table td, .cyberpunk .table th, .cyberpunk .table td {
+  border-color: rgba(5, 217, 232, 0.25) !important;
+  background: transparent;
+  color: #eafcff;
+}
+html[data-bs-theme=cyberpunk] #view-grid, html[data-bs-theme=cyberpunk] #view-list, html[data-bs-theme=cyberpunk] #view-table, body.theme-cyberpunk #view-grid, body.theme-cyberpunk #view-list, body.theme-cyberpunk #view-table, .cyberpunk #view-grid, .cyberpunk #view-list, .cyberpunk #view-table {
+  background: rgba(20, 10, 40, 0.55);
+  border: 1px solid rgba(5, 217, 232, 0.35);
+  border-radius: 0.75rem;
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+  box-shadow: 0 0 14px rgba(255, 42, 109, 0.18), inset 0 0 24px rgba(5, 217, 232, 0.05);
+  color: #eafcff;
+}
+html[data-bs-theme=cyberpunk] #view-grid.active, html[data-bs-theme=cyberpunk] #view-list.active, html[data-bs-theme=cyberpunk] #view-table.active, body.theme-cyberpunk #view-grid.active, body.theme-cyberpunk #view-list.active, body.theme-cyberpunk #view-table.active, .cyberpunk #view-grid.active, .cyberpunk #view-list.active, .cyberpunk #view-table.active {
+  box-shadow: 0 0 14px rgba(255, 42, 109, 0.55);
+  color: #f9f871 !important;
+}
+html[data-bs-theme=cyberpunk] .modal-header, html[data-bs-theme=cyberpunk] .modal-footer, body.theme-cyberpunk .modal-header, body.theme-cyberpunk .modal-footer, .cyberpunk .modal-header, .cyberpunk .modal-footer {
+  border-color: rgba(5, 217, 232, 0.3) !important;
+}
+html[data-bs-theme=cyberpunk] .toast, html[data-bs-theme=cyberpunk] .toast-body, body.theme-cyberpunk .toast, body.theme-cyberpunk .toast-body, .cyberpunk .toast, .cyberpunk .toast-body {
+  background: rgba(20, 10, 40, 0.55);
+  border: 1px solid rgba(5, 217, 232, 0.35);
+  border-radius: 0.75rem;
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+  box-shadow: 0 0 14px rgba(255, 42, 109, 0.18), inset 0 0 24px rgba(5, 217, 232, 0.05);
+  color: #eafcff !important;
+}
+html[data-bs-theme=cyberpunk] #page-info, html[data-bs-theme=cyberpunk] #provider-info-text, body.theme-cyberpunk #page-info, body.theme-cyberpunk #provider-info-text, .cyberpunk #page-info, .cyberpunk #provider-info-text {
+  color: #eafcff !important;
+}
+
+html[data-bs-theme=retro80s], body.theme-retro80s, .retro80s {
+  background: repeating-linear-gradient(180deg, rgba(1, 205, 254, 0.05) 0px, rgba(1, 205, 254, 0.05) 1px, transparent 1px, transparent 26px), linear-gradient(180deg, #2b0f54 0%, #7b2a8a 55%, #ff5f7e 100%);
+  color: #fdf6ff;
+  letter-spacing: 0.02em;
+}
+html[data-bs-theme=retro80s] label, html[data-bs-theme=retro80s] span, html[data-bs-theme=retro80s] p, html[data-bs-theme=retro80s] h1, html[data-bs-theme=retro80s] h2, html[data-bs-theme=retro80s] h3, html[data-bs-theme=retro80s] h4, html[data-bs-theme=retro80s] h5, html[data-bs-theme=retro80s] h6, html[data-bs-theme=retro80s] .small, html[data-bs-theme=retro80s] .form-label, html[data-bs-theme=retro80s] .form-text, html[data-bs-theme=retro80s] .form-check-label, html[data-bs-theme=retro80s] .form-check-input, body.theme-retro80s label, body.theme-retro80s span, body.theme-retro80s p, body.theme-retro80s h1, body.theme-retro80s h2, body.theme-retro80s h3, body.theme-retro80s h4, body.theme-retro80s h5, body.theme-retro80s h6, body.theme-retro80s .small, body.theme-retro80s .form-label, body.theme-retro80s .form-text, body.theme-retro80s .form-check-label, body.theme-retro80s .form-check-input, .retro80s label, .retro80s span, .retro80s p, .retro80s h1, .retro80s h2, .retro80s h3, .retro80s h4, .retro80s h5, .retro80s h6, .retro80s .small, .retro80s .form-label, .retro80s .form-text, .retro80s .form-check-label, .retro80s .form-check-input {
+  color: #fdf6ff !important;
+}
+html[data-bs-theme=retro80s] h1, html[data-bs-theme=retro80s] h2, html[data-bs-theme=retro80s] h3, html[data-bs-theme=retro80s] h4, html[data-bs-theme=retro80s] h5, html[data-bs-theme=retro80s] h6, html[data-bs-theme=retro80s] .game-card__title, html[data-bs-theme=retro80s] #player-profile-link, body.theme-retro80s h1, body.theme-retro80s h2, body.theme-retro80s h3, body.theme-retro80s h4, body.theme-retro80s h5, body.theme-retro80s h6, body.theme-retro80s .game-card__title, body.theme-retro80s #player-profile-link, .retro80s h1, .retro80s h2, .retro80s h3, .retro80s h4, .retro80s h5, .retro80s h6, .retro80s .game-card__title, .retro80s #player-profile-link {
+  text-shadow: 0 0 5px rgba(1, 205, 254, 0.9), 0 0 12px rgba(1, 205, 254, 0.45);
+  text-transform: uppercase;
+}
+html[data-bs-theme=retro80s] .text-muted, body.theme-retro80s .text-muted, .retro80s .text-muted {
+  color: #d9a9e6 !important;
+}
+html[data-bs-theme=retro80s] .app-header, html[data-bs-theme=retro80s] .app-footer, body.theme-retro80s .app-header, body.theme-retro80s .app-footer, .retro80s .app-header, .retro80s .app-footer {
+  background: linear-gradient(90deg, rgba(1, 205, 254, 0.15), rgba(255, 45, 149, 0.15));
+  border-bottom: 2px solid rgba(255, 45, 149, 0.5);
+  box-shadow: 0 4px 22px rgba(255, 45, 149, 0.3);
+}
+html[data-bs-theme=retro80s] .player-card, html[data-bs-theme=retro80s] .stat-box, html[data-bs-theme=retro80s] .game-card, html[data-bs-theme=retro80s] .modal-content, html[data-bs-theme=retro80s] .machievementlist, body.theme-retro80s .player-card, body.theme-retro80s .stat-box, body.theme-retro80s .game-card, body.theme-retro80s .modal-content, body.theme-retro80s .machievementlist, .retro80s .player-card, .retro80s .stat-box, .retro80s .game-card, .retro80s .modal-content, .retro80s .machievementlist {
+  background: rgba(43, 15, 84, 0.55);
+  border: 2px solid rgba(255, 45, 149, 0.5);
+  border-radius: 0.75rem;
+  box-shadow: 0 0 16px rgba(255, 45, 149, 0.3), inset 0 0 20px rgba(1, 205, 254, 0.06);
+  color: #fdf6ff !important;
+}
+html[data-bs-theme=retro80s] .game-card__body, body.theme-retro80s .game-card__body, .retro80s .game-card__body {
+  background: transparent;
+}
+html[data-bs-theme=retro80s] .game-card__image, body.theme-retro80s .game-card__image, .retro80s .game-card__image {
+  background-color: rgba(185, 103, 255, 0.15);
+}
+html[data-bs-theme=retro80s] .stat-value, body.theme-retro80s .stat-value, .retro80s .stat-value {
+  text-shadow: 0 0 5px rgba(255, 251, 150, 0.9), 0 0 12px rgba(255, 251, 150, 0.45);
+}
+html[data-bs-theme=retro80s] select, html[data-bs-theme=retro80s] .form-select, html[data-bs-theme=retro80s] input, html[data-bs-theme=retro80s] .form-control, html[data-bs-theme=retro80s] .input-group-text, body.theme-retro80s select, body.theme-retro80s .form-select, body.theme-retro80s input, body.theme-retro80s .form-control, body.theme-retro80s .input-group-text, .retro80s select, .retro80s .form-select, .retro80s input, .retro80s .form-control, .retro80s .input-group-text {
+  background: rgba(43, 15, 84, 0.75) !important;
+  border: 2px solid rgba(185, 103, 255, 0.5) !important;
+  color: #fdf6ff !important;
+}
+html[data-bs-theme=retro80s] select::placeholder, html[data-bs-theme=retro80s] .form-select::placeholder, html[data-bs-theme=retro80s] input::placeholder, html[data-bs-theme=retro80s] .form-control::placeholder, html[data-bs-theme=retro80s] .input-group-text::placeholder, body.theme-retro80s select::placeholder, body.theme-retro80s .form-select::placeholder, body.theme-retro80s input::placeholder, body.theme-retro80s .form-control::placeholder, body.theme-retro80s .input-group-text::placeholder, .retro80s select::placeholder, .retro80s .form-select::placeholder, .retro80s input::placeholder, .retro80s .form-control::placeholder, .retro80s .input-group-text::placeholder {
+  color: #d9a9e6 !important;
+}
+html[data-bs-theme=retro80s] select:focus, html[data-bs-theme=retro80s] .form-select:focus, html[data-bs-theme=retro80s] input:focus, html[data-bs-theme=retro80s] .form-control:focus, html[data-bs-theme=retro80s] .input-group-text:focus, body.theme-retro80s select:focus, body.theme-retro80s .form-select:focus, body.theme-retro80s input:focus, body.theme-retro80s .form-control:focus, body.theme-retro80s .input-group-text:focus, .retro80s select:focus, .retro80s .form-select:focus, .retro80s input:focus, .retro80s .form-control:focus, .retro80s .input-group-text:focus {
+  border-color: #01cdfe !important;
+  box-shadow: 0 0 10px rgba(1, 205, 254, 0.6) !important;
+  color: #fdf6ff !important;
+}
+html[data-bs-theme=retro80s] select option, body.theme-retro80s select option, .retro80s select option {
+  background: #2b0f54;
+  color: #fdf6ff;
+}
+html[data-bs-theme=retro80s] .btnsearchicogrp, body.theme-retro80s .btnsearchicogrp, .retro80s .btnsearchicogrp {
+  background: rgba(43, 15, 84, 0.75) !important;
+  color: #fdf6ff !important;
+}
+html[data-bs-theme=retro80s] #pagination-controls, html[data-bs-theme=retro80s] .pagination-controls,
+html[data-bs-theme=retro80s] #pagination, html[data-bs-theme=retro80s] .pagination, body.theme-retro80s #pagination-controls, body.theme-retro80s .pagination-controls,
+body.theme-retro80s #pagination, body.theme-retro80s .pagination, .retro80s #pagination-controls, .retro80s .pagination-controls,
+.retro80s #pagination, .retro80s .pagination {
+  color: #fdf6ff;
+}
+html[data-bs-theme=retro80s] #pagination-controls .page-link, html[data-bs-theme=retro80s] .pagination-controls .page-link,
+html[data-bs-theme=retro80s] #pagination .page-link, html[data-bs-theme=retro80s] .pagination .page-link, body.theme-retro80s #pagination-controls .page-link, body.theme-retro80s .pagination-controls .page-link,
+body.theme-retro80s #pagination .page-link, body.theme-retro80s .pagination .page-link, .retro80s #pagination-controls .page-link, .retro80s .pagination-controls .page-link,
+.retro80s #pagination .page-link, .retro80s .pagination .page-link {
+  background: rgba(43, 15, 84, 0.7);
+  border: 2px solid rgba(185, 103, 255, 0.4) !important;
+  color: #fdf6ff !important;
+}
+html[data-bs-theme=retro80s] #pagination-controls .page-item.active .page-link, html[data-bs-theme=retro80s] .pagination-controls .page-item.active .page-link,
+html[data-bs-theme=retro80s] #pagination .page-item.active .page-link, html[data-bs-theme=retro80s] .pagination .page-item.active .page-link, body.theme-retro80s #pagination-controls .page-item.active .page-link, body.theme-retro80s .pagination-controls .page-item.active .page-link,
+body.theme-retro80s #pagination .page-item.active .page-link, body.theme-retro80s .pagination .page-item.active .page-link, .retro80s #pagination-controls .page-item.active .page-link, .retro80s .pagination-controls .page-item.active .page-link,
+.retro80s #pagination .page-item.active .page-link, .retro80s .pagination .page-item.active .page-link {
+  background: rgba(255, 45, 149, 0.25);
+  box-shadow: 0 0 10px rgba(255, 45, 149, 0.6);
+  color: #fffb96 !important;
+}
+html[data-bs-theme=retro80s] .bg-body, html[data-bs-theme=retro80s] .bg-body-secondary, html[data-bs-theme=retro80s] .bg-body-tertiary, body.theme-retro80s .bg-body, body.theme-retro80s .bg-body-secondary, body.theme-retro80s .bg-body-tertiary, .retro80s .bg-body, .retro80s .bg-body-secondary, .retro80s .bg-body-tertiary {
+  background: rgba(43, 15, 84, 0.45) !important;
+}
+html[data-bs-theme=retro80s] .btn, body.theme-retro80s .btn, .retro80s .btn {
+  background: linear-gradient(90deg, #ff2d95, #b967ff) !important;
+  border: none !important;
+  border-radius: 999px !important;
+  color: #fdf6ff;
+  text-transform: uppercase;
+}
+html[data-bs-theme=retro80s] .btn:hover, body.theme-retro80s .btn:hover, .retro80s .btn:hover {
+  box-shadow: 0 0 20px rgba(255, 45, 149, 0.65);
+}
+html[data-bs-theme=retro80s] .btn:active, body.theme-retro80s .btn:active, .retro80s .btn:active {
+  box-shadow: inset 0 0 12px rgba(185, 103, 255, 0.6);
+}
+html[data-bs-theme=retro80s] .table th, html[data-bs-theme=retro80s] .table td, body.theme-retro80s .table th, body.theme-retro80s .table td, .retro80s .table th, .retro80s .table td {
+  border-color: rgba(185, 103, 255, 0.35) !important;
+  background: transparent;
+  color: #fdf6ff;
+}
+html[data-bs-theme=retro80s] #view-grid, html[data-bs-theme=retro80s] #view-list, html[data-bs-theme=retro80s] #view-table, body.theme-retro80s #view-grid, body.theme-retro80s #view-list, body.theme-retro80s #view-table, .retro80s #view-grid, .retro80s #view-list, .retro80s #view-table {
+  background: rgba(43, 15, 84, 0.55);
+  border: 2px solid rgba(255, 45, 149, 0.5);
+  border-radius: 0.75rem;
+  box-shadow: 0 0 16px rgba(255, 45, 149, 0.3), inset 0 0 20px rgba(1, 205, 254, 0.06);
+  color: #fdf6ff;
+}
+html[data-bs-theme=retro80s] #view-grid.active, html[data-bs-theme=retro80s] #view-list.active, html[data-bs-theme=retro80s] #view-table.active, body.theme-retro80s #view-grid.active, body.theme-retro80s #view-list.active, body.theme-retro80s #view-table.active, .retro80s #view-grid.active, .retro80s #view-list.active, .retro80s #view-table.active {
+  box-shadow: 0 0 14px rgba(255, 45, 149, 0.6);
+  color: #fffb96 !important;
+}
+html[data-bs-theme=retro80s] .modal-header, html[data-bs-theme=retro80s] .modal-footer, body.theme-retro80s .modal-header, body.theme-retro80s .modal-footer, .retro80s .modal-header, .retro80s .modal-footer {
+  border-color: rgba(255, 45, 149, 0.4) !important;
+}
+html[data-bs-theme=retro80s] .toast, html[data-bs-theme=retro80s] .toast-body, body.theme-retro80s .toast, body.theme-retro80s .toast-body, .retro80s .toast, .retro80s .toast-body {
+  background: rgba(43, 15, 84, 0.55);
+  border: 2px solid rgba(255, 45, 149, 0.5);
+  border-radius: 0.75rem;
+  box-shadow: 0 0 16px rgba(255, 45, 149, 0.3), inset 0 0 20px rgba(1, 205, 254, 0.06);
+  color: #fdf6ff !important;
+}
+html[data-bs-theme=retro80s] #page-info, html[data-bs-theme=retro80s] #provider-info-text, body.theme-retro80s #page-info, body.theme-retro80s #provider-info-text, .retro80s #page-info, .retro80s #provider-info-text {
+  color: #fdf6ff !important;
 }
 
 /* -------------------------------------------------------------------------- */
