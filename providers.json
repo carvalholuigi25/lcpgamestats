@@ -29,7 +29,7 @@
     "uplay": {
         "id": "uplay",
         "label": "Uplay",
-        "playerSupported": false,
+        "playerSupported": true,
         "storeBase": "https://store.ubi.com/",
         "sampleImageBase": "https://via.placeholder.com/460x215?text=Uplay",
         "sampleImageBase2": "https://via.placeholder.com/460x215?text=Uplay",

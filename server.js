@@ -16,6 +16,7 @@ import auth from './lib/auth.js';
 import feedbackStore from './lib/feedback.js';
 import { isGogConfigured, fetchGogUserData, fetchGogOwnedGameIds, fetchGogProductDetails, fetchGogAchievements } from './lib/gog.js';
 import { isEpicConfigured, fetchEpicAccountInfo, fetchEpicLibraryItems, fetchEpicCatalogItem } from './lib/epic.js';
+import { isUplayConfigured, fetchUplayAccountInfo, fetchUplayOwnedGames } from './lib/uplay.js';
 dotenv.config();
 
 const app = express();
@@ -601,6 +602,22 @@ async function getApiPlayer(req, res) {
     }
   }
 
+  if (provider.id === 'uplay' && isUplayConfigured()) {
+    try {
+      const account = await fetchUplayAccountInfo();
+      return res.json({
+        personaname: account?.nameOnPlatform || 'Uplay User',
+        avatarfull: `https://via.placeholder.com/128?text=${encodeURIComponent(provider.label)}`,
+        profileurl: '#',
+        provider: provider.id,
+        providerLabel: provider.label
+      });
+    } catch (err) {
+      console.error('Error fetching Uplay player profile:', err.message);
+      return res.status(500).json({ error: 'Failed to fetch Uplay player profile' });
+    }
+  }
+
   if (provider.id !== 'steam') {
     return res.json({
       personaname: provider.id === 'retroachievements' ? RETROACHIEVEMENTS_USER : 'guest',
@@ -842,6 +859,34 @@ async function getApiGames(req, res) {
       return res.json(responseData);
     } catch (err) {
       console.error('Error fetching Epic games:', err.message);
+      // Fall through to sample data below.
+    }
+  }
+
+  if (provider.id === 'uplay' && isUplayConfigured()) {
+    try {
+      const ownedGames = await fetchUplayOwnedGames();
+
+      let games = ownedGames.map((game) => normalizeProviderGame(provider, {
+        appid: game.spaceId || game.id,
+        name: game.name,
+        header_image: '',
+        store_path: game.spaceId || game.id,
+        playtime_forever: 0,
+        playtime_2weeks: 0
+      }));
+
+      games = filterGames(games, search);
+      games = sortGames(games, sortBy);
+
+      const responseData = createGamesResponse(games, page, pageSize, provider);
+      const format = getQueryParamValue(req, 'format', 'json').toLowerCase();
+      if (format === 'xml') {
+        return res.type('application/xml').send(convertGamesResponseToXml(responseData));
+      }
+      return res.json(responseData);
+    } catch (err) {
+      console.error('Error fetching Uplay games:', err.message);
       // Fall through to sample data below.
     }
   }

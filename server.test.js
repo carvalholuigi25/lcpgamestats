@@ -16,16 +16,21 @@ import auth from './lib/auth.js';
 import { getVideoTrailerData, resolveAchievementBadgeImage, normalizeGogAchievement } from './lib/utils.js';
 import { isGogConfigured } from './lib/gog.js';
 import { isEpicConfigured } from './lib/epic.js';
+import { isUplayConfigured, parseUplayLoginPayload } from './lib/uplay.js';
 
-// GOG_REFRESH_TOKEN / EPIC_REFRESH_TOKEN may legitimately be set in a developer's
-// local .env once they've run `npm run login:gog` / `npm run login:epic`. Tests that
-// specifically exercise the "unconfigured" fallback path stub those vars out for
-// their duration so they stay deterministic regardless of local .env contents.
+const PROVIDER_CREDENTIAL_ENV_VARS = ['GOG_REFRESH_TOKEN', 'EPIC_REFRESH_TOKEN', 'UPLAY_REMEMBER_ME_TICKET', 'UPLAY_USER_ID'];
+
+// These vars may legitimately be set in a developer's local .env once they've run
+// `npm run login:gog` / `login:epic` / `login:uplay`. Tests that specifically exercise
+// the "unconfigured" fallback path stub them out for their duration so they stay
+// deterministic regardless of local .env contents.
 function withoutProviderCredentials(fn) {
   return async () => {
-    const saved = { GOG_REFRESH_TOKEN: process.env.GOG_REFRESH_TOKEN, EPIC_REFRESH_TOKEN: process.env.EPIC_REFRESH_TOKEN };
-    delete process.env.GOG_REFRESH_TOKEN;
-    delete process.env.EPIC_REFRESH_TOKEN;
+    const saved = {};
+    for (const key of PROVIDER_CREDENTIAL_ENV_VARS) {
+      saved[key] = process.env[key];
+      delete process.env[key];
+    }
     try {
       await fn();
     } finally {
@@ -132,6 +137,24 @@ describe('server helper functions', () => {
     assert.strictEqual(isEpicConfigured(), false);
   }));
 
+  it('reports Uplay as unconfigured without UPLAY_REMEMBER_ME_TICKET/UPLAY_USER_ID', withoutProviderCredentials(() => {
+    assert.strictEqual(isUplayConfigured(), false);
+  }));
+
+  it('parses a pasted Ubisoft PRODloginData payload and rejects incomplete ones', () => {
+    const parsed = parseUplayLoginPayload(JSON.stringify({
+      ticket: 't-1',
+      rememberMeTicket: 'rmt-1',
+      sessionId: 's-1',
+      userId: 'u-1',
+      nameOnPlatform: 'PlayerOne'
+    }));
+    assert.strictEqual(parsed.userId, 'u-1');
+    assert.strictEqual(parsed.nameOnPlatform, 'PlayerOne');
+
+    assert.throws(() => parseUplayLoginPayload(JSON.stringify({ ticket: 't-1' })));
+  });
+
   it('normalizes a GOG achievement payload, deriving unlock state from date_unlocked', () => {
     const unlocked = normalizeGogAchievement({
       achievement_key: 'ach_finish_game',
@@ -156,8 +179,8 @@ describe('server helper functions', () => {
     assert.strictEqual(locked.unlocktime, 0);
   });
 
-  it('falls back to sample GOG/Epic games when no credentials are configured', withoutProviderCredentials(async () => {
-    for (const provider of ['gog', 'epic']) {
+  it('falls back to sample GOG/Epic/Uplay games when no credentials are configured', withoutProviderCredentials(async () => {
+    for (const provider of ['gog', 'epic', 'uplay']) {
       const req = { query: { provider } };
       const res = {
         statusCode: 200,

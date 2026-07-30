@@ -101,6 +101,15 @@ Once configured, `/api/player`, `/api/games`, and `/api/achievements` fetch your
 
 Once configured, `/api/player` and `/api/games` fetch your real account name and owned games (entitlements) from Epic. Epic doesn't expose a generic playtime/achievements API, so achievements keep falling back to sample data unless you point `EPIC_API_BASE`/`EPIC_API_KEY` at your own per-game achievement source.
 
+### Ubisoft Connect (Uplay)
+
+1. `npm run login:uplay`
+2. Open the printed URL and log in to Ubisoft Connect (2FA, if enabled, is handled by Ubisoft's own login page - nothing to configure on our side).
+3. Once you land back on the Ubisoft Connect homepage logged in, open your browser's DevTools (F12) → Application/Storage → Local Storage → `https://connect.ubisoft.com`, and copy the value of the `PRODloginData` key.
+4. Paste it into the prompt. The script verifies it works, then prints `UPLAY_REMEMBER_ME_TICKET` and `UPLAY_USER_ID` to copy into your `.env` file.
+
+Once configured, `/api/player` and `/api/games` fetch your real account name and PC-owned games from Ubisoft Connect's Club API. Ubisoft doesn't expose header art or a generic achievements API through this endpoint, so game art falls back to a placeholder and achievements keep falling back to sample data. Ubisoft also occasionally rotates the remember-me ticket on refresh - if that happens, the server logs the new value so you can update `.env` before your next restart.
+
 ## Project Structure
 
 ```text
