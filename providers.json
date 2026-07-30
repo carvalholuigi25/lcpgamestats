@@ -11,7 +11,7 @@
     "epic": {
         "id": "epic",
         "label": "Epic Games",
-        "playerSupported": false,
+        "playerSupported": true,
         "storeBase": "https://www.epicgames.com/store/en-US/p/",
         "sampleImageBase": "https://via.placeholder.com/460x215?text=Epic+Games",
         "sampleImageBase2": "https://via.placeholder.com/460x215?text=Epic+Games",
@@ -20,7 +20,7 @@
     "gog": {
         "id": "gog",
         "label": "GOG",
-        "playerSupported": false,
+        "playerSupported": true,
         "storeBase": "https://www.gog.com/game/",
         "sampleImageBase": "https://via.placeholder.com/460x215?text=GOG",
         "sampleImageBase2": "https://via.placeholder.com/460x215?text=GOG",

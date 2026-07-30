@@ -10,7 +10,9 @@
     "coverage": "c8 --reporter=lcov npm test",
     "build:css": "sass public/css/style.scss public/css/style.css",
     "watchscss": "npx sass --watch public/css/style.scss public/css/style.css",
-    "startall": "conc 'npm:watchscss' 'npm:start'"
+    "startall": "conc 'npm:watchscss' 'npm:start'",
+    "login:gog": "node scripts/gog-login.js",
+    "login:epic": "node scripts/epic-login.js"
   },
   "dependencies": {
     "@fortawesome/fontawesome-free": "^7.2.0",

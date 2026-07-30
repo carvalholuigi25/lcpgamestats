@@ -10,10 +10,12 @@ import { Strategy as LocalStrategy } from 'passport-local';
 import { Strategy as GoogleStrategy } from 'passport-google-oauth20';
 import { fileURLToPath } from 'url';
 import { randomBytes } from 'node:crypto';
-import { getHeaderImage, getStoreGameLink, normalizeEpicAchievement, getVideoTrailerData, resolveAchievementBadgeImage } from './lib/utils.js';
+import { getHeaderImage, getStoreGameLink, normalizeEpicAchievement, normalizeGogAchievement, getVideoTrailerData, resolveAchievementBadgeImage } from './lib/utils.js';
 import multer from 'multer';
 import auth from './lib/auth.js';
 import feedbackStore from './lib/feedback.js';
+import { isGogConfigured, fetchGogUserData, fetchGogOwnedGameIds, fetchGogProductDetails, fetchGogAchievements } from './lib/gog.js';
+import { isEpicConfigured, fetchEpicAccountInfo, fetchEpicLibraryItems, fetchEpicCatalogItem } from './lib/epic.js';
 dotenv.config();
 
 const app = express();
@@ -461,6 +463,73 @@ async function fetchSteamAchievementSchema(appid) {
   return icons;
 }
 
+const gogProductDetailsCache = new Map();
+
+async function fetchCachedGogProductDetails(productId) {
+  if (gogProductDetailsCache.has(productId)) return gogProductDetailsCache.get(productId);
+
+  let details = null;
+  try {
+    details = await fetchGogProductDetails(productId);
+  } catch (err) {
+    console.error(`Error fetching GOG product details for ${productId}:`, err.message);
+  }
+
+  gogProductDetailsCache.set(productId, details);
+  return details;
+}
+
+const epicCatalogItemCache = new Map();
+
+async function fetchCachedEpicCatalogItem(namespace, catalogItemId) {
+  const cacheKey = `${namespace}:${catalogItemId}`;
+  if (epicCatalogItemCache.has(cacheKey)) return epicCatalogItemCache.get(cacheKey);
+
+  let item = null;
+  try {
+    item = await fetchEpicCatalogItem(namespace, catalogItemId);
+  } catch (err) {
+    console.error(`Error fetching Epic catalog item ${cacheKey}:`, err.message);
+  }
+
+  epicCatalogItemCache.set(cacheKey, item);
+  return item;
+}
+
+function pickEpicKeyImage(catalogItem) {
+  const images = catalogItem?.keyImages || [];
+  const preferredTypes = ['DieselStoreFrontWide', 'OfferImageWide', 'DieselGameBoxWide', 'Thumbnail'];
+  for (const type of preferredTypes) {
+    const match = images.find((img) => img.type === type);
+    if (match?.url) return match.url;
+  }
+  return images[0]?.url || '';
+}
+
+async function fetchGogAchievementsForAppid(appid) {
+  const sampleGames = SAMPLE_GAME_DATA.gog || [];
+  const sampleGame = sampleGames.find((item) => [item.id, item.appid].some((field) => field !== undefined && String(field) === String(appid)));
+
+  if (isGogConfigured()) {
+    try {
+      const rawAchievements = await fetchGogAchievements(appid);
+      if (Array.isArray(rawAchievements) && rawAchievements.length > 0) {
+        return rawAchievements.map(normalizeGogAchievement);
+      }
+    } catch (err) {
+      console.error('Error fetching GOG achievements from API:', err.message);
+    }
+  }
+
+  const fallbackAchievements = sampleGame?.achievements || [
+    { apiname: 'first_play', name: 'First Play', description: 'Start the game on GOG', achieved: false },
+    { apiname: 'collector', name: 'Collector', description: 'Collect a few items', achieved: false },
+    { apiname: 'completionist', name: 'Completionist', description: 'Complete all available objectives', achieved: false }
+  ];
+
+  return fallbackAchievements.map(normalizeGogAchievement);
+}
+
 async function fetchEpicAchievements(appid) {
   const sampleGames = SAMPLE_GAME_DATA.epic || [];
   const sampleGame = sampleGames.find((item) => [item.id, item.appid].some((field) => field !== undefined && String(field) === String(appid)));
@@ -499,6 +568,38 @@ async function fetchEpicAchievements(appid) {
 async function getApiPlayer(req, res) {
   const providerId = (req.query.provider || 'steam').toLowerCase();
   const provider = getProvider(providerId);
+
+  if (provider.id === 'gog' && isGogConfigured()) {
+    try {
+      const userData = await fetchGogUserData();
+      return res.json({
+        personaname: userData?.username || 'GOG User',
+        avatarfull: userData?.avatar || `https://via.placeholder.com/128?text=${encodeURIComponent(provider.label)}`,
+        profileurl: userData?.username ? `https://www.gog.com/u/${userData.username}` : '#',
+        provider: provider.id,
+        providerLabel: provider.label
+      });
+    } catch (err) {
+      console.error('Error fetching GOG player profile:', err.message);
+      return res.status(500).json({ error: 'Failed to fetch GOG player profile' });
+    }
+  }
+
+  if (provider.id === 'epic' && isEpicConfigured()) {
+    try {
+      const account = await fetchEpicAccountInfo();
+      return res.json({
+        personaname: account?.displayName || account?.preferredLanguage || 'Epic User',
+        avatarfull: `https://via.placeholder.com/128?text=${encodeURIComponent(provider.label)}`,
+        profileurl: '#',
+        provider: provider.id,
+        providerLabel: provider.label
+      });
+    } catch (err) {
+      console.error('Error fetching Epic player profile:', err.message);
+      return res.status(500).json({ error: 'Failed to fetch Epic player profile' });
+    }
+  }
 
   if (provider.id !== 'steam') {
     return res.json({
@@ -676,6 +777,72 @@ async function getApiGames(req, res) {
     } catch (err) {
       console.error('Error fetching owned games:', err.message);
       return res.status(500).json({ error: 'Failed to fetch games library' });
+    }
+  }
+
+  if (provider.id === 'gog' && isGogConfigured()) {
+    try {
+      const ownedIds = await fetchGogOwnedGameIds();
+      const details = await Promise.all(ownedIds.map((id) => fetchCachedGogProductDetails(id)));
+
+      let games = ownedIds
+        .map((id, index) => ({ id, details: details[index] }))
+        .filter((entry) => entry.details)
+        .map((entry) => normalizeProviderGame(provider, {
+          appid: entry.id,
+          name: entry.details.title,
+          header_image: entry.details.images?.background || entry.details.images?.logo2x || entry.details.images?.sidebarIcon || '',
+          store_path: entry.details.slug || entry.id,
+          playtime_forever: 0,
+          playtime_2weeks: 0
+        }));
+
+      games = filterGames(games, search);
+      games = sortGames(games, sortBy);
+
+      const responseData = createGamesResponse(games, page, pageSize, provider);
+      const format = getQueryParamValue(req, 'format', 'json').toLowerCase();
+      if (format === 'xml') {
+        return res.type('application/xml').send(convertGamesResponseToXml(responseData));
+      }
+      return res.json(responseData);
+    } catch (err) {
+      console.error('Error fetching GOG games:', err.message);
+      // Fall through to sample data below.
+    }
+  }
+
+  if (provider.id === 'epic' && isEpicConfigured()) {
+    try {
+      const records = await fetchEpicLibraryItems();
+      const catalogItems = await Promise.all(
+        records.map((record) => fetchCachedEpicCatalogItem(record.namespace, record.catalogItemId))
+      );
+
+      let games = records.map((record, index) => {
+        const catalogItem = catalogItems[index];
+        return normalizeProviderGame(provider, {
+          appid: record.catalogItemId,
+          name: catalogItem?.title || record.appName,
+          header_image: pickEpicKeyImage(catalogItem),
+          store_path: catalogItem?.urlSlug || record.catalogItemId,
+          playtime_forever: 0,
+          playtime_2weeks: 0
+        });
+      });
+
+      games = filterGames(games, search);
+      games = sortGames(games, sortBy);
+
+      const responseData = createGamesResponse(games, page, pageSize, provider);
+      const format = getQueryParamValue(req, 'format', 'json').toLowerCase();
+      if (format === 'xml') {
+        return res.type('application/xml').send(convertGamesResponseToXml(responseData));
+      }
+      return res.json(responseData);
+    } catch (err) {
+      console.error('Error fetching Epic games:', err.message);
+      // Fall through to sample data below.
     }
   }
 
@@ -863,6 +1030,17 @@ async function getApiAchievements(req, res) {
     } catch (err) {
       console.error('Error fetching RetroAchievements stats:', err.message);
       return res.status(500).json({ error: 'Failed to fetch RetroAchievements achievements' });
+    }
+  }
+
+  if (provider.id === 'gog') {
+    try {
+      const achievements = await fetchGogAchievementsForAppid(appid);
+      const unlocked = achievements.filter((a) => a.achieved).length;
+      return res.json({ provider: provider.id, appid, total: achievements.length, unlocked, achievements });
+    } catch (err) {
+      console.error('Error fetching GOG achievements:', err.message);
+      return res.status(500).json({ error: 'Failed to fetch GOG achievements' });
     }
   }
 
@@ -1224,6 +1402,7 @@ export {
   createGamesResponse,
   convertGamesResponseToXml,
   fetchEpicAchievements,
+  fetchGogAchievementsForAppid,
   getMixedDataGameHeader,
   getApiGames,
   requireApiAuth,

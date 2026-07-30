@@ -8,11 +8,34 @@ import {
   createGamesResponse,
   convertGamesResponseToXml,
   fetchEpicAchievements,
+  fetchGogAchievementsForAppid,
   getMixedDataGameHeader,
   getApiGames
 } from './server.js';
 import auth from './lib/auth.js';
-import { getVideoTrailerData, resolveAchievementBadgeImage } from './lib/utils.js';
+import { getVideoTrailerData, resolveAchievementBadgeImage, normalizeGogAchievement } from './lib/utils.js';
+import { isGogConfigured } from './lib/gog.js';
+import { isEpicConfigured } from './lib/epic.js';
+
+// GOG_REFRESH_TOKEN / EPIC_REFRESH_TOKEN may legitimately be set in a developer's
+// local .env once they've run `npm run login:gog` / `npm run login:epic`. Tests that
+// specifically exercise the "unconfigured" fallback path stub those vars out for
+// their duration so they stay deterministic regardless of local .env contents.
+function withoutProviderCredentials(fn) {
+  return async () => {
+    const saved = { GOG_REFRESH_TOKEN: process.env.GOG_REFRESH_TOKEN, EPIC_REFRESH_TOKEN: process.env.EPIC_REFRESH_TOKEN };
+    delete process.env.GOG_REFRESH_TOKEN;
+    delete process.env.EPIC_REFRESH_TOKEN;
+    try {
+      await fn();
+    } finally {
+      for (const [key, value] of Object.entries(saved)) {
+        if (value === undefined) delete process.env[key];
+        else process.env[key] = value;
+      }
+    }
+  };
+}
 
 describe('server helper functions', () => {
   it('normalizes page values to integer >= 1', () => {
@@ -96,6 +119,63 @@ describe('server helper functions', () => {
     assert.strictEqual(achievements[0].apiname, 'first_play');
     assert.strictEqual(typeof achievements[0].achieved, 'boolean');
   });
+
+  it('returns fallback GOG achievements when no GOG refresh token is configured', withoutProviderCredentials(async () => {
+    assert.strictEqual(isGogConfigured(), false);
+    const achievements = await fetchGogAchievementsForAppid('the-witcher-3-wild-hunt');
+    assert.ok(Array.isArray(achievements));
+    assert.ok(achievements.length > 0);
+    assert.strictEqual(typeof achievements[0].achieved, 'boolean');
+  }));
+
+  it('reports Epic as unconfigured without an EPIC_REFRESH_TOKEN', withoutProviderCredentials(() => {
+    assert.strictEqual(isEpicConfigured(), false);
+  }));
+
+  it('normalizes a GOG achievement payload, deriving unlock state from date_unlocked', () => {
+    const unlocked = normalizeGogAchievement({
+      achievement_key: 'ach_finish_game',
+      name: 'Finish the Game',
+      description: 'Complete the main story',
+      date_unlocked: '2024-01-15T12:00:00Z',
+      image_url_unlocked: 'https://example.com/unlocked.jpg',
+      image_url_locked: 'https://example.com/locked.jpg'
+    });
+    assert.strictEqual(unlocked.apiname, 'ach_finish_game');
+    assert.strictEqual(unlocked.achieved, true);
+    assert.strictEqual(unlocked.badgeimage, 'https://example.com/unlocked.jpg');
+    assert.ok(unlocked.unlocktime > 0);
+
+    const locked = normalizeGogAchievement({
+      achievement_key: 'ach_hidden',
+      name: 'Hidden',
+      image_url_locked: 'https://example.com/locked.jpg'
+    });
+    assert.strictEqual(locked.achieved, false);
+    assert.strictEqual(locked.badgeimage, 'https://example.com/locked.jpg');
+    assert.strictEqual(locked.unlocktime, 0);
+  });
+
+  it('falls back to sample GOG/Epic games when no credentials are configured', withoutProviderCredentials(async () => {
+    for (const provider of ['gog', 'epic']) {
+      const req = { query: { provider } };
+      const res = {
+        statusCode: 200,
+        body: null,
+        status(code) { this.statusCode = code; return this; },
+        json(payload) { this.body = payload; return this; },
+        type() { return this; },
+        send(payload) { this.body = payload; return this; }
+      };
+
+      await getApiGames(req, res);
+
+      assert.strictEqual(res.statusCode, 200);
+      assert.strictEqual(res.body.provider, provider);
+      assert.ok(Array.isArray(res.body.games));
+      assert.ok(res.body.games.length > 0);
+    }
+  }));
 
   it('builds a Steam-style achievement icon URL when no direct badge image is provided', () => {
     const badgeImage = resolveAchievementBadgeImage({ apiname: 'ach_1' }, '730');

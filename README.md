@@ -81,6 +81,26 @@ Displays the current user's steam and other providers from games library using t
 >
 > To enable RetroAchievements integration, configure `RETROACHIEVEMENTS_USER` and `RETROACHIEVEMENTS_API_KEY` in your `.env` file. When these are not set, the app falls back to sample RetroAchievements game data for preview.
 
+## GOG & Epic Games integration
+
+Neither GOG nor Epic Games Store publish a public API for personal library data, so these integrations talk to the same *unofficial* endpoints their own launchers use (the same approach taken by open-source tools like Heroic Games Launcher and Legendary). Without credentials configured, both providers fall back to sample data for preview.
+
+### GOG
+
+1. `npm run login:gog`
+2. Open the printed URL, log in to GOG, then copy the `code` query parameter from the resulting `embed.gog.com` URL and paste it back into the prompt.
+3. Copy the printed `GOG_REFRESH_TOKEN` into your `.env` file.
+
+Once configured, `/api/player`, `/api/games`, and `/api/achievements` fetch your real owned games, profile, and achievement progress from GOG. Playtime isn't exposed by this API, so it's reported as `0`.
+
+### Epic Games Store
+
+1. `npm run login:epic`
+2. Open the printed URL, log in to Epic Games, then copy the `authorizationCode` value from the JSON page it lands on and paste it back into the prompt.
+3. Copy the printed `EPIC_REFRESH_TOKEN` into your `.env` file.
+
+Once configured, `/api/player` and `/api/games` fetch your real account name and owned games (entitlements) from Epic. Epic doesn't expose a generic playtime/achievements API, so achievements keep falling back to sample data unless you point `EPIC_API_BASE`/`EPIC_API_KEY` at your own per-game achievement source.
+
 ## Project Structure
 
 ```text
