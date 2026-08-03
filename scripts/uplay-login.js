@@ -22,9 +22,17 @@ async function main() {
   const payload = parseUplayLoginPayload(pasted);
   const session = await verifyUplaySession(payload);
 
-  console.log(`\nLogged in as ${session.nameOnPlatform || payload.userId}. Add these lines to your .env file:\n`);
-  console.log(`UPLAY_REMEMBER_ME_TICKET=${session.rememberMeTicket}`);
-  console.log(`UPLAY_USER_ID=${session.userId}`);
+  console.log(`\nLogged in as ${session.nameOnPlatform || payload.userId}.`);
+
+  if (session.rememberMeTicket) {
+    console.log('\nAdd these lines to your .env file:\n');
+    console.log(`UPLAY_REMEMBER_ME_TICKET=${session.rememberMeTicket}`);
+    console.log(`UPLAY_USER_ID=${session.userId}`);
+  } else {
+    console.log('\nUbisoft did not issue a remember-me ticket for this login, so there is nothing');
+    console.log('to save for unattended access - this session is only valid until it expires');
+    console.log('(a few hours). Re-run this script and paste a fresh PRODloginData when it does.');
+  }
 }
 
 main().catch((err) => {
