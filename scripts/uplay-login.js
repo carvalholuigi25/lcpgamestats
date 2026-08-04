@@ -24,14 +24,13 @@ async function main() {
 
   console.log(`\nLogged in as ${session.nameOnPlatform || payload.userId}.`);
 
+  console.log('\nYour Uplay session has been saved to .env automatically - no need to copy anything.');
   if (session.rememberMeTicket) {
-    console.log('\nAdd these lines to your .env file:\n');
-    console.log(`UPLAY_REMEMBER_ME_TICKET=${session.rememberMeTicket}`);
-    console.log(`UPLAY_USER_ID=${session.userId}`);
+    console.log('Ubisoft issued a remember-me ticket, so it will keep refreshing itself unattended.');
   } else {
-    console.log('\nUbisoft did not issue a remember-me ticket for this login, so there is nothing');
-    console.log('to save for unattended access - this session is only valid until it expires');
-    console.log('(a few hours). Re-run this script and paste a fresh PRODloginData when it does.');
+    console.log('Ubisoft did not issue a remember-me ticket for this login, so this session is only');
+    console.log('valid until it expires (a few hours) - re-run this script and paste a fresh');
+    console.log('PRODloginData once it does.');
   }
 }
 
