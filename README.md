@@ -108,7 +108,7 @@ Once configured, `/api/player` and `/api/games` fetch your real account name and
 3. Once you land back on the Ubisoft Connect homepage logged in, open your browser's DevTools (F12) → Application/Storage → Local Storage → `https://connect.ubisoft.com`, and copy the value of the `PRODloginData` key.
 4. Paste it into the prompt. The script verifies it works, then prints `UPLAY_REMEMBER_ME_TICKET` and `UPLAY_USER_ID` to copy into your `.env` file.
 
-Once configured, `/api/player` and `/api/games` fetch your real account name and PC-owned games from Ubisoft Connect's Club API. Ubisoft doesn't expose header art or a generic achievements API through this endpoint, so game art falls back to a placeholder and achievements keep falling back to sample data. Ubisoft also occasionally rotates the remember-me ticket on refresh - if that happens, the server logs the new value so you can update `.env` before your next restart.
+Once configured, `/api/player` and `/api/games` fetch your real account name, PC-owned games, per-game playtime/last-played, and header art from Ubisoft Connect's Club API. Ubisoft doesn't expose a generic achievements API through this endpoint, so achievements keep falling back to sample data. Ubisoft also occasionally rotates the remember-me ticket on refresh - if that happens, the server logs the new value so you can update `.env` before your next restart.
 
 ## Project Structure
 

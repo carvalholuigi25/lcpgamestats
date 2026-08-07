@@ -16,7 +16,7 @@ import auth from './lib/auth.js';
 import feedbackStore from './lib/feedback.js';
 import { isGogConfigured, fetchGogUserData, fetchGogOwnedGameIds, fetchGogProductDetails, fetchGogAchievements } from './lib/gog.js';
 import { isEpicConfigured, fetchEpicAccountInfo, fetchEpicLibraryItems, fetchEpicCatalogItem } from './lib/epic.js';
-import { isUplayConfigured, fetchUplayAccountInfo, fetchUplayOwnedGames } from './lib/uplay.js';
+import { isUplayConfigured, fetchUplayAccountInfo, fetchUplayOwnedGames, fetchUplayGameDetails } from './lib/uplay.js';
 dotenv.config();
 
 const app = express();
@@ -497,6 +497,29 @@ async function fetchCachedEpicCatalogItem(namespace, catalogItemId) {
   return item;
 }
 
+// Unlike GOG's product details/Epic's catalog items, this is per-game
+// playtime rather than static metadata, so it's re-fetched (not cached)
+// every /api/games call to stay current.
+async function fetchUplayGameDetailsSafe(spaceId) {
+  try {
+    return await fetchUplayGameDetails(spaceId);
+  } catch (err) {
+    console.error(`Error fetching Uplay game details for ${spaceId}:`, err.message);
+    return { playtimeMinutes: 0, lastPlayed: 0 };
+  }
+}
+
+// Ubisoft only assigns a real slug to some games - others (eg. Far Cry 3 Blood
+// Dragon in testing) get the spaceId echoed back as "slug", which doesn't
+// resolve on the storefront, so fall back to a search link in that case.
+function getUplayStoreLink(game) {
+  const spaceId = game.spaceId || game.id;
+  if (game.slug && game.slug !== spaceId) {
+    return `https://store.ubi.com/us/${game.slug}`;
+  }
+  return `https://store.ubi.com/us/search/?q=${encodeURIComponent(game.name)}`;
+}
+
 function pickEpicKeyImage(catalogItem) {
   const images = catalogItem?.keyImages || [];
   const preferredTypes = ['DieselStoreFrontWide', 'OfferImageWide', 'DieselGameBoxWide', 'Thumbnail'];
@@ -866,14 +889,16 @@ async function getApiGames(req, res) {
   if (provider.id === 'uplay' && isUplayConfigured()) {
     try {
       const ownedGames = await fetchUplayOwnedGames();
+      const details = await Promise.all(ownedGames.map((game) => fetchUplayGameDetailsSafe(game.spaceId || game.id)));
 
-      let games = ownedGames.map((game) => normalizeProviderGame(provider, {
+      let games = ownedGames.map((game, index) => normalizeProviderGame(provider, {
         appid: game.spaceId || game.id,
         name: game.name,
-        header_image: '',
-        store_path: game.spaceId || game.id,
-        playtime_forever: 0,
-        playtime_2weeks: 0
+        header_image: game.bannerUrl || game.coverUrl || '',
+        store_link: getUplayStoreLink(game),
+        playtime_forever: details[index].playtimeMinutes,
+        playtime_2weeks: 0,
+        rtime_last_played: details[index].lastPlayed
       }));
 
       games = filterGames(games, search);
