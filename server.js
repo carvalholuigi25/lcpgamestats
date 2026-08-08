@@ -16,7 +16,7 @@ import { randomBytes } from 'node:crypto';
 import { getHeaderImage, getStoreGameLink, normalizeEpicAchievement, normalizeGogAchievement, getVideoTrailerData, resolveAchievementBadgeImage } from './lib/utils.js';
 import { isGogConfigured, fetchGogUserData, fetchGogOwnedGameIds, fetchGogProductDetails, fetchGogAchievements } from './lib/gog.js';
 import { isEpicConfigured, fetchEpicAccountInfo, fetchEpicLibraryItems, fetchEpicCatalogItem } from './lib/epic.js';
-import { isUplayConfigured, fetchUplayAccountInfo, fetchUplayOwnedGames, fetchUplayGameDetails, refreshSession } from './lib/uplay.js';
+import { isUplayConfigured, fetchUplayAccountInfo, fetchUplayOwnedGames, fetchUplayGameDetails, refreshSession, refreshMyUplaySession } from './lib/uplay.js';
 
 dotenv.config();
 
@@ -1279,7 +1279,7 @@ app.get('/api/providers', (req, res) => {
   res.json({ providers: Object.values(PROVIDERS).map(({ id, label }) => ({ id, label })) });
 });
 
-app.post('/api/feedback', (req, res) => {
+app.post('/api/feedback', async (req, res) => {
   await getFeedback(req, res);
 });
 
@@ -1303,7 +1303,7 @@ app.get('/api/achievements', async (req, res) => {
   await getApiAchievements(req, res);
 });
 
-app.get('/api/refresh/session/uplay', requireLogin, requireRole('admin'), async (req, res) => {
+app.get('/api/refresh/session/uplay', async (req, res) => {
   await refreshMyUplaySession(req, res);
 });
 
