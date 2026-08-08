@@ -6,17 +6,18 @@ import cors from 'cors';
 import fs from 'fs';
 import session from 'express-session';
 import passport from 'passport';
+import multer from 'multer';
+import auth from './lib/auth.js';
+import feedbackStore from './lib/feedback.js';
 import { Strategy as LocalStrategy } from 'passport-local';
 import { Strategy as GoogleStrategy } from 'passport-google-oauth20';
 import { fileURLToPath } from 'url';
 import { randomBytes } from 'node:crypto';
 import { getHeaderImage, getStoreGameLink, normalizeEpicAchievement, normalizeGogAchievement, getVideoTrailerData, resolveAchievementBadgeImage } from './lib/utils.js';
-import multer from 'multer';
-import auth from './lib/auth.js';
-import feedbackStore from './lib/feedback.js';
 import { isGogConfigured, fetchGogUserData, fetchGogOwnedGameIds, fetchGogProductDetails, fetchGogAchievements } from './lib/gog.js';
 import { isEpicConfigured, fetchEpicAccountInfo, fetchEpicLibraryItems, fetchEpicCatalogItem } from './lib/epic.js';
-import { isUplayConfigured, fetchUplayAccountInfo, fetchUplayOwnedGames, fetchUplayGameDetails } from './lib/uplay.js';
+import { isUplayConfigured, fetchUplayAccountInfo, fetchUplayOwnedGames, fetchUplayGameDetails, refreshSession } from './lib/uplay.js';
+
 dotenv.config();
 
 const app = express();
@@ -1187,6 +1188,39 @@ async function getApiAchievements(req, res) {
   }
 }
 
+async function getFeedback(req, res) {
+  const FEEDBACK_CATEGORIES = ['bug', 'feature', 'general'];
+  const { name, email, category, message } = req.body || {};
+  const rating = Number(req.body && req.body.rating);
+
+  if (!name || !String(name).trim()) {
+    return res.status(400).json({ error: 'Name is required' });
+  }
+  if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(email).trim())) {
+    return res.status(400).json({ error: 'A valid email is required' });
+  }
+  if (!message || !String(message).trim()) {
+    return res.status(400).json({ error: 'Message is required' });
+  }
+
+  const entry = {
+    name: String(name).trim().slice(0, 200),
+    email: String(email).trim().slice(0, 200),
+    category: FEEDBACK_CATEGORIES.includes(category) ? category : 'general',
+    message: String(message).trim().slice(0, 5000),
+    rating: Number.isFinite(rating) ? Math.min(5, Math.max(1, Math.round(rating))) : null,
+    createdAt: Math.floor(Date.now() / 1000)
+  };
+
+  try {
+    feedbackStore.save(entry);
+    res.json({ success: true });
+  } catch (err) {
+    console.error('Failed to save feedback:', err.message);
+    res.status(500).json({ error: 'Unable to save feedback' });
+  }
+}
+
 const spaces = 4;
 app.set("json spaces", spaces);
 app.use('/node_modules', express.static(path.join(__dirname, 'node_modules')));
@@ -1245,39 +1279,10 @@ app.get('/api/providers', (req, res) => {
   res.json({ providers: Object.values(PROVIDERS).map(({ id, label }) => ({ id, label })) });
 });
 
-const FEEDBACK_CATEGORIES = ['bug', 'feature', 'general'];
-
 app.post('/api/feedback', (req, res) => {
-  const { name, email, category, message } = req.body || {};
-  const rating = Number(req.body && req.body.rating);
-
-  if (!name || !String(name).trim()) {
-    return res.status(400).json({ error: 'Name is required' });
-  }
-  if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(email).trim())) {
-    return res.status(400).json({ error: 'A valid email is required' });
-  }
-  if (!message || !String(message).trim()) {
-    return res.status(400).json({ error: 'Message is required' });
-  }
-
-  const entry = {
-    name: String(name).trim().slice(0, 200),
-    email: String(email).trim().slice(0, 200),
-    category: FEEDBACK_CATEGORIES.includes(category) ? category : 'general',
-    message: String(message).trim().slice(0, 5000),
-    rating: Number.isFinite(rating) ? Math.min(5, Math.max(1, Math.round(rating))) : null,
-    createdAt: Math.floor(Date.now() / 1000)
-  };
-
-  try {
-    feedbackStore.save(entry);
-    res.json({ success: true });
-  } catch (err) {
-    console.error('Failed to save feedback:', err.message);
-    res.status(500).json({ error: 'Unable to save feedback' });
-  }
+  await getFeedback(req, res);
 });
+
 app.get('/api/player', async (req, res) => {
   await getApiPlayer(req, res);
 });
@@ -1296,6 +1301,10 @@ app.get('/api/gamesmixedheader', async (req, res) => {
 
 app.get('/api/achievements', async (req, res) => {
   await getApiAchievements(req, res);
+});
+
+app.get('/api/refresh/session/uplay', requireLogin, requireRole('admin'), async (req, res) => {
+  await refreshMyUplaySession(req, res);
 });
 
 // Authentication routes
