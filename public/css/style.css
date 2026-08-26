@@ -356,7 +356,7 @@ select option, .form-select option {
   transition: width 0.35s ease;
 }
 
-#pagination-controls .page-link {
+#pagination-controls .page-link, #achievements-pagination-controls .page-link {
   padding: 0.5rem 0.85rem;
   border-radius: 24px;
   width: 2.5rem;
@@ -1090,15 +1090,21 @@ html[data-bs-theme=glassmorphism] #search-input:focus, html[data-bs-theme=glassm
   color: white !important;
 }
 html[data-bs-theme=glassmorphism] #pagination-controls, html[data-bs-theme=glassmorphism] .pagination-controls,
+html[data-bs-theme=glassmorphism] #achievements-pagination-controls, html[data-bs-theme=glassmorphism] .achievements-pagination-controls,
 html[data-bs-theme=glassmorphism] #pagination, html[data-bs-theme=glassmorphism] .pagination, body.theme-glassmorphism #pagination-controls, body.theme-glassmorphism .pagination-controls,
+body.theme-glassmorphism #achievements-pagination-controls, body.theme-glassmorphism .achievements-pagination-controls,
 body.theme-glassmorphism #pagination, body.theme-glassmorphism .pagination, .glassmorphism #pagination-controls, .glassmorphism .pagination-controls,
+.glassmorphism #achievements-pagination-controls, .glassmorphism .achievements-pagination-controls,
 .glassmorphism #pagination, .glassmorphism .pagination {
   border: 1px solid rgba(255, 255, 255, 0.08) !important;
   color: white;
 }
 html[data-bs-theme=glassmorphism] #pagination-controls .page-link, html[data-bs-theme=glassmorphism] .pagination-controls .page-link,
+html[data-bs-theme=glassmorphism] #achievements-pagination-controls .page-link, html[data-bs-theme=glassmorphism] .achievements-pagination-controls .page-link,
 html[data-bs-theme=glassmorphism] #pagination .page-link, html[data-bs-theme=glassmorphism] .pagination .page-link, body.theme-glassmorphism #pagination-controls .page-link, body.theme-glassmorphism .pagination-controls .page-link,
+body.theme-glassmorphism #achievements-pagination-controls .page-link, body.theme-glassmorphism .achievements-pagination-controls .page-link,
 body.theme-glassmorphism #pagination .page-link, body.theme-glassmorphism .pagination .page-link, .glassmorphism #pagination-controls .page-link, .glassmorphism .pagination-controls .page-link,
+.glassmorphism #achievements-pagination-controls .page-link, .glassmorphism .achievements-pagination-controls .page-link,
 .glassmorphism #pagination .page-link, .glassmorphism .pagination .page-link {
   background: rgba(255, 255, 255, 0.08) !important;
   -webkit-backdrop-filter: blur(6px) saturate(120%) !important;
@@ -1107,10 +1113,16 @@ body.theme-glassmorphism #pagination .page-link, body.theme-glassmorphism .pagin
   color: white !important;
 }
 html[data-bs-theme=glassmorphism] #pagination-controls .page-link, html[data-bs-theme=glassmorphism] #pagination-controls .page-item, html[data-bs-theme=glassmorphism] .pagination-controls .page-link, html[data-bs-theme=glassmorphism] .pagination-controls .page-item,
+html[data-bs-theme=glassmorphism] #achievements-pagination-controls .page-link,
+html[data-bs-theme=glassmorphism] #achievements-pagination-controls .page-item, html[data-bs-theme=glassmorphism] .achievements-pagination-controls .page-link, html[data-bs-theme=glassmorphism] .achievements-pagination-controls .page-item,
 html[data-bs-theme=glassmorphism] #pagination .page-link,
 html[data-bs-theme=glassmorphism] #pagination .page-item, html[data-bs-theme=glassmorphism] .pagination .page-link, html[data-bs-theme=glassmorphism] .pagination .page-item, body.theme-glassmorphism #pagination-controls .page-link, body.theme-glassmorphism #pagination-controls .page-item, body.theme-glassmorphism .pagination-controls .page-link, body.theme-glassmorphism .pagination-controls .page-item,
+body.theme-glassmorphism #achievements-pagination-controls .page-link,
+body.theme-glassmorphism #achievements-pagination-controls .page-item, body.theme-glassmorphism .achievements-pagination-controls .page-link, body.theme-glassmorphism .achievements-pagination-controls .page-item,
 body.theme-glassmorphism #pagination .page-link,
 body.theme-glassmorphism #pagination .page-item, body.theme-glassmorphism .pagination .page-link, body.theme-glassmorphism .pagination .page-item, .glassmorphism #pagination-controls .page-link, .glassmorphism #pagination-controls .page-item, .glassmorphism .pagination-controls .page-link, .glassmorphism .pagination-controls .page-item,
+.glassmorphism #achievements-pagination-controls .page-link,
+.glassmorphism #achievements-pagination-controls .page-item, .glassmorphism .achievements-pagination-controls .page-link, .glassmorphism .achievements-pagination-controls .page-item,
 .glassmorphism #pagination .page-link,
 .glassmorphism #pagination .page-item, .glassmorphism .pagination .page-link, .glassmorphism .pagination .page-item {
   background: inherit;
@@ -1118,10 +1130,16 @@ body.theme-glassmorphism #pagination .page-item, body.theme-glassmorphism .pagin
   color: inherit !important;
 }
 html[data-bs-theme=glassmorphism] #pagination-controls .page-link.active, html[data-bs-theme=glassmorphism] #pagination-controls .page-item.active, html[data-bs-theme=glassmorphism] .pagination-controls .page-link.active, html[data-bs-theme=glassmorphism] .pagination-controls .page-item.active,
+html[data-bs-theme=glassmorphism] #achievements-pagination-controls .page-link.active,
+html[data-bs-theme=glassmorphism] #achievements-pagination-controls .page-item.active, html[data-bs-theme=glassmorphism] .achievements-pagination-controls .page-link.active, html[data-bs-theme=glassmorphism] .achievements-pagination-controls .page-item.active,
 html[data-bs-theme=glassmorphism] #pagination .page-link.active,
 html[data-bs-theme=glassmorphism] #pagination .page-item.active, html[data-bs-theme=glassmorphism] .pagination .page-link.active, html[data-bs-theme=glassmorphism] .pagination .page-item.active, body.theme-glassmorphism #pagination-controls .page-link.active, body.theme-glassmorphism #pagination-controls .page-item.active, body.theme-glassmorphism .pagination-controls .page-link.active, body.theme-glassmorphism .pagination-controls .page-item.active,
+body.theme-glassmorphism #achievements-pagination-controls .page-link.active,
+body.theme-glassmorphism #achievements-pagination-controls .page-item.active, body.theme-glassmorphism .achievements-pagination-controls .page-link.active, body.theme-glassmorphism .achievements-pagination-controls .page-item.active,
 body.theme-glassmorphism #pagination .page-link.active,
 body.theme-glassmorphism #pagination .page-item.active, body.theme-glassmorphism .pagination .page-link.active, body.theme-glassmorphism .pagination .page-item.active, .glassmorphism #pagination-controls .page-link.active, .glassmorphism #pagination-controls .page-item.active, .glassmorphism .pagination-controls .page-link.active, .glassmorphism .pagination-controls .page-item.active,
+.glassmorphism #achievements-pagination-controls .page-link.active,
+.glassmorphism #achievements-pagination-controls .page-item.active, .glassmorphism .achievements-pagination-controls .page-link.active, .glassmorphism .achievements-pagination-controls .page-item.active,
 .glassmorphism #pagination .page-link.active,
 .glassmorphism #pagination .page-item.active, .glassmorphism .pagination .page-link.active, .glassmorphism .pagination .page-item.active {
   background: rgba(255, 255, 255, 0.06) !important;
@@ -1245,15 +1263,21 @@ html[data-bs-theme=liquid] #search-input:focus, html[data-bs-theme=liquid] #sort
   color: #e6f7ff !important;
 }
 html[data-bs-theme=liquid] #pagination-controls, html[data-bs-theme=liquid] .pagination-controls,
+html[data-bs-theme=liquid] #achievements-pagination-controls, html[data-bs-theme=liquid] .achievements-pagination-controls,
 html[data-bs-theme=liquid] #pagination, html[data-bs-theme=liquid] .pagination, body.theme-liquid #pagination-controls, body.theme-liquid .pagination-controls,
+body.theme-liquid #achievements-pagination-controls, body.theme-liquid .achievements-pagination-controls,
 body.theme-liquid #pagination, body.theme-liquid .pagination, .liquid #pagination-controls, .liquid .pagination-controls,
+.liquid #achievements-pagination-controls, .liquid .achievements-pagination-controls,
 .liquid #pagination, .liquid .pagination {
   border: none !important;
   color: #e6f7ff;
 }
 html[data-bs-theme=liquid] #pagination-controls .page-link, html[data-bs-theme=liquid] .pagination-controls .page-link,
+html[data-bs-theme=liquid] #achievements-pagination-controls .page-link, html[data-bs-theme=liquid] .achievements-pagination-controls .page-link,
 html[data-bs-theme=liquid] #pagination .page-link, html[data-bs-theme=liquid] .pagination .page-link, body.theme-liquid #pagination-controls .page-link, body.theme-liquid .pagination-controls .page-link,
+body.theme-liquid #achievements-pagination-controls .page-link, body.theme-liquid .achievements-pagination-controls .page-link,
 body.theme-liquid #pagination .page-link, body.theme-liquid .pagination .page-link, .liquid #pagination-controls .page-link, .liquid .pagination-controls .page-link,
+.liquid #achievements-pagination-controls .page-link, .liquid .achievements-pagination-controls .page-link,
 .liquid #pagination .page-link, .liquid .pagination .page-link {
   background: linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.01)) !important;
   -webkit-backdrop-filter: blur(6px) saturate(120%) !important;
@@ -1262,10 +1286,16 @@ body.theme-liquid #pagination .page-link, body.theme-liquid .pagination .page-li
   color: #e6f7ff !important;
 }
 html[data-bs-theme=liquid] #pagination-controls .page-link, html[data-bs-theme=liquid] #pagination-controls .page-item, html[data-bs-theme=liquid] .pagination-controls .page-link, html[data-bs-theme=liquid] .pagination-controls .page-item,
+html[data-bs-theme=liquid] #achievements-pagination-controls .page-link,
+html[data-bs-theme=liquid] #achievements-pagination-controls .page-item, html[data-bs-theme=liquid] .achievements-pagination-controls .page-link, html[data-bs-theme=liquid] .achievements-pagination-controls .page-item,
 html[data-bs-theme=liquid] #pagination .page-link,
 html[data-bs-theme=liquid] #pagination .page-item, html[data-bs-theme=liquid] .pagination .page-link, html[data-bs-theme=liquid] .pagination .page-item, body.theme-liquid #pagination-controls .page-link, body.theme-liquid #pagination-controls .page-item, body.theme-liquid .pagination-controls .page-link, body.theme-liquid .pagination-controls .page-item,
+body.theme-liquid #achievements-pagination-controls .page-link,
+body.theme-liquid #achievements-pagination-controls .page-item, body.theme-liquid .achievements-pagination-controls .page-link, body.theme-liquid .achievements-pagination-controls .page-item,
 body.theme-liquid #pagination .page-link,
 body.theme-liquid #pagination .page-item, body.theme-liquid .pagination .page-link, body.theme-liquid .pagination .page-item, .liquid #pagination-controls .page-link, .liquid #pagination-controls .page-item, .liquid .pagination-controls .page-link, .liquid .pagination-controls .page-item,
+.liquid #achievements-pagination-controls .page-link,
+.liquid #achievements-pagination-controls .page-item, .liquid .achievements-pagination-controls .page-link, .liquid .achievements-pagination-controls .page-item,
 .liquid #pagination .page-link,
 .liquid #pagination .page-item, .liquid .pagination .page-link, .liquid .pagination .page-item {
   background: inherit;
@@ -1273,10 +1303,16 @@ body.theme-liquid #pagination .page-item, body.theme-liquid .pagination .page-li
   color: inherit !important;
 }
 html[data-bs-theme=liquid] #pagination-controls .page-link.active, html[data-bs-theme=liquid] #pagination-controls .page-item.active, html[data-bs-theme=liquid] .pagination-controls .page-link.active, html[data-bs-theme=liquid] .pagination-controls .page-item.active,
+html[data-bs-theme=liquid] #achievements-pagination-controls .page-link.active,
+html[data-bs-theme=liquid] #achievements-pagination-controls .page-item.active, html[data-bs-theme=liquid] .achievements-pagination-controls .page-link.active, html[data-bs-theme=liquid] .achievements-pagination-controls .page-item.active,
 html[data-bs-theme=liquid] #pagination .page-link.active,
 html[data-bs-theme=liquid] #pagination .page-item.active, html[data-bs-theme=liquid] .pagination .page-link.active, html[data-bs-theme=liquid] .pagination .page-item.active, body.theme-liquid #pagination-controls .page-link.active, body.theme-liquid #pagination-controls .page-item.active, body.theme-liquid .pagination-controls .page-link.active, body.theme-liquid .pagination-controls .page-item.active,
+body.theme-liquid #achievements-pagination-controls .page-link.active,
+body.theme-liquid #achievements-pagination-controls .page-item.active, body.theme-liquid .achievements-pagination-controls .page-link.active, body.theme-liquid .achievements-pagination-controls .page-item.active,
 body.theme-liquid #pagination .page-link.active,
 body.theme-liquid #pagination .page-item.active, body.theme-liquid .pagination .page-link.active, body.theme-liquid .pagination .page-item.active, .liquid #pagination-controls .page-link.active, .liquid #pagination-controls .page-item.active, .liquid .pagination-controls .page-link.active, .liquid .pagination-controls .page-item.active,
+.liquid #achievements-pagination-controls .page-link.active,
+.liquid #achievements-pagination-controls .page-item.active, .liquid .achievements-pagination-controls .page-link.active, .liquid .achievements-pagination-controls .page-item.active,
 .liquid #pagination .page-link.active,
 .liquid #pagination .page-item.active, .liquid .pagination .page-link.active, .liquid .pagination .page-item.active {
   background: linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.01)) !important;
@@ -1386,14 +1422,20 @@ html[data-bs-theme=neomorphism] select option, body.theme-neomorphism select opt
   color: #3a3f4b;
 }
 html[data-bs-theme=neomorphism] #pagination-controls, html[data-bs-theme=neomorphism] .pagination-controls,
+html[data-bs-theme=neomorphism] #achievements-pagination-controls, html[data-bs-theme=neomorphism] .achievements-pagination-controls,
 html[data-bs-theme=neomorphism] #pagination, html[data-bs-theme=neomorphism] .pagination, body.theme-neomorphism #pagination-controls, body.theme-neomorphism .pagination-controls,
+body.theme-neomorphism #achievements-pagination-controls, body.theme-neomorphism .achievements-pagination-controls,
 body.theme-neomorphism #pagination, body.theme-neomorphism .pagination, .neomorphism #pagination-controls, .neomorphism .pagination-controls,
+.neomorphism #achievements-pagination-controls, .neomorphism .achievements-pagination-controls,
 .neomorphism #pagination, .neomorphism .pagination {
   color: #3a3f4b;
 }
 html[data-bs-theme=neomorphism] #pagination-controls .page-link, html[data-bs-theme=neomorphism] .pagination-controls .page-link,
+html[data-bs-theme=neomorphism] #achievements-pagination-controls .page-link, html[data-bs-theme=neomorphism] .achievements-pagination-controls .page-link,
 html[data-bs-theme=neomorphism] #pagination .page-link, html[data-bs-theme=neomorphism] .pagination .page-link, body.theme-neomorphism #pagination-controls .page-link, body.theme-neomorphism .pagination-controls .page-link,
+body.theme-neomorphism #achievements-pagination-controls .page-link, body.theme-neomorphism .achievements-pagination-controls .page-link,
 body.theme-neomorphism #pagination .page-link, body.theme-neomorphism .pagination .page-link, .neomorphism #pagination-controls .page-link, .neomorphism .pagination-controls .page-link,
+.neomorphism #achievements-pagination-controls .page-link, .neomorphism .achievements-pagination-controls .page-link,
 .neomorphism #pagination .page-link, .neomorphism .pagination .page-link {
   background: #e6e9ef;
   border: none !important;
@@ -1403,8 +1445,11 @@ body.theme-neomorphism #pagination .page-link, body.theme-neomorphism .paginatio
   color: #3a3f4b !important;
 }
 html[data-bs-theme=neomorphism] #pagination-controls .page-item.active .page-link, html[data-bs-theme=neomorphism] .pagination-controls .page-item.active .page-link,
+html[data-bs-theme=neomorphism] #achievements-pagination-controls .page-item.active .page-link, html[data-bs-theme=neomorphism] .achievements-pagination-controls .page-item.active .page-link,
 html[data-bs-theme=neomorphism] #pagination .page-item.active .page-link, html[data-bs-theme=neomorphism] .pagination .page-item.active .page-link, body.theme-neomorphism #pagination-controls .page-item.active .page-link, body.theme-neomorphism .pagination-controls .page-item.active .page-link,
+body.theme-neomorphism #achievements-pagination-controls .page-item.active .page-link, body.theme-neomorphism .achievements-pagination-controls .page-item.active .page-link,
 body.theme-neomorphism #pagination .page-item.active .page-link, body.theme-neomorphism .pagination .page-item.active .page-link, .neomorphism #pagination-controls .page-item.active .page-link, .neomorphism .pagination-controls .page-item.active .page-link,
+.neomorphism #achievements-pagination-controls .page-item.active .page-link, .neomorphism .achievements-pagination-controls .page-item.active .page-link,
 .neomorphism #pagination .page-item.active .page-link, .neomorphism .pagination .page-item.active .page-link {
   background: #e6e9ef;
   border: none !important;
@@ -1516,22 +1561,31 @@ html[data-bs-theme=matrix] .btnsearchicogrp, body.theme-matrix .btnsearchicogrp,
   color: #39ff14 !important;
 }
 html[data-bs-theme=matrix] #pagination-controls, html[data-bs-theme=matrix] .pagination-controls,
+html[data-bs-theme=matrix] #achievements-pagination-controls, html[data-bs-theme=matrix] .achievements-pagination-controls,
 html[data-bs-theme=matrix] #pagination, html[data-bs-theme=matrix] .pagination, body.theme-matrix #pagination-controls, body.theme-matrix .pagination-controls,
+body.theme-matrix #achievements-pagination-controls, body.theme-matrix .achievements-pagination-controls,
 body.theme-matrix #pagination, body.theme-matrix .pagination, .matrix #pagination-controls, .matrix .pagination-controls,
+.matrix #achievements-pagination-controls, .matrix .achievements-pagination-controls,
 .matrix #pagination, .matrix .pagination {
   color: #39ff14;
 }
 html[data-bs-theme=matrix] #pagination-controls .page-link, html[data-bs-theme=matrix] .pagination-controls .page-link,
+html[data-bs-theme=matrix] #achievements-pagination-controls .page-link, html[data-bs-theme=matrix] .achievements-pagination-controls .page-link,
 html[data-bs-theme=matrix] #pagination .page-link, html[data-bs-theme=matrix] .pagination .page-link, body.theme-matrix #pagination-controls .page-link, body.theme-matrix .pagination-controls .page-link,
+body.theme-matrix #achievements-pagination-controls .page-link, body.theme-matrix .achievements-pagination-controls .page-link,
 body.theme-matrix #pagination .page-link, body.theme-matrix .pagination .page-link, .matrix #pagination-controls .page-link, .matrix .pagination-controls .page-link,
+.matrix #achievements-pagination-controls .page-link, .matrix .achievements-pagination-controls .page-link,
 .matrix #pagination .page-link, .matrix .pagination .page-link {
   background: rgba(0, 10, 5, 0.85);
   border: 1px solid rgba(57, 255, 20, 0.35) !important;
   color: #39ff14 !important;
 }
 html[data-bs-theme=matrix] #pagination-controls .page-item.active .page-link, html[data-bs-theme=matrix] .pagination-controls .page-item.active .page-link,
+html[data-bs-theme=matrix] #achievements-pagination-controls .page-item.active .page-link, html[data-bs-theme=matrix] .achievements-pagination-controls .page-item.active .page-link,
 html[data-bs-theme=matrix] #pagination .page-item.active .page-link, html[data-bs-theme=matrix] .pagination .page-item.active .page-link, body.theme-matrix #pagination-controls .page-item.active .page-link, body.theme-matrix .pagination-controls .page-item.active .page-link,
+body.theme-matrix #achievements-pagination-controls .page-item.active .page-link, body.theme-matrix .achievements-pagination-controls .page-item.active .page-link,
 body.theme-matrix #pagination .page-item.active .page-link, body.theme-matrix .pagination .page-item.active .page-link, .matrix #pagination-controls .page-item.active .page-link, .matrix .pagination-controls .page-item.active .page-link,
+.matrix #achievements-pagination-controls .page-item.active .page-link, .matrix .achievements-pagination-controls .page-item.active .page-link,
 .matrix #pagination .page-item.active .page-link, .matrix .pagination .page-item.active .page-link {
   background: rgba(57, 255, 20, 0.18);
   box-shadow: 0 0 10px rgba(57, 255, 20, 0.5);
@@ -1642,22 +1696,31 @@ html[data-bs-theme=cyberpunk] .btnsearchicogrp, body.theme-cyberpunk .btnsearchi
   color: #eafcff !important;
 }
 html[data-bs-theme=cyberpunk] #pagination-controls, html[data-bs-theme=cyberpunk] .pagination-controls,
+html[data-bs-theme=cyberpunk] #achievements-pagination-controls, html[data-bs-theme=cyberpunk] .achievements-pagination-controls,
 html[data-bs-theme=cyberpunk] #pagination, html[data-bs-theme=cyberpunk] .pagination, body.theme-cyberpunk #pagination-controls, body.theme-cyberpunk .pagination-controls,
+body.theme-cyberpunk #achievements-pagination-controls, body.theme-cyberpunk .achievements-pagination-controls,
 body.theme-cyberpunk #pagination, body.theme-cyberpunk .pagination, .cyberpunk #pagination-controls, .cyberpunk .pagination-controls,
+.cyberpunk #achievements-pagination-controls, .cyberpunk .achievements-pagination-controls,
 .cyberpunk #pagination, .cyberpunk .pagination {
   color: #eafcff;
 }
 html[data-bs-theme=cyberpunk] #pagination-controls .page-link, html[data-bs-theme=cyberpunk] .pagination-controls .page-link,
+html[data-bs-theme=cyberpunk] #achievements-pagination-controls .page-link, html[data-bs-theme=cyberpunk] .achievements-pagination-controls .page-link,
 html[data-bs-theme=cyberpunk] #pagination .page-link, html[data-bs-theme=cyberpunk] .pagination .page-link, body.theme-cyberpunk #pagination-controls .page-link, body.theme-cyberpunk .pagination-controls .page-link,
+body.theme-cyberpunk #achievements-pagination-controls .page-link, body.theme-cyberpunk .achievements-pagination-controls .page-link,
 body.theme-cyberpunk #pagination .page-link, body.theme-cyberpunk .pagination .page-link, .cyberpunk #pagination-controls .page-link, .cyberpunk .pagination-controls .page-link,
+.cyberpunk #achievements-pagination-controls .page-link, .cyberpunk .achievements-pagination-controls .page-link,
 .cyberpunk #pagination .page-link, .cyberpunk .pagination .page-link {
   background: rgba(20, 10, 40, 0.7);
   border: 1px solid rgba(5, 217, 232, 0.3) !important;
   color: #eafcff !important;
 }
 html[data-bs-theme=cyberpunk] #pagination-controls .page-item.active .page-link, html[data-bs-theme=cyberpunk] .pagination-controls .page-item.active .page-link,
+html[data-bs-theme=cyberpunk] #achievements-pagination-controls .page-item.active .page-link, html[data-bs-theme=cyberpunk] .achievements-pagination-controls .page-item.active .page-link,
 html[data-bs-theme=cyberpunk] #pagination .page-item.active .page-link, html[data-bs-theme=cyberpunk] .pagination .page-item.active .page-link, body.theme-cyberpunk #pagination-controls .page-item.active .page-link, body.theme-cyberpunk .pagination-controls .page-item.active .page-link,
+body.theme-cyberpunk #achievements-pagination-controls .page-item.active .page-link, body.theme-cyberpunk .achievements-pagination-controls .page-item.active .page-link,
 body.theme-cyberpunk #pagination .page-item.active .page-link, body.theme-cyberpunk .pagination .page-item.active .page-link, .cyberpunk #pagination-controls .page-item.active .page-link, .cyberpunk .pagination-controls .page-item.active .page-link,
+.cyberpunk #achievements-pagination-controls .page-item.active .page-link, .cyberpunk .achievements-pagination-controls .page-item.active .page-link,
 .cyberpunk #pagination .page-item.active .page-link, .cyberpunk .pagination .page-item.active .page-link {
   background: rgba(255, 42, 109, 0.22);
   box-shadow: 0 0 10px rgba(255, 42, 109, 0.6);
@@ -1771,22 +1834,31 @@ html[data-bs-theme=retro80s] .btnsearchicogrp, body.theme-retro80s .btnsearchico
   color: #fdf6ff !important;
 }
 html[data-bs-theme=retro80s] #pagination-controls, html[data-bs-theme=retro80s] .pagination-controls,
+html[data-bs-theme=retro80s] #achievements-pagination-controls, html[data-bs-theme=retro80s] .achievements-pagination-controls,
 html[data-bs-theme=retro80s] #pagination, html[data-bs-theme=retro80s] .pagination, body.theme-retro80s #pagination-controls, body.theme-retro80s .pagination-controls,
+body.theme-retro80s #achievements-pagination-controls, body.theme-retro80s .achievements-pagination-controls,
 body.theme-retro80s #pagination, body.theme-retro80s .pagination, .retro80s #pagination-controls, .retro80s .pagination-controls,
+.retro80s #achievements-pagination-controls, .retro80s .achievements-pagination-controls,
 .retro80s #pagination, .retro80s .pagination {
   color: #fdf6ff;
 }
 html[data-bs-theme=retro80s] #pagination-controls .page-link, html[data-bs-theme=retro80s] .pagination-controls .page-link,
+html[data-bs-theme=retro80s] #achievements-pagination-controls .page-link, html[data-bs-theme=retro80s] .achievements-pagination-controls .page-link,
 html[data-bs-theme=retro80s] #pagination .page-link, html[data-bs-theme=retro80s] .pagination .page-link, body.theme-retro80s #pagination-controls .page-link, body.theme-retro80s .pagination-controls .page-link,
+body.theme-retro80s #achievements-pagination-controls .page-link, body.theme-retro80s .achievements-pagination-controls .page-link,
 body.theme-retro80s #pagination .page-link, body.theme-retro80s .pagination .page-link, .retro80s #pagination-controls .page-link, .retro80s .pagination-controls .page-link,
+.retro80s #achievements-pagination-controls .page-link, .retro80s .achievements-pagination-controls .page-link,
 .retro80s #pagination .page-link, .retro80s .pagination .page-link {
   background: rgba(43, 15, 84, 0.7);
   border: 2px solid rgba(185, 103, 255, 0.4) !important;
   color: #fdf6ff !important;
 }
 html[data-bs-theme=retro80s] #pagination-controls .page-item.active .page-link, html[data-bs-theme=retro80s] .pagination-controls .page-item.active .page-link,
+html[data-bs-theme=retro80s] #achievements-pagination-controls .page-item.active .page-link, html[data-bs-theme=retro80s] .achievements-pagination-controls .page-item.active .page-link,
 html[data-bs-theme=retro80s] #pagination .page-item.active .page-link, html[data-bs-theme=retro80s] .pagination .page-item.active .page-link, body.theme-retro80s #pagination-controls .page-item.active .page-link, body.theme-retro80s .pagination-controls .page-item.active .page-link,
+body.theme-retro80s #achievements-pagination-controls .page-item.active .page-link, body.theme-retro80s .achievements-pagination-controls .page-item.active .page-link,
 body.theme-retro80s #pagination .page-item.active .page-link, body.theme-retro80s .pagination .page-item.active .page-link, .retro80s #pagination-controls .page-item.active .page-link, .retro80s .pagination-controls .page-item.active .page-link,
+.retro80s #achievements-pagination-controls .page-item.active .page-link, .retro80s .achievements-pagination-controls .page-item.active .page-link,
 .retro80s #pagination .page-item.active .page-link, .retro80s .pagination .page-item.active .page-link {
   background: rgba(255, 45, 149, 0.25);
   box-shadow: 0 0 10px rgba(255, 45, 149, 0.6);

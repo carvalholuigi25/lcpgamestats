@@ -1,6 +1,6 @@
 @use '../base/variables' as *;
 
-#pagination-controls {
+#pagination-controls, #achievements-pagination-controls {
   .page-link {
     padding: 0.5rem calc(1rem - .15rem);
     border-radius: calc(16px + 8px);

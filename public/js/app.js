@@ -28,6 +28,8 @@ import { fetchTranslations, getVideoStuff } from './functions.js';
     achievementsStatusFilter: 'all',
     achievementsDateSort: 'desc',
     achievementsSearch: '',
+    achievementsPage: 1,
+    achievementsPageSize: 5,
     activeGame: null
   };
 
@@ -67,6 +69,11 @@ import { fetchTranslations, getVideoStuff } from './functions.js';
     achievementsStatusFilter: document.getElementById('achievements-status-filter'),
     achievementsDateSort: document.getElementById('achievements-date-sort'),
     achievementsSearchInput: document.getElementById('achievements-search-input'),
+    achievementsPagination: document.getElementById('achievements-pagination'),
+    achievementsPageInfo: document.getElementById('achievements-page-info'),
+    achievementsPageSize: document.getElementById('achievements-page-size'),
+    achievementsPaginationNav: document.getElementById('achievements-pagination-nav'),
+    achievementsPaginationControls: document.getElementById('achievements-pagination-controls'),
     themeSelect: document.getElementById('theme-select'),
     langSelectBtn: document.getElementById('lang-select-btn'),
     langSelectFlag: document.getElementById('lang-select-flag'),
@@ -397,7 +404,8 @@ import { fetchTranslations, getVideoStuff } from './functions.js';
       ,
       backgroundImage: state.backgroundImage || '',
       showVideo: state.showVideo === undefined ? true : Boolean(state.showVideo),
-      showAchievements: state.showAchievements === undefined ? true : Boolean(state.showAchievements)
+      showAchievements: state.showAchievements === undefined ? true : Boolean(state.showAchievements),
+      achievementsPageSize: state.achievementsPageSize
     };
     localStorage.setItem('settings', JSON.stringify(settings));
   }
@@ -421,6 +429,10 @@ import { fetchTranslations, getVideoStuff } from './functions.js';
         state.backgroundImage = settings.backgroundImage || '';
         state.showVideo = settings.showVideo === undefined ? true : Boolean(settings.showVideo);
         state.showAchievements = settings.showAchievements === undefined ? true : Boolean(settings.showAchievements);
+        const savedAchievementsPageSize = Number(settings.achievementsPageSize);
+        if ([5, 10, 15, 20, -1].includes(savedAchievementsPageSize)) {
+          state.achievementsPageSize = savedAchievementsPageSize;
+        }
       }
     } catch (err) {
       console.warn('Failed to load settings from localStorage:', err.message);
@@ -767,9 +779,11 @@ import { fetchTranslations, getVideoStuff } from './functions.js';
     state.achievementsStatusFilter = 'all';
     state.achievementsDateSort = 'desc';
     state.achievementsSearch = '';
+    state.achievementsPage = 1;
     if (els.achievementsStatusFilter) els.achievementsStatusFilter.value = 'all';
     if (els.achievementsDateSort) els.achievementsDateSort.value = 'desc';
     if (els.achievementsSearchInput) els.achievementsSearchInput.value = '';
+    if (els.achievementsPageSize) els.achievementsPageSize.value = String(state.achievementsPageSize);
 
     els.modalAchievementsTitle.textContent = translations.achievements || 'Achievements';
     els.modalAchievementsStatus.textContent = translations.loadingAchievements || 'Loading achievements...';
@@ -811,6 +825,7 @@ import { fetchTranslations, getVideoStuff } from './functions.js';
   function renderAchievements(achievements = [], summary = {}) {
     currentAchievements = achievements;
     currentAchievementsSummary = summary;
+    state.achievementsPage = 1;
 
     els.modalAchievementsTitle.textContent = translations.achievements || 'Achievements';
     const total = summary.total || achievements.length;
@@ -826,6 +841,7 @@ import { fetchTranslations, getVideoStuff } from './functions.js';
   /** Re-render the achievements list applying the current status filter and date sort */
   function renderAchievementsList() {
     if (currentAchievements.length === 0) {
+      renderAchievementsPagination(0);
       els.modalAchievements.innerHTML = `<div class="text-center text-muted small">${translations.noAchievements || 'No achievements are available for this game.'}</div>`;
       return;
     }
@@ -842,6 +858,7 @@ import { fetchTranslations, getVideoStuff } from './functions.js';
     });
 
     if (filteredAchievements.length === 0) {
+      renderAchievementsPagination(0);
       const message = searchTerm
         ? (translations.noAchievementsSearch || 'No achievements match your search.')
         : (translations.noAchievementsFilter || 'No achievements match the selected filter.');
@@ -858,8 +875,17 @@ import { fetchTranslations, getVideoStuff } from './functions.js';
       return 0;
     });
 
+    const showAllAchievements = state.achievementsPageSize === -1;
+    const totalPages = showAllAchievements ? 1 : Math.ceil(sortedAchievements.length / state.achievementsPageSize);
+    state.achievementsPage = Math.min(state.achievementsPage, totalPages);
+    const pageStart = (state.achievementsPage - 1) * state.achievementsPageSize;
+    const pageAchievements = showAllAchievements
+      ? sortedAchievements
+      : sortedAchievements.slice(pageStart, pageStart + state.achievementsPageSize);
+    renderAchievementsPagination(sortedAchievements.length, totalPages);
+
     const fragment = document.createDocumentFragment();
-    sortedAchievements.forEach((achievement) => {
+    pageAchievements.forEach((achievement) => {
       const item = document.createElement('div');
       item.className = 'machievementlist list-group-item list-group-item-dark d-flex justify-content-between align-items-start';
       item.innerHTML = `
@@ -885,6 +911,39 @@ import { fetchTranslations, getVideoStuff } from './functions.js';
 
     els.modalAchievements.innerHTML = '';
     els.modalAchievements.appendChild(fragment);
+  }
+
+  function renderAchievementsPagination(total, totalPages = Math.ceil(total / state.achievementsPageSize)) {
+    if (!els.achievementsPagination || !els.achievementsPaginationControls) return;
+    els.achievementsPagination.classList.toggle('d-none', total === 0);
+    if (els.achievementsPaginationNav) els.achievementsPaginationNav.classList.toggle('d-none', totalPages <= 1);
+    els.achievementsPaginationControls.innerHTML = '';
+    if (totalPages <= 1) {
+      if (els.achievementsPageInfo && total > 0) els.achievementsPageInfo.textContent = `Showing 1-${total} of ${total}`;
+      return;
+    }
+
+    const createPageItem = (pageNumber, label, disabled = false, active = false, title = '') => {
+      const item = document.createElement('li');
+      item.className = `page-item${active ? ' active' : ''}${disabled ? ' disabled' : ''}`;
+      item.innerHTML = `<button class="page-link" type="button" title="${title}" aria-label="${title}">${label}</button>`;
+      if (!disabled) item.querySelector('button').addEventListener('click', () => {
+        state.achievementsPage = pageNumber;
+        renderAchievementsList();
+      });
+      return item;
+    };
+
+    els.achievementsPaginationControls.appendChild(createPageItem(1, '&#60;&#60;', state.achievementsPage === 1, false, 'First page'));
+    els.achievementsPaginationControls.appendChild(createPageItem(state.achievementsPage - 1, '&#60;', state.achievementsPage === 1, false, 'Previous page'));
+    const startPage = Math.max(1, state.achievementsPage - 2);
+    const endPage = Math.min(totalPages, state.achievementsPage + 2);
+    for (let page = startPage; page <= endPage; page += 1) {
+      els.achievementsPaginationControls.appendChild(createPageItem(page, page, false, state.achievementsPage === page, `Page ${page}`));
+    }
+    els.achievementsPaginationControls.appendChild(createPageItem(state.achievementsPage + 1, '&#62;', state.achievementsPage === totalPages, false, 'Next page'));
+    els.achievementsPaginationControls.appendChild(createPageItem(totalPages, '&#62;&#62;', state.achievementsPage === totalPages, false, 'Last page'));
+    els.achievementsPageInfo.textContent = `Showing ${(state.achievementsPage - 1) * state.achievementsPageSize + 1}-${Math.min(state.achievementsPage * state.achievementsPageSize, total)} of ${total}`;
   }
 
   const AUTO_THEME_DARK_FROM_HOUR = 18; // 6pm
@@ -1394,16 +1453,25 @@ import { fetchTranslations, getVideoStuff } from './functions.js';
     if (els.toggleAchievementsBtn) els.toggleAchievementsBtn.addEventListener('click', toggleAchievements);
     if (els.achievementsStatusFilter) els.achievementsStatusFilter.addEventListener('change', (e) => {
       state.achievementsStatusFilter = e.target.value;
+      state.achievementsPage = 1;
       renderAchievementsList();
     });
     if (els.achievementsDateSort) els.achievementsDateSort.addEventListener('change', (e) => {
       state.achievementsDateSort = e.target.value;
+      state.achievementsPage = 1;
       renderAchievementsList();
     });
     if (els.achievementsSearchInput) els.achievementsSearchInput.addEventListener('input', debounce((e) => {
       state.achievementsSearch = e.target.value.trim();
+      state.achievementsPage = 1;
       renderAchievementsList();
     }, 200));
+    if (els.achievementsPageSize) els.achievementsPageSize.addEventListener('change', (e) => {
+      state.achievementsPageSize = Number(e.target.value) || 5;
+      state.achievementsPage = 1;
+      saveSettings();
+      renderAchievementsList();
+    });
 
     if (els.themeCodeForm) {
       els.themeCodeForm.addEventListener('submit', (e) => {

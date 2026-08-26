@@ -644,6 +644,22 @@
                 </button>
               </div>
               <div id="modalAchievements" class="list-group"></div>
+              <div id="achievements-pagination" class="d-flex flex-column flex-xs-column flex-sm-column flex-md-column flex-lg-row flex-xl-row flex-xxl-row justify-content-between align-items-center gap-2 flex-wrap mt-3 d-none">
+                <span id="achievements-page-info" class="small text-muted"></span>
+                <div class="d-flex flex-column flex-xs-column flex-sm-column flex-md-column flex-lg-row flex-xl-row flex-xxl-row align-items-center gap-2">
+                  <label for="achievements-page-size" class="small text-muted">Per page</label>
+                  <select id="achievements-page-size" class="form-select form-select-sm w-auto" aria-label="Achievements per page">
+                    <option value="5" selected>5</option>
+                    <option value="10">10</option>
+                    <option value="15">15</option>
+                    <option value="20">20</option>
+                    <option value="-1">All</option>
+                  </select>
+                  <nav id="achievements-pagination-nav" aria-label="Achievements pagination">
+                    <ul id="achievements-pagination-controls" class="pagination pagination-sm mb-0"></ul>
+                  </nav>
+                </div>
+              </div>
               <div class="d-flex justify-content-center mb-2 mt-3 mx-auto">
                 <button
                   id="toggle-video-btn"
