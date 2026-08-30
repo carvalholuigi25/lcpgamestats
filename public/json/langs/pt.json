@@ -63,6 +63,8 @@
         "totalUsers": "Total de usuários",
         "adminsLabel": "Administradores",
         "recentSignups": "Cadastros recentes",
+        "roleDistribution": "Distribuição de funções",
+        "signupsLast7Days": "Cadastros (7d)",
         "userManagementTitle": "Gerenciamento de usuários",
         "userManagementDesc": "Promova ou rebaixe usuários a partir deste painel.",
         "refresh": "Atualizar",

@@ -63,6 +63,8 @@
         "totalUsers": "Benutzer insgesamt",
         "adminsLabel": "Admins",
         "recentSignups": "Neue Anmeldungen",
+        "roleDistribution": "Rollenverteilung",
+        "signupsLast7Days": "Anmeldungen (7 Tage)",
         "userManagementTitle": "Benutzerverwaltung",
         "userManagementDesc": "Benutzer über dieses Dashboard befördern oder degradieren.",
         "refresh": "Aktualisieren",

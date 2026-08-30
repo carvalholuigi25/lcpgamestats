@@ -5,6 +5,8 @@ const els = {
   adminSummaryTotal: document.getElementById('admin-summary-total'),
   adminSummaryAdmins: document.getElementById('admin-summary-admins'),
   adminSummaryRecent: document.getElementById('admin-summary-recent'),
+  adminRoleChart: document.getElementById('admin-role-chart'),
+  adminSignupChart: document.getElementById('admin-signup-chart'),
   adminUsersTableBody: document.getElementById('admin-users-table-body'),
   refreshAdminBtn: document.getElementById('refresh-admin-btn'),
   logoutBtn: document.getElementById('btn-logout'),
@@ -145,9 +147,13 @@ function updateInterfaceLanguage() {
   const totalLabel = document.getElementById('admin-summary-total-label');
   const adminsLabel = document.getElementById('admin-summary-admins-label');
   const recentLabel = document.getElementById('admin-summary-recent-label');
+  const roleChartTitle = document.getElementById('admin-role-chart-title');
+  const signupChartTitle = document.getElementById('admin-signup-chart-title');
   if (totalLabel) totalLabel.textContent = t.totalUsers || 'Total users';
   if (adminsLabel) adminsLabel.textContent = t.adminsLabel || 'Admins';
   if (recentLabel) recentLabel.textContent = t.recentSignups || 'Recent signups';
+  if (roleChartTitle) roleChartTitle.textContent = t.roleDistribution || 'Role distribution';
+  if (signupChartTitle) signupChartTitle.textContent = t.signupsLast7Days || 'Signups (7d)';
 
   const userManagementTitle = document.getElementById('user-management-title');
   const userManagementDesc = document.getElementById('user-management-desc');
@@ -201,6 +207,57 @@ function escapeHtml(value) {
     .replaceAll('>', '&gt;')
     .replaceAll('"', '&quot;')
     .replaceAll("'", '&#39;');
+}
+
+function renderSummaryCharts(summary = {}) {
+  const roleBreakdown = Array.isArray(summary.roleBreakdown) ? summary.roleBreakdown : [];
+  const signupTrend = Array.isArray(summary.signupTrend) ? summary.signupTrend : [];
+
+  if (els.adminRoleChart) {
+    if (!roleBreakdown.length) {
+      els.adminRoleChart.innerHTML = '<div class="text-muted small">No role data available.</div>';
+    } else {
+      const maxValue = Math.max(1, ...roleBreakdown.map((item) => Number(item.value) || 0));
+      els.adminRoleChart.innerHTML = roleBreakdown.map((item) => {
+        const value = Number(item.value) || 0;
+        const pct = Number(item.pct) || Math.round((value / maxValue) * 100);
+        return `
+          <div class="admin-chart__item">
+            <div class="admin-chart__meta">
+              <span class="admin-chart__label">${escapeHtml(item.label || 'Unknown')}</span>
+              <span class="admin-chart__value">${value}</span>
+            </div>
+            <div class="admin-chart__bar-wrap">
+              <div class="admin-chart__bar admin-chart__bar--role" style="width: ${Math.max(8, pct)}%"></div>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+  }
+
+  if (els.adminSignupChart) {
+    if (!signupTrend.length) {
+      els.adminSignupChart.innerHTML = '<div class="text-muted small">No signup history available.</div>';
+    } else {
+      const maxValue = Math.max(1, ...signupTrend.map((item) => Number(item.value) || 0));
+      els.adminSignupChart.innerHTML = signupTrend.map((item) => {
+        const value = Number(item.value) || 0;
+        const pct = Math.round((value / maxValue) * 100);
+        return `
+          <div class="admin-chart__item">
+            <div class="admin-chart__meta">
+              <span class="admin-chart__label">${escapeHtml(item.label || 'Day')}</span>
+              <span class="admin-chart__value">${value}</span>
+            </div>
+            <div class="admin-chart__bar-wrap">
+              <div class="admin-chart__bar admin-chart__bar--signup" style="width: ${Math.max(8, pct)}%"></div>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+  }
 }
 
 function renderUsers(users) {
@@ -273,6 +330,7 @@ async function loadAdminData() {
     if (els.adminSummaryTotal) els.adminSummaryTotal.textContent = summary.totalUsers ?? 0;
     if (els.adminSummaryAdmins) els.adminSummaryAdmins.textContent = summary.totalAdmins ?? 0;
     if (els.adminSummaryRecent) els.adminSummaryRecent.textContent = summary.recentSignups ?? 0;
+    renderSummaryCharts(summary);
     renderUsers(usersData.users || []);
     setAdminFeedback('Admin data loaded.', 'info');
   } catch (err) {

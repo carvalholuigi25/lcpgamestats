@@ -63,6 +63,8 @@
         "totalUsers": "Usuarios totales",
         "adminsLabel": "Administradores",
         "recentSignups": "Registros recientes",
+        "roleDistribution": "Distribución de roles",
+        "signupsLast7Days": "Registros (7 días)",
         "userManagementTitle": "Gestión de usuarios",
         "userManagementDesc": "Promueve o degrada usuarios desde este panel.",
         "refresh": "Actualizar",

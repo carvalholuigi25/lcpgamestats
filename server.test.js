@@ -10,7 +10,8 @@ import {
   fetchEpicAchievements,
   fetchGogAchievementsForAppid,
   getMixedDataGameHeader,
-  getApiGames
+  getApiGames,
+  buildAdminSummary
 } from './server.js';
 import auth from './lib/auth.js';
 import { getVideoTrailerData, resolveAchievementBadgeImage, normalizeGogAchievement } from './lib/utils.js';
@@ -203,6 +204,26 @@ describe('server helper functions', () => {
   it('builds a Steam-style achievement icon URL when no direct badge image is provided', () => {
     const badgeImage = resolveAchievementBadgeImage({ apiname: 'ach_1' }, '730');
     assert.ok(badgeImage.includes('steamcommunity/public/images/apps/730/ach_1.jpg'));
+  });
+
+  it('builds an admin summary with role and signup trend charts', () => {
+    const users = [
+      { id: 1, role: 'admin', createdAt: Math.floor(Date.now() / 1000) - 2 * 86400 },
+      { id: 2, role: 'admin', createdAt: Math.floor(Date.now() / 1000) - 10 * 86400 },
+      { id: 3, role: 'user', createdAt: Math.floor(Date.now() / 1000) - 3 * 86400 },
+      { id: 4, role: 'user', createdAt: Math.floor(Date.now() / 1000) - 9 * 86400 },
+      { id: 5, role: 'user', createdAt: Math.floor(Date.now() / 1000) }
+    ];
+
+    const summary = buildAdminSummary(users);
+
+    assert.strictEqual(summary.totalUsers, 5);
+    assert.strictEqual(summary.totalAdmins, 2);
+    assert.strictEqual(summary.recentSignups, 3);
+    assert.deepStrictEqual(summary.roleBreakdown.map((entry) => entry.label), ['Admins', 'Users']);
+    assert.ok(Array.isArray(summary.signupTrend));
+    assert.ok(summary.signupTrend.length >= 7);
+    assert.ok(summary.signupTrend.every((entry) => Number.isInteger(entry.value)));
   });
 
   it('updates a user role through the auth helper', () => {

@@ -63,6 +63,8 @@
         "totalUsers": "Total des utilisateurs",
         "adminsLabel": "Administrateurs",
         "recentSignups": "Inscriptions récentes",
+        "roleDistribution": "Répartition des rôles",
+        "signupsLast7Days": "Inscriptions (7 j)",
         "userManagementTitle": "Gestion des utilisateurs",
         "userManagementDesc": "Promouvoir ou rétrograder des utilisateurs depuis ce tableau de bord.",
         "refresh": "Actualiser",

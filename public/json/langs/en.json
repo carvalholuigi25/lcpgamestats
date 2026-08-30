@@ -63,6 +63,8 @@
         "totalUsers": "Total users",
         "adminsLabel": "Admins",
         "recentSignups": "Recent signups",
+        "roleDistribution": "Role distribution",
+        "signupsLast7Days": "Signups (7d)",
         "userManagementTitle": "User management",
         "userManagementDesc": "Promote or demote users from this dashboard.",
         "refresh": "Refresh",

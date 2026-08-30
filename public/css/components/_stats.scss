@@ -89,3 +89,57 @@
   background: linear-gradient(90deg, $steam-accent, color.adjust($steam-accent, $lightness: 15%));
   transition: width 0.35s ease;
 }
+
+.admin-chart {
+  display: grid;
+  gap: 0.9rem;
+}
+
+.admin-chart__item {
+  display: grid;
+  gap: 0.45rem;
+}
+
+.admin-chart__meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.admin-chart__label {
+  color: #e9eef2;
+  font-size: 0.8rem;
+  font-weight: 600;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.admin-chart__value {
+  color: #9fb1c1;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.admin-chart__bar-wrap {
+  background: rgba($steam-blue, 0.18);
+  border: 1px solid rgba($steam-accent, 0.14);
+  border-radius: 999px;
+  overflow: hidden;
+  height: 0.75rem;
+}
+
+.admin-chart__bar {
+  height: 100%;
+  border-radius: 999px;
+  transition: width 0.35s ease;
+}
+
+.admin-chart__bar--role {
+  background: linear-gradient(90deg, #5cc8ff, #51d3b3);
+}
+
+.admin-chart__bar--signup {
+  background: linear-gradient(90deg, #8d8cff, #f5a7ff);
+}

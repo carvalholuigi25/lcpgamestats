@@ -188,6 +188,45 @@ function requireRole(role) {
   };
 }
 
+function buildAdminSummary(users = []) {
+  const normalizedUsers = Array.isArray(users) ? users : [];
+  const totalUsers = normalizedUsers.length;
+  const totalAdmins = normalizedUsers.filter((user) => user && user.role === 'admin').length;
+  const totalPlayers = totalUsers - totalAdmins;
+  const now = Math.floor(Date.now() / 1000);
+  const recentWindow = now - 7 * 24 * 60 * 60;
+  const recentSignups = normalizedUsers.filter((user) => Number(user.createdAt || 0) >= recentWindow).length;
+
+  const roleBreakdown = [
+    { label: 'Admins', value: totalAdmins, pct: totalUsers ? Math.round((totalAdmins / totalUsers) * 100) : 0 },
+    { label: 'Users', value: totalPlayers, pct: totalUsers ? Math.round((totalPlayers / totalUsers) * 100) : 0 }
+  ];
+
+  const signupTrend = Array.from({ length: 7 }, (_, index) => {
+    const target = new Date();
+    target.setHours(0, 0, 0, 0);
+    target.setDate(target.getDate() - (6 - index));
+
+    const startOfDay = Math.floor(target.getTime() / 1000);
+    const endOfDay = startOfDay + 24 * 60 * 60;
+    const label = target.toLocaleDateString(undefined, { month: 'short', day: 'numeric' });
+    const value = normalizedUsers.filter((user) => {
+      const createdAt = Number(user.createdAt || 0);
+      return createdAt >= startOfDay && createdAt < endOfDay;
+    }).length;
+
+    return { label, value, startOfDay, endOfDay };
+  });
+
+  return {
+    totalUsers,
+    totalAdmins,
+    recentSignups,
+    roleBreakdown,
+    signupTrend
+  };
+}
+
 // Login/registration are disabled from midnight to 7am UTC (curfew window),
 // so the restriction is consistent regardless of where the server or client is located.
 const AUTH_CURFEW_START_HOUR_UTC = 0;
@@ -1383,13 +1422,7 @@ app.get('/api/admin/users', requireLogin, requireRole('admin'), (req, res) => {
 app.get('/api/admin/summary', requireLogin, requireRole('admin'), (req, res) => {
   try {
     const users = auth.listUsers();
-    const now = Math.floor(Date.now() / 1000);
-    const recentWindow = now - 7 * 24 * 60 * 60;
-    const summary = {
-      totalUsers: users.length,
-      totalAdmins: users.filter((user) => user.role === 'admin').length,
-      recentSignups: users.filter((user) => (user.createdAt || 0) >= recentWindow).length
-    };
+    const summary = buildAdminSummary(users);
     res.json({ summary });
   } catch (err) {
     console.error('Admin summary error:', err.message);
@@ -1484,6 +1517,7 @@ export {
   fetchGogAchievementsForAppid,
   getMixedDataGameHeader,
   getApiGames,
+  buildAdminSummary,
   requireApiAuth,
   apiRateLimiter
 };
