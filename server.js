@@ -13,7 +13,7 @@ import { Strategy as LocalStrategy } from 'passport-local';
 import { Strategy as GoogleStrategy } from 'passport-google-oauth20';
 import { fileURLToPath } from 'url';
 import { randomBytes } from 'node:crypto';
-import { getHeaderImage, getStoreGameLink, normalizeEpicAchievement, normalizeGogAchievement, getVideoTrailerData, resolveAchievementBadgeImage } from './lib/utils.js';
+import { getHeaderImage, getStoreGameLink, normalizeEpicAchievement, normalizeGogAchievement, getVideoTrailerData, resolveAchievementBadgeImage } from './lib/gameData.js';
 import { isGogConfigured, fetchGogUserData, fetchGogOwnedGameIds, fetchGogProductDetails, fetchGogAchievements } from './lib/gog.js';
 import { isEpicConfigured, fetchEpicAccountInfo, fetchEpicLibraryItems, fetchEpicCatalogItem } from './lib/epic.js';
 import { isUplayConfigured, fetchUplayAccountInfo, fetchUplayOwnedGames, fetchUplayGameDetails, refreshSession, refreshMyUplaySession } from './lib/uplay.js';

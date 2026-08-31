@@ -14,7 +14,7 @@ import {
   buildAdminSummary
 } from './server.js';
 import auth from './lib/auth.js';
-import { getVideoTrailerData, resolveAchievementBadgeImage, normalizeGogAchievement } from './lib/utils.js';
+import { getVideoTrailerData, resolveAchievementBadgeImage, normalizeGogAchievement } from './lib/gameData.js';
 import { isGogConfigured } from './lib/gog.js';
 import { isEpicConfigured } from './lib/epic.js';
 import { isUplayConfigured, parseUplayLoginPayload } from './lib/uplay.js';
