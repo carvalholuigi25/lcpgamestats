@@ -1,0 +1,167 @@
+@use 'sass:color';
+@use '../base/variables' as *;
+
+// ==========================================================================
+// Sunset vibes theme — GTA VI-inspired warm neon city glow at dusk
+// ==========================================================================
+$sunset-bg-top: #1d0b1d;
+$sunset-bg-mid: #4e2354;
+$sunset-bg-low: #ff7a59;
+$sunset-sky: #ffb36b;
+$sunset-gold: #ffd166;
+$sunset-orange: #ff7a59;
+$sunset-rose: #ff5a7a;
+$sunset-purple: #9b59ff;
+$sunset-cyan: #7be3f7;
+$sunset-text: #fff3eb;
+$sunset-muted: #f6c7b3;
+
+@mixin sunset-glow($color: $sunset-gold) {
+  text-shadow: 0 0 8px rgba($color, 0.8), 0 0 22px rgba($color, 0.35);
+}
+
+@mixin sunset-panel($radius: $card-radius) {
+  background: rgba(45, 16, 38, 0.64);
+  border: 1px solid rgba($sunset-gold, 0.35);
+  border-radius: $radius;
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 0 18px rgba($sunset-orange, 0.2), inset 0 0 25px rgba($sunset-cyan, 0.04);
+}
+
+html[data-bs-theme="sunset-vibes"], body.theme-sunset-vibes, .sunset-vibes {
+  background:
+    radial-gradient(circle at top, rgba($sunset-gold, 0.18), transparent 28%),
+    linear-gradient(180deg, $sunset-bg-top 0%, $sunset-bg-mid 36%, $sunset-bg-low 72%, $sunset-sky 100%);
+  color: $sunset-text;
+  letter-spacing: 0.01em;
+
+  label, span, p, h1, h2, h3, h4, h5, h6, .small, .form-label, .form-text, .form-check-label, .form-check-input {
+    color: $sunset-text !important;
+  }
+
+  h1, h2, h3, h4, h5, h6, .game-card__title, #player-profile-link {
+    @include sunset-glow($sunset-gold);
+  }
+
+  .text-muted {
+    color: $sunset-muted !important;
+  }
+
+  .app-header, .app-footer {
+    background: linear-gradient(90deg, rgba($sunset-orange, 0.2), rgba($sunset-purple, 0.18));
+    border-bottom: 1px solid rgba($sunset-gold, 0.4);
+    box-shadow: 0 8px 24px rgba($sunset-rose, 0.2);
+  }
+
+  .player-card, .stat-box, .game-card, .modal-content, .machievementlist {
+    @include sunset-panel;
+    color: $sunset-text !important;
+  }
+
+  .game-card__body {
+    background: transparent;
+  }
+
+  .game-card__image {
+    background: linear-gradient(180deg, rgba($sunset-purple, 0.16), rgba($sunset-orange, 0.12));
+  }
+
+  .stat-value {
+    @include sunset-glow($sunset-cyan);
+  }
+
+  select, .form-select, input, .form-control, .input-group-text {
+    background: rgba(40, 12, 26, 0.72) !important;
+    border: 1px solid rgba($sunset-gold, 0.45) !important;
+    color: $sunset-text !important;
+
+    &::placeholder {
+      color: $sunset-muted !important;
+    }
+
+    &:focus {
+      border-color: $sunset-cyan !important;
+      box-shadow: 0 0 12px rgba($sunset-cyan, 0.5) !important;
+      color: $sunset-text !important;
+    }
+  }
+
+  select option {
+    background: $sunset-bg-top;
+    color: $sunset-text;
+  }
+
+  .btnsearchicogrp {
+    background: rgba(40, 12, 26, 0.72) !important;
+    color: $sunset-text !important;
+  }
+
+  #pagination-controls, .pagination-controls,
+  #achievements-pagination-controls, .achievements-pagination-controls,
+  #pagination, .pagination {
+    color: $sunset-text;
+
+    .page-link {
+      background: rgba(40, 12, 26, 0.7);
+      border: 1px solid rgba($sunset-gold, 0.35) !important;
+      color: $sunset-text !important;
+    }
+
+    .page-item.active .page-link {
+      background: rgba($sunset-orange, 0.3);
+      box-shadow: 0 0 12px rgba($sunset-orange, 0.55);
+      color: $sunset-gold !important;
+    }
+  }
+
+  .bg-body, .bg-body-secondary, .bg-body-tertiary {
+    background: rgba(22, 9, 18, 0.42) !important;
+  }
+
+  .btn {
+    background: linear-gradient(90deg, rgba($sunset-orange, 0.9), rgba($sunset-purple, 0.8)) !important;
+    border: 1px solid rgba($sunset-gold, 0.45) !important;
+    border-radius: 999px !important;
+    color: $sunset-text;
+
+    &:hover {
+      box-shadow: 0 0 18px rgba($sunset-gold, 0.5);
+    }
+
+    &:active {
+      box-shadow: inset 0 0 12px rgba($sunset-cyan, 0.4);
+    }
+  }
+
+  .table {
+    th, td {
+      border-color: rgba($sunset-gold, 0.28) !important;
+      background: transparent;
+      color: $sunset-text;
+    }
+  }
+
+  #view-grid, #view-list, #view-table {
+    @include sunset-panel(0.75rem);
+    color: $sunset-text;
+
+    &.active {
+      box-shadow: 0 0 14px rgba($sunset-gold, 0.58);
+      color: $sunset-gold !important;
+    }
+  }
+
+  .modal-header, .modal-footer {
+    border-color: rgba($sunset-gold, 0.38) !important;
+  }
+
+  .toast, .toast-body {
+    @include sunset-panel;
+    color: $sunset-text !important;
+  }
+
+  #page-info, #provider-info-text {
+    color: $sunset-text !important;
+  }
+}

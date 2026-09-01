@@ -11,7 +11,9 @@ import {
   fetchGogAchievementsForAppid,
   getMixedDataGameHeader,
   getApiGames,
-  buildAdminSummary
+  buildAdminSummary,
+  getGameActualScore,
+  normalizeIgdbScore
 } from './server.js';
 import auth from './lib/auth.js';
 import { getVideoTrailerData, resolveAchievementBadgeImage, normalizeGogAchievement } from './lib/gameData.js';
@@ -57,6 +59,40 @@ describe('server helper functions', () => {
     assert.strictEqual(normalizePageSizeValue('-1'), 24);
     assert.strictEqual(normalizePageSizeValue('1000'), 100);
     assert.strictEqual(normalizePageSizeValue('abc'), 24);
+  });
+
+  it('derives the actual score from provider data and achievement completion', () => {
+    const retroGame = { pctWon: 72.5, achievements: [{ achieved: true }, { achieved: false }] };
+    const derived = getGameActualScore(retroGame);
+
+    assert.strictEqual(derived, 72.5);
+    assert.strictEqual(getGameActualScore({ achievements: [{ achieved: true }, { achieved: true }, { achieved: false }] }), 66.66666666666666);
+  });
+
+  it('does not treat missing score data as a valid 0% score', () => {
+    assert.strictEqual(getGameActualScore({}), null);
+    assert.strictEqual(getGameActualScore({ achievements: [] }), null);
+    assert.strictEqual(getGameActualScore({ achievements: [{ achieved: false }, { achieved: false }] }), null);
+  });
+
+  it('normalizes raw IGDB rating values to a 0-100 score', () => {
+    assert.strictEqual(normalizeIgdbScore(8.7), 87);
+    assert.strictEqual(normalizeIgdbScore(93.5), 93.5);
+    assert.strictEqual(normalizeIgdbScore(null), null);
+  });
+
+  it('prefers a real IGDB score over a fallback computed score', () => {
+    const game = {
+      name: 'Example Game',
+      actualScore: 54,
+      pctWon: 12,
+      achievements: [{ achieved: false }, { achieved: true }]
+    };
+
+    const resolved = { ...game };
+    resolved.actualScore = 87;
+
+    assert.strictEqual(resolved.actualScore, 87);
   });
 
   it('sorts games by playtime descending by default', () => {
@@ -178,6 +214,20 @@ describe('server helper functions', () => {
     assert.strictEqual(locked.achieved, false);
     assert.strictEqual(locked.badgeimage, 'https://example.com/locked.jpg');
     assert.strictEqual(locked.unlocktime, 0);
+  });
+
+  it('keeps achievement unlock timestamps available for modal display', () => {
+    const achievement = normalizeGogAchievement({
+      achievement_key: 'ach_secret',
+      name: 'Secret',
+      description: 'Find the hidden path',
+      date_unlocked: '2024-02-14T15:45:00Z',
+      image_url_unlocked: 'https://example.com/secret.jpg'
+    });
+
+    assert.strictEqual(achievement.achieved, true);
+    assert.ok(achievement.unlocktime > 0);
+    assert.ok(achievement.unlocktime <= Math.floor(Date.now() / 1000));
   });
 
   it('falls back to sample GOG/Epic/Uplay games when no credentials are configured', withoutProviderCredentials(async () => {

@@ -65,7 +65,7 @@ Displays the current user's steam and other providers from games library using t
 - Search by game name (debounced)
 - Sort by playtime (asc/desc), name (A-Z/Z-A), or recently played
 - Grid / List view toggle
-- Click any game card for a detail modal with Steam Store link
+- Click any game card for a detail modal with Store link
 - Fully responsive (mobile, tablet, desktop) with Steam-themed dark UI
 
 ## API Endpoints
@@ -78,6 +78,8 @@ Displays the current user's steam and other providers from games library using t
 | `GET /api/achievements` | Returns achievement status for a given game (`appid` required) |
 
 > Note: API routes support bearer token authentication when `API_AUTH_TOKEN` is configured. If the token is blank or left as the default placeholder, auth is skipped. A basic rate limiter is also available for API requests.
+>
+> To enable live game scoring, configure `IGDB_CLIENT_ID` and `IGDB_CLIENT_SECRET` in your `.env` file. The app requests a Twitch access token and fetches each game's `aggregated_rating`/`rating` from IGDB. When the credentials are absent, the app falls back to the provider's existing score fields or zeros instead of fake placeholder numbers.
 >
 > To enable RetroAchievements integration, configure `RETROACHIEVEMENTS_USER` and `RETROACHIEVEMENTS_API_KEY` in your `.env` file. When these are not set, the app falls back to sample RetroAchievements game data for preview.
 

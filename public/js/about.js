@@ -23,7 +23,7 @@ function updateInterfaceLanguage() {
     'about-description': t.aboutDescription || 'LCPGameStats is a web application that connects to Steam and other providers to visualize your game library, playtime, and achievements in one place.',
     'about-features-title': t.aboutFeaturesTitle || 'Features',
     'about-feature-multi-provider': t.aboutFeatureMultiProvider || 'Multi-provider support: Steam, Epic Games, GOG, Uplay, and RetroAchievements',
-    'about-feature-themes': t.aboutFeatureThemes || 'Multiple themes including Dark, Light, Glassmorphism, Liquid Glass, and Neomorphism',
+    'about-feature-themes': t.aboutFeatureThemes || 'Multiple themes including Dark, Light, Glassmorphism, Liquid Glass, Neomorphism, and Sunset vibes',
     'about-feature-achievements': t.aboutFeatureAchievements || 'Detailed achievement tracking with filters and search',
     'about-feature-export': t.aboutFeatureExport || 'Export your library data to JSON or XML',
     'about-feature-auth': t.aboutFeatureAuth || 'Secure accounts with local login or Google sign-in',

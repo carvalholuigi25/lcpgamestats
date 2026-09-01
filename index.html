@@ -132,7 +132,7 @@
                 rel="noopener"
                 class="small text-decoration-none"
               >
-                View Steam Profile
+                View your profile
                 <i class="fa-solid fa-arrow-up-right-from-square ms-1"></i>
               </a>
             </div>
@@ -343,6 +343,7 @@
             <option value="matrix">Matrix</option>
             <option value="cyberpunk">Cyberpunk</option>
             <option value="retro80s">Retro 80s</option>
+            <option value="sunset-vibes">Sunset vibes</option>
           </select>
           <div class="dropdown lang-dropdown">
             <button
@@ -577,17 +578,23 @@
               alt=""
               class="img-fluid rounded mb-3 w-100"
             />
-            <div class="row g-3 text-center">
-              <div class="col-6">
+            <div class="row justify-content-center align-items-center g-3 text-center">
+              <div class="col-12 col-md-4">
                 <div class="stat-box p-3">
                   <div class="stat-value" id="modalPlaytime">--</div>
                   <div class="stat-label" id="modalPlaytimeLabel">Total Playtime</div>
                 </div>
               </div>
-              <div class="col-6">
+              <div class="col-12 col-md-4">
                 <div class="stat-box p-3">
                   <div class="stat-value" id="modalRecent">--</div>
                   <div class="stat-label" id="modalRecentLabel">Last 2 Weeks</div>
+                </div>
+              </div>
+              <div class="col-12 col-md-4" id="modalScoreContainer">
+                <div class="stat-box p-3">
+                  <div class="stat-value" id="modalScore">--</div>
+                  <div class="stat-label" id="modalScoreLabel">Actual Score</div>
                 </div>
               </div>
             </div>
@@ -683,7 +690,7 @@
               class="btn btn-primary"
             >
               <i class="fa-brands fa-steam me-1"></i>
-              <span id="modalStoreLinkLabel">View on Steam Store</span>
+              <span id="modalStoreLinkLabel">View on Store</span>
             </a>
           </div>
         </div>

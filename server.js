@@ -31,6 +31,8 @@ const PORT = process.env.PORT || 3000;
 const STEAM_API_BASE = 'https://api.steampowered.com';
 const STEAM_API_KEY = process.env.STEAM_API_KEY;
 const STEAM_USER_ID = process.env.STEAM_USER_ID;
+const IGDB_CLIENT_ID = process.env.IGDB_CLIENT_ID || '';
+const IGDB_CLIENT_SECRET = process.env.IGDB_CLIENT_SECRET || '';
 const RETROACHIEVEMENTS_API_BASE = process.env.RETROACHIEVEMENTS_API_BASE || 'https://retroachievements.org/API';
 const RETROACHIEVEMENTS_USER = process.env.RETROACHIEVEMENTS_USER || '';
 const RETROACHIEVEMENTS_API_KEY = process.env.RETROACHIEVEMENTS_API_KEY || '';
@@ -250,9 +252,150 @@ function getProvider(providerId) {
   return PROVIDERS[providerId] || PROVIDERS.steam;
 }
 
+function normalizeIgdbScore(value) {
+  if (value === null || value === undefined || value === '') return null;
+
+  const numericValue = Number(value);
+  if (!Number.isFinite(numericValue)) return null;
+  if (numericValue > 0 && numericValue <= 10) return numericValue * 10;
+  if (numericValue >= 0 && numericValue <= 100) return numericValue;
+  return null;
+}
+
+let igdbTokenCache = { token: '', expiresAt: 0 };
+
+async function fetchIgdbAccessToken() {
+  if (!IGDB_CLIENT_ID || !IGDB_CLIENT_SECRET) return null;
+
+  const now = Date.now();
+  if (igdbTokenCache.token && now < igdbTokenCache.expiresAt) {
+    return igdbTokenCache.token;
+  }
+
+  try {
+    const response = await axios.post(
+      'https://id.twitch.tv/oauth2/token',
+      new URLSearchParams({
+        client_id: IGDB_CLIENT_ID,
+        client_secret: IGDB_CLIENT_SECRET,
+        grant_type: 'client_credentials'
+      }),
+      {
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded'
+        }
+      }
+    );
+
+    const accessToken = response.data?.access_token;
+    const expiresIn = Number(response.data?.expires_in || 3600);
+    if (!accessToken) return null;
+
+    igdbTokenCache = {
+      token: accessToken,
+      expiresAt: Date.now() + Math.max((expiresIn - 60) * 1000, 60000)
+    };
+
+    return accessToken;
+  } catch (err) {
+    console.error('Error fetching IGDB access token:', err.message);
+    return null;
+  }
+}
+
+async function fetchIgdbGameScore(gameName) {
+  const name = String(gameName || '').trim();
+  if (!name || !IGDB_CLIENT_ID || !IGDB_CLIENT_SECRET) return null;
+
+  const token = await fetchIgdbAccessToken();
+  if (!token) return null;
+
+  const safeName = name.replace(/\\/g, '\\\\').replace(/"/g, '\\"');
+  const query = `fields name,aggregated_rating,rating; search "${safeName}"; limit 1;`;
+
+  try {
+    const response = await axios.post('https://api.igdb.com/v4/games', query, {
+      headers: {
+        'Client-ID': IGDB_CLIENT_ID,
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'text/plain'
+      },
+      timeout: 15000
+    });
+
+    const item = Array.isArray(response.data) ? response.data[0] : null;
+    const rawScore = item?.aggregated_rating ?? item?.rating ?? null;
+    return normalizeIgdbScore(rawScore);
+  } catch (err) {
+    console.error(`Error fetching IGDB score for ${name}:`, err.message);
+    return null;
+  }
+}
+
+async function enrichGamesWithIgdbScores(games) {
+  if (!Array.isArray(games) || games.length === 0 || !IGDB_CLIENT_ID || !IGDB_CLIENT_SECRET) {
+    return games;
+  }
+
+  const seen = new Map();
+  const tasks = games.map(async (game) => {
+    const gameName = game?.name || game?.title || '';
+    if (!gameName) return game;
+
+    const cacheKey = String(gameName).trim().toLowerCase();
+    if (!seen.has(cacheKey)) {
+      seen.set(cacheKey, await fetchIgdbGameScore(gameName));
+    }
+
+    const score = seen.get(cacheKey);
+    if (score !== null && score !== undefined) {
+      game.actualScore = score;
+      return game;
+    }
+
+    if (game.actualScore === undefined || game.actualScore === null || game.actualScore === '') {
+      const fallbackScore = getGameActualScore(game);
+      game.actualScore = fallbackScore;
+    }
+
+    return game;
+  });
+
+  await Promise.all(tasks);
+  return games;
+}
+
+function getGameActualScore(game = {}) {
+  const directCandidates = [game.actualScore, game.pctWon, game.PctWon, game.score];
+  const directValue = directCandidates.find((value) => value !== undefined && value !== null && value !== '');
+
+  if (directValue !== undefined && directValue !== null && directValue !== '') {
+    const numericValue = Number(directValue);
+    if (Number.isFinite(numericValue) && numericValue >= 0 && numericValue <= 100) {
+      return numericValue;
+    }
+  }
+
+  const awarded = Number(game.numAwarded ?? game.NumAwarded ?? 0);
+  const maxPossible = Number(game.maxPossible ?? game.MaxPossible ?? 0);
+  if (maxPossible > 0) {
+    const derivedValue = (awarded / maxPossible) * 100;
+    return Number.isFinite(derivedValue) && derivedValue > 0 ? derivedValue : null;
+  }
+
+  const achievements = Array.isArray(game.achievements) ? game.achievements : [];
+  if (achievements.length > 0) {
+    const unlocked = achievements.filter((achievement) => achievement && Boolean(achievement.achieved)).length;
+    const derivedValue = (unlocked / achievements.length) * 100;
+    return Number.isFinite(derivedValue) && derivedValue > 0 ? derivedValue : null;
+  }
+
+  return null;
+}
 
 function normalizeProviderGame(provider, game) {
   const trailer = getVideoTrailerData(provider, game);
+  const actualScore = getGameActualScore(game);
 
   const normalized = provider.id === 'retroachievements' ? {
     gameId: game.gameId || game.GameId || game.ID || game.id,
@@ -268,6 +411,7 @@ function normalizeProviderGame(provider, game) {
     numAwarded: game.numAwarded || game.NumAwarded,
     pctWon: game.pctWon || game.PctWon,
     hardcoreMode: game.hardcoreMode || game.HardcoreMode,
+    actualScore,
     playtime_forever: Number(game.playtime_forever || 0),
     playtime_2weeks: Number(game.playtime_2weeks || 0),
     provider: provider.id,
@@ -283,6 +427,7 @@ function normalizeProviderGame(provider, game) {
     rtime_last_played: Number(game.rtime_last_played || 0),
     header_image: getHeaderImage(provider, game),
     store_link: getStoreGameLink(provider, game),
+    actualScore,
     provider: provider.id,
     video_url: trailer.videoUrl,
     video_thumbnail: trailer.thumbnailUrl,
@@ -773,6 +918,7 @@ async function getApiGames(req, res) {
 
       games = filterGames(games, search);
       games = sortGames(games, sortBy);
+      await enrichGamesWithIgdbScores(games);
 
       const responseData = createGamesResponse(games, page, pageSize, provider);
       const format = getQueryParamValue(req, 'format', 'json').toLowerCase();
@@ -823,6 +969,7 @@ async function getApiGames(req, res) {
 
       games = filterGames(games, search);
       games = sortGames(games, sortBy);
+      await enrichGamesWithIgdbScores(games);
 
       const responseData = createGamesResponse(games, page, pageSize, provider);
 
@@ -879,6 +1026,7 @@ async function getApiGames(req, res) {
 
       games = filterGames(games, search);
       games = sortGames(games, sortBy);
+      await enrichGamesWithIgdbScores(games);
 
       const responseData = createGamesResponse(games, page, pageSize, provider);
       const format = getQueryParamValue(req, 'format', 'json').toLowerCase();
@@ -913,6 +1061,7 @@ async function getApiGames(req, res) {
 
       games = filterGames(games, search);
       games = sortGames(games, sortBy);
+      await enrichGamesWithIgdbScores(games);
 
       const responseData = createGamesResponse(games, page, pageSize, provider);
       const format = getQueryParamValue(req, 'format', 'json').toLowerCase();
@@ -943,6 +1092,7 @@ async function getApiGames(req, res) {
 
       games = filterGames(games, search);
       games = sortGames(games, sortBy);
+      await enrichGamesWithIgdbScores(games);
 
       const responseData = createGamesResponse(games, page, pageSize, provider);
       const format = getQueryParamValue(req, 'format', 'json').toLowerCase();
@@ -961,6 +1111,7 @@ async function getApiGames(req, res) {
 
   games = filterGames(games, search);
   games = sortGames(games, sortBy);
+  await enrichGamesWithIgdbScores(games);
 
   const responseData = createGamesResponse(games, page, pageSize, provider);
   const format = getQueryParamValue(req, 'format', 'json').toLowerCase();
@@ -1507,6 +1658,8 @@ if (process.argv[1] === __filename) {
 export {
   app,
   getQueryParamValue,
+  getGameActualScore,
+  normalizeIgdbScore,
   normalizePageValue,
   normalizePageSizeValue,
   sortGames,

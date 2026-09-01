@@ -95,6 +95,8 @@ import { fetchTranslations, getVideoStuff } from './functions.js';
     modalGameImage: document.getElementById('modalGameImage'),
     modalPlaytime: document.getElementById('modalPlaytime'),
     modalRecent: document.getElementById('modalRecent'),
+    modalScoreContainer: document.getElementById('modalScoreContainer'),
+    modalScore: document.getElementById('modalScore'),
     modalStoreLink: document.getElementById('modalStoreLink'),
     clearfilter: document.querySelectorAll('.clearfilter')[0],
     bgImageInput: document.getElementById('bg-image-input'),
@@ -113,6 +115,7 @@ import { fetchTranslations, getVideoStuff } from './functions.js';
     footerText: document.getElementById('footer-text'),
     modalPlaytimeLabel: document.getElementById('modalPlaytimeLabel'),
     modalRecentLabel: document.getElementById('modalRecentLabel'),
+    modalScoreLabel: document.getElementById('modalScoreLabel'),
     modalStoreLinkLabel: document.getElementById('modalStoreLinkLabel'),
     loginModalTitle: document.getElementById('loginModalTitle'),
     loginUsernameLabel: document.getElementById('loginUsernameLabel'),
@@ -180,7 +183,10 @@ import { fetchTranslations, getVideoStuff } from './functions.js';
     cyberpunk: 'cyberpunk',
     retro80s: 'retro80s',
     retro: 'retro80s',
-    synthwave: 'retro80s'
+    synthwave: 'retro80s',
+    'sunset-vibes': 'sunset-vibes',
+    sunset: 'sunset-vibes',
+    sunsetvibes: 'sunset-vibes'
   };
   const LANG_NAME_SETTING_KEY = 'showLanguageName';
   const THEME_CODES_SETTING_KEY = 'themeCodesEnabled';
@@ -761,6 +767,66 @@ import { fetchTranslations, getVideoStuff } from './functions.js';
     return game.appid || game.GameID || game.gameId || game.GameId || game.id;
   }
 
+  function getGameActualScore(game = {}) {
+    const directCandidates = [game.actualScore, game.pctWon, game.PctWon, game.score];
+    const directValue = directCandidates.find((value) => value !== undefined && value !== null && value !== '');
+
+    if (directValue !== undefined && directValue !== null && directValue !== '') {
+      const numericValue = Number(directValue);
+      if (Number.isFinite(numericValue) && numericValue >= 0 && numericValue <= 100) {
+        return numericValue;
+      }
+    }
+
+    const awarded = Number(game.numAwarded ?? game.NumAwarded ?? 0);
+    const maxPossible = Number(game.maxPossible ?? game.MaxPossible ?? 0);
+    if (maxPossible > 0) {
+      const derivedValue = (awarded / maxPossible) * 100;
+      return Number.isFinite(derivedValue) && derivedValue > 0 ? derivedValue : null;
+    }
+
+    const achievements = Array.isArray(game.achievements) ? game.achievements : [];
+    if (achievements.length > 0) {
+      const unlocked = achievements.filter((achievement) => achievement && Boolean(achievement.achieved)).length;
+      const derivedValue = (unlocked / achievements.length) * 100;
+      return Number.isFinite(derivedValue) && derivedValue > 0 ? derivedValue : null;
+    }
+
+    return null;
+  }
+
+  function formatActualScore(value) {
+    const score = Number(value);
+    if (!Number.isFinite(score) || score <= 0) return null;
+    const rounded = score % 1 === 0 ? score.toFixed(0) : score.toFixed(1);
+    return `${rounded}%`;
+  }
+
+  function formatAchievementUnlockDate(unlocktime) {
+    const timestamp = Number(unlocktime);
+    if (!Number.isFinite(timestamp) || timestamp <= 0) return '';
+
+    const date = new Date(timestamp * 1000);
+    if (Number.isNaN(date.getTime())) return '';
+
+    try {
+      return new Intl.DateTimeFormat(state.lang || 'en', {
+        year: 'numeric',
+        month: 'short',
+        day: 'numeric'
+      }).format(date);
+    } catch (err) {
+      return date.toLocaleDateString();
+    }
+  }
+
+  function getActualScoreValue(game = {}) {
+    const rawValue = game.actualScore ?? getGameActualScore(game);
+    const score = Number(rawValue);
+    if (!Number.isFinite(score) || score <= 0) return null;
+    return score;
+  }
+
   /** Open the game detail modal */
   function openModal(game) {
     state.activeGame = game;
@@ -770,6 +836,18 @@ import { fetchTranslations, getVideoStuff } from './functions.js';
     els.modalGameImage.onerror = () => { els.modalGameImage.onerror = null; els.modalGameImage.src = '/images/notfound.jpg'; };
     els.modalPlaytime.textContent = formatPlaytime(game.playtime_forever);
     els.modalRecent.textContent = formatPlaytime(game.playtime_2weeks);
+
+    const actualScoreValue = getActualScoreValue(game);
+    const actualScoreText = actualScoreValue === null ? null : formatActualScore(actualScoreValue);
+    if (actualScoreText === null) {
+      els.modalScore.textContent = '';
+      els.modalScore.closest('.stat-box')?.classList.add('d-none');
+      els.modalScoreContainer.classList.add('d-none');
+    } else {
+      els.modalScore.textContent = actualScoreText;
+      els.modalScore.closest('.stat-box')?.classList.remove('d-none');
+      els.modalScoreContainer.classList.remove('d-none');
+    }
     const achievementId = getGameId(game);
     els.modalStoreLink.href = game.store_link || (state.provider === 'retroachievements'
       ? `https://retroachievements.org/game/${encodeURIComponent(achievementId)}`
@@ -888,6 +966,11 @@ import { fetchTranslations, getVideoStuff } from './functions.js';
     pageAchievements.forEach((achievement) => {
       const item = document.createElement('div');
       item.className = 'machievementlist list-group-item list-group-item-dark d-flex justify-content-between align-items-start';
+      const unlockedDate = achievement.achieved ? formatAchievementUnlockDate(achievement.unlocktime) : '';
+      const unlockedDateMarkup = unlockedDate
+        ? `<div class="small text-muted mt-1">${escapeHtml((translations.unlockedOnLabel || 'Unlocked on') + ': ' + unlockedDate)}</div>`
+        : '';
+
       item.innerHTML = `
       <div class="w-100">
         <div class="row justify-content-center align-items-center text-start">
@@ -898,6 +981,7 @@ import { fetchTranslations, getVideoStuff } from './functions.js';
             <div>
               <div class="fw-semibold">${escapeHtml(achievement.name)}</div>
               <div class="small text-muted">${escapeHtml(achievement.description || '')}</div>
+              ${unlockedDateMarkup}
             </div>
             <span class="badge rounded-pill ${achievement.achieved ? 'bg-success' : 'bg-secondary'}">
               ${achievement.achieved ? (translations.unlockedLabel || 'Unlocked') : (translations.lockedLabel || 'Locked')}
@@ -1077,7 +1161,7 @@ import { fetchTranslations, getVideoStuff } from './functions.js';
     els.labelTotalHours.textContent = t.totalHours || 'Total Hours';
     els.labelRecentGames.textContent = t.playedRecently || 'Played Recently';
     els.labelTopGame.textContent = t.mostPlayed || 'Most Played';
-    if (els.modalStoreLinkLabel) els.modalStoreLinkLabel.textContent = t.viewOnSteamStore || 'View on Steam Store';
+    if (els.modalStoreLinkLabel) els.modalStoreLinkLabel.textContent = t.viewOnSteamStore || 'View on Store';
     if (els.themeCodeModalTitle) els.themeCodeModalTitle.textContent = t.themeCodeModalTitle || 'Theme Codes';
     if (els.themeCodeInputLabel) els.themeCodeInputLabel.textContent = t.themeCodeInputLabel || 'Enter a theme code';
     if (els.themeCodeHint) els.themeCodeHint.textContent = t.themeCodeHint || 'Try: nox / dark, lumos / light, liquidglass, glassmorphism';
@@ -1159,6 +1243,7 @@ import { fetchTranslations, getVideoStuff } from './functions.js';
     // Modals
     if (els.modalPlaytimeLabel) els.modalPlaytimeLabel.textContent = t.totalPlaytime || 'Total Playtime';
     if (els.modalRecentLabel) els.modalRecentLabel.textContent = t.last2Weeks || 'Last 2 Weeks';
+    if (els.modalScoreLabel) els.modalScoreLabel.textContent = t.actualScore || 'Actual Score';
     if (els.loginModalTitle) els.loginModalTitle.textContent = t.loginTitle || 'Login';
     if (els.loginUsernameLabel) els.loginUsernameLabel.textContent = t.usernameLabel || 'Username';
     if (els.loginPasswordLabel) els.loginPasswordLabel.textContent = t.passwordLabel || 'Password';
