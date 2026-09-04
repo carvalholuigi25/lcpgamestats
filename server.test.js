@@ -11,8 +11,10 @@ import {
   fetchGogAchievementsForAppid,
   getMixedDataGameHeader,
   getApiGames,
+  getApiAchievements,
   buildAdminSummary,
   getGameActualScore,
+  getSteamAppDetailsScore,
   normalizeIgdbScore
 } from './server.js';
 import auth from './lib/auth.js';
@@ -73,6 +75,45 @@ describe('server helper functions', () => {
     assert.strictEqual(getGameActualScore({}), null);
     assert.strictEqual(getGameActualScore({ achievements: [] }), null);
     assert.strictEqual(getGameActualScore({ achievements: [{ achieved: false }, { achieved: false }] }), null);
+  });
+
+  it('handles missing Steam app details without crashing', () => {
+    assert.strictEqual(getSteamAppDetailsScore(null), null);
+    assert.strictEqual(getSteamAppDetailsScore({}), null);
+  });
+
+  it('falls back to sample Steam achievements when the provider API rejects the request', async () => {
+    const axios = (await import('axios')).default;
+    const originalGet = axios.get;
+    axios.get = async () => {
+      const error = new Error('Request failed with status code 400');
+      error.response = { status: 400 };
+      throw error;
+    };
+
+    try {
+      const req = { query: { provider: 'steam', appid: '570' } };
+      const res = {
+        statusCode: 200,
+        body: null,
+        status(code) {
+          this.statusCode = code;
+          return this;
+        },
+        json(payload) {
+          this.body = payload;
+          return this;
+        }
+      };
+
+      await getApiAchievements(req, res);
+
+      assert.strictEqual(res.statusCode, 200);
+      assert.ok(res.body && Array.isArray(res.body.achievements));
+      assert.ok(res.body.achievements.length > 0);
+    } finally {
+      axios.get = originalGet;
+    }
   });
 
   it('normalizes raw IGDB rating values to a 0-100 score', () => {

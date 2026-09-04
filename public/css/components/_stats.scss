@@ -28,11 +28,21 @@
   }
 
   &--silver {
-    background-color: silver !important;
+    background: linear-gradient(
+      135deg,
+      hsl(0deg, 0%, calc(75.3% - 20%)), 
+      hsl(0deg, 0%, calc(65.3% - 20%))
+    ) !important;
+    border-color: hsl(0deg, 0%, 75.3%) !important;
   }
 
   &--bronze {
-    background-color: #cd7f32 !important;
+     background: linear-gradient(
+      135deg,
+      hsl(29.8deg, 60.8%, calc(100% / 2)), 
+      hsl(29.8deg, 50.8%, calc(100% / 4)),
+    ) !important;
+    border-color: hsl(29.8deg, 60.8%, 50%) !important;
   }
 
   &:hover {

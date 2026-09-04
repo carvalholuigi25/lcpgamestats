@@ -290,10 +290,12 @@ select option, .form-select option {
   border-color: hsl(var(--score-hue), 80%, 58%) !important;
 }
 .stat-box--silver {
-  background-color: silver !important;
+  background: linear-gradient(135deg, hsl(0, 0%, 55.3%), hsl(0, 0%, 45.3%)) !important;
+  border-color: hsl(0, 0%, 75.3%) !important;
 }
 .stat-box--bronze {
-  background-color: #cd7f32 !important;
+  background: linear-gradient(135deg, hsl(29.8, 60.8%, 50%), hsl(29.8, 50.8%, 25%)) !important;
+  border-color: hsl(29.8, 60.8%, 50%) !important;
 }
 .stat-box:hover {
   transform: translateY(-2px);
