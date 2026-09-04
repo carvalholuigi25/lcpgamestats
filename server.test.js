@@ -125,6 +125,21 @@ describe('server helper functions', () => {
     assert.strictEqual(filtered[0].name, 'Rocket League');
   });
 
+  it('filters games by exact app ID', () => {
+    const games = [
+      { appid: 12210, name: 'Grand Theft Auto IV: The Complete Edition' },
+      { appid: 570, name: 'Dota 2' }
+    ];
+
+    const filtered = filterGames(games, '', '12210');
+    assert.deepStrictEqual(filtered.map((game) => game.appid), [12210]);
+  });
+
+  it('derives actual score from user and game rating fields', () => {
+    assert.strictEqual(getGameActualScore({ rating: 8.8 }), 88);
+    assert.strictEqual(getGameActualScore({ aggregated_rating: 91 }), 91);
+  });
+
   it('creates paginated game responses', () => {
     const provider = { id: 'test' };
     const games = Array.from({ length: 10 }, (_, index) => ({
@@ -390,7 +405,8 @@ describe('server helper functions', () => {
           data: {
             response: {
               games: [
-                { appid: 570, name: 'Dota 2', playtime_forever: 100, playtime_2weeks: 10, rtime_last_played: 12345 }
+                { appid: 570, name: 'Dota 2', playtime_forever: 100, playtime_2weeks: 10, rtime_last_played: 12345 },
+                { appid: 12210, name: 'Grand Theft Auto IV: The Complete Edition', playtime_forever: 90, playtime_2weeks: 0, rtime_last_played: 12344 }
               ]
             }
           }
@@ -416,10 +432,21 @@ describe('server helper functions', () => {
         };
       }
 
+      if (url.includes('store.steampowered.com/appreviews/')) {
+        return {
+          data: {
+            query_summary: {
+              total_positive: 168955,
+              total_negative: 33847
+            }
+          }
+        };
+      }
+
       throw new Error(`Unexpected URL: ${url}`);
     };
 
-    const req = { query: {} };
+    const req = { query: { provider: 'steam', appid: '12210' } };
     const res = {
       statusCode: 200,
       body: null,
@@ -435,8 +462,10 @@ describe('server helper functions', () => {
 
     await getApiGames(req, res);
 
-    const game = res.body.games.find((g) => String(g.appid) === '570');
+    assert.strictEqual(res.body.totalGames, 1);
+    const game = res.body.games.find((g) => String(g.appid) === '12210');
     assert.ok(game);
+    assert.strictEqual(game.actualScore, (168955 / (168955 + 33847)) * 100);
     assert.strictEqual(game.video_url, 'https://example.com/570/trailer.mp4');
     assert.strictEqual(game.video_thumbnail, 'https://example.com/570/trailer-thumb.jpg');
     assert.strictEqual(game.trailer_url, 'https://example.com/570/trailer.mp4');

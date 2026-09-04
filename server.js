@@ -376,6 +376,11 @@ function getGameActualScore(game = {}) {
     }
   }
 
+  const ratingCandidates = [game.userRating, game.user_rating, game.rating, game.aggregated_rating];
+  const ratingValue = ratingCandidates.find((value) => value !== undefined && value !== null && value !== '');
+  const normalizedRating = normalizeIgdbScore(ratingValue);
+  if (normalizedRating !== null) return normalizedRating;
+
   const awarded = Number(game.numAwarded ?? game.NumAwarded ?? 0);
   const maxPossible = Number(game.maxPossible ?? game.MaxPossible ?? 0);
   if (maxPossible > 0) {
@@ -479,10 +484,16 @@ function sortGames(games, sortBy) {
   }
 }
 
-function filterGames(games, search) {
-  if (!search) return games;
-  const normalizedSearch = search.toLowerCase();
-  return games.filter((game) => game.name.toLowerCase().includes(normalizedSearch));
+function filterGames(games, search, appid = '') {
+  const normalizedSearch = String(search || '').toLowerCase();
+  const normalizedAppid = String(appid || '').trim();
+
+  return games.filter((game) => {
+    const matchesSearch = !normalizedSearch || String(game.name || '').toLowerCase().includes(normalizedSearch);
+    const gameAppid = game.appid ?? game.gameId ?? game.GameId ?? game.id ?? game.ID;
+    const matchesAppid = !normalizedAppid || String(gameAppid) === normalizedAppid;
+    return matchesSearch && matchesAppid;
+  });
 }
 
 function createGamesResponse(games, page, pageSize, provider) {
@@ -567,6 +578,7 @@ function convertGamesResponseToXml(response) {
 }
 
 const steamAppDetailsCache = new Map();
+const steamReviewScoreCache = new Map();
 
 async function fetchSteamAppDetails(appid) {
   if (steamAppDetailsCache.has(appid)) return steamAppDetailsCache.get(appid);
@@ -587,6 +599,33 @@ async function fetchSteamAppDetails(appid) {
 
   steamAppDetailsCache.set(appid, details);
   return details;
+}
+
+async function fetchSteamReviewScore(appid) {
+  const cacheKey = String(appid);
+  if (steamReviewScoreCache.has(cacheKey)) return steamReviewScoreCache.get(cacheKey);
+
+  try {
+    const response = await axios.get(`https://store.steampowered.com/appreviews/${encodeURIComponent(cacheKey)}`, {
+      params: { json: 1, language: 'all', purchase_type: 'all' },
+      timeout: 15000
+    });
+    const summary = response.data?.query_summary;
+    const positive = Number(summary?.total_positive || 0);
+    const negative = Number(summary?.total_negative || 0);
+    const total = positive + negative;
+    const score = total > 0 ? (positive / total) * 100 : null;
+    steamReviewScoreCache.set(cacheKey, score);
+    return score;
+  } catch (err) {
+    console.error(`Error fetching Steam review score for appid ${appid}:`, err.message);
+    steamReviewScoreCache.set(cacheKey, null);
+    return null;
+  }
+}
+
+function getSteamAppDetailsScore(details = {}) {
+  return normalizeIgdbScore(details.metacritic?.score);
 }
 
 async function fetchActualSteamHeaderImage(appid) {
@@ -865,6 +904,7 @@ async function getApiGames(req, res) {
   const provider = getProvider(providerId);
 
   const search = getQueryParamValue(req, 'search', '');
+  const appid = getQueryParamValue(req, 'appid', '');
   const sortBy = getQueryParamValue(req, 'sortBy', 'playtime-desc');
   const page = normalizePageValue(getQueryParamValue(req, 'page', '1'));
   const pageSize = normalizePageSizeValue(getQueryParamValue(req, 'pageSize', '24'));
@@ -916,7 +956,7 @@ async function getApiGames(req, res) {
         provider: provider.id
       }));
 
-      games = filterGames(games, search);
+      games = filterGames(games, search, appid);
       games = sortGames(games, sortBy);
       await enrichGamesWithIgdbScores(games);
 
@@ -967,7 +1007,7 @@ async function getApiGames(req, res) {
         store_path: String(game.appid)
       }));
 
-      games = filterGames(games, search);
+      games = filterGames(games, search, appid);
       games = sortGames(games, sortBy);
       await enrichGamesWithIgdbScores(games);
 
@@ -983,6 +1023,10 @@ async function getApiGames(req, res) {
 
         if (details?.header_image) {
           game.header_image = details.header_image;
+        }
+
+        if (game.actualScore === null || game.actualScore === undefined) {
+          game.actualScore = await fetchSteamReviewScore(appid) ?? getSteamAppDetailsScore(details);
         }
 
         const movies = Array.isArray(details?.movies) ? details.movies : [];
@@ -1024,7 +1068,7 @@ async function getApiGames(req, res) {
           playtime_2weeks: 0
         }));
 
-      games = filterGames(games, search);
+      games = filterGames(games, search, appid);
       games = sortGames(games, sortBy);
       await enrichGamesWithIgdbScores(games);
 
@@ -1059,7 +1103,7 @@ async function getApiGames(req, res) {
         });
       });
 
-      games = filterGames(games, search);
+      games = filterGames(games, search, appid);
       games = sortGames(games, sortBy);
       await enrichGamesWithIgdbScores(games);
 
@@ -1090,7 +1134,7 @@ async function getApiGames(req, res) {
         rtime_last_played: details[index].lastPlayed
       }));
 
-      games = filterGames(games, search);
+      games = filterGames(games, search, appid);
       games = sortGames(games, sortBy);
       await enrichGamesWithIgdbScores(games);
 
@@ -1109,7 +1153,7 @@ async function getApiGames(req, res) {
   const sampleGames = SAMPLE_GAME_DATA[provider.id] || [];
   let games = sampleGames.map((game) => normalizeProviderGame(provider, game));
 
-  games = filterGames(games, search);
+  games = filterGames(games, search, appid);
   games = sortGames(games, sortBy);
   await enrichGamesWithIgdbScores(games);
 
