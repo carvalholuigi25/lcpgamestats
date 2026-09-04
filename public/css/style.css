@@ -2012,6 +2012,7 @@ html[data-bs-theme=sunset-vibes] .game-card__image, body.theme-sunset-vibes .gam
 }
 html[data-bs-theme=sunset-vibes] .stat-value, body.theme-sunset-vibes .stat-value, .sunset-vibes .stat-value {
   text-shadow: 0 0 8px rgba(123, 227, 247, 0.8), 0 0 22px rgba(123, 227, 247, 0.35);
+  color: inherit;
 }
 html[data-bs-theme=sunset-vibes] select, html[data-bs-theme=sunset-vibes] .form-select, html[data-bs-theme=sunset-vibes] input, html[data-bs-theme=sunset-vibes] .form-control, html[data-bs-theme=sunset-vibes] .input-group-text, body.theme-sunset-vibes select, body.theme-sunset-vibes .form-select, body.theme-sunset-vibes input, body.theme-sunset-vibes .form-control, body.theme-sunset-vibes .input-group-text, .sunset-vibes select, .sunset-vibes .form-select, .sunset-vibes input, .sunset-vibes .form-control, .sunset-vibes .input-group-text {
   background: rgba(40, 12, 26, 0.72) !important;
@@ -2022,6 +2023,109 @@ html[data-bs-theme=sunset-vibes] select::placeholder, html[data-bs-theme=sunset-
   color: #f6c7b3 !important;
 }
 html[data-bs-theme=sunset-vibes] select:focus, html[data-bs-theme=sunset-vibes] .form-select:focus, html[data-bs-theme=sunset-vibes] input:focus, html[data-bs-theme=sunset-vibes] .form-control:focus, html[data-bs-theme=sunset-vibes] .input-group-text:focus, body.theme-sunset-vibes select:focus, body.theme-sunset-vibes .form-select:focus, body.theme-sunset-vibes input:focus, body.theme-sunset-vibes .form-control:focus, body.theme-sunset-vibes .input-group-text:focus, .sunset-vibes select:focus, .sunset-vibes .form-select:focus, .sunset-vibes input:focus, .sunset-vibes .form-control:focus, .sunset-vibes .input-group-text:focus {
+  border-color: #7be3f7 !important;
+  box-shadow: 0 0 12px rgba(123, 227, 247, 0.5) !important;
+  color: #fff3eb !important;
+}
+html[data-bs-theme=sunset-vibes] .mchartstats, html[data-bs-theme=sunset-vibes] #mchartstats, body.theme-sunset-vibes .mchartstats, body.theme-sunset-vibes #mchartstats, .sunset-vibes .mchartstats, .sunset-vibes #mchartstats {
+  background: rgba(40, 12, 26, 0.72) !important;
+  border: 1px solid rgba(255, 209, 102, 0.45) !important;
+  color: #fff3eb !important;
+}
+html[data-bs-theme=sunset-vibes] .app-nav-link, body.theme-sunset-vibes .app-nav-link, .sunset-vibes .app-nav-link {
+  background: linear-gradient(90deg, rgba(255, 122, 89, 0.9), rgba(155, 89, 255, 0.8)) !important;
+  border: 1px solid rgba(255, 209, 102, 0.45) !important;
+  color: #fff3eb !important;
+}
+html[data-bs-theme=sunset-vibes] .app-nav-link.active, body.theme-sunset-vibes .app-nav-link.active, .sunset-vibes .app-nav-link.active {
+  text-shadow: 0 0 8px rgba(255, 209, 102, 0.8), 0 0 22px rgba(255, 209, 102, 0.35);
+}
+html[data-bs-theme=sunset-vibes] .app-clock, html[data-bs-theme=sunset-vibes] #app-clock, body.theme-sunset-vibes .app-clock, body.theme-sunset-vibes #app-clock, .sunset-vibes .app-clock, .sunset-vibes #app-clock {
+  background: linear-gradient(90deg, rgba(255, 122, 89, 0.9), rgba(155, 89, 255, 0.8));
+  border: 1px solid rgba(255, 209, 102, 0.45);
+  color: #fff3eb !important;
+}
+html[data-bs-theme=sunset-vibes] .lang-dropdown .dropdown-menu, body.theme-sunset-vibes .lang-dropdown .dropdown-menu, .sunset-vibes .lang-dropdown .dropdown-menu {
+  background: linear-gradient(90deg, rgba(255, 122, 89, 0.9), rgba(155, 89, 255, 0.8)) !important;
+  border: 1px solid rgba(255, 209, 102, 0.45) !important;
+  color: #fff3eb !important;
+}
+html[data-bs-theme=sunset-vibes] .lang-dropdown .dropdown-menu:focus, html[data-bs-theme=sunset-vibes] .lang-dropdown .dropdown-menu:hover, body.theme-sunset-vibes .lang-dropdown .dropdown-menu:focus, body.theme-sunset-vibes .lang-dropdown .dropdown-menu:hover, .sunset-vibes .lang-dropdown .dropdown-menu:focus, .sunset-vibes .lang-dropdown .dropdown-menu:hover {
+  border-color: #7be3f7 !important;
+  box-shadow: 0 0 12px rgba(123, 227, 247, 0.5) !important;
+  color: #fff3eb !important;
+}
+html[data-bs-theme=sunset-vibes] .lang-dropdown .dropdown-menu .dropdown-item, body.theme-sunset-vibes .lang-dropdown .dropdown-menu .dropdown-item, .sunset-vibes .lang-dropdown .dropdown-menu .dropdown-item {
+  color: #fff3eb !important;
+}
+html[data-bs-theme=sunset-vibes] .lang-dropdown .dropdown-menu .dropdown-item:hover, html[data-bs-theme=sunset-vibes] .lang-dropdown .dropdown-menu .dropdown-item:focus, body.theme-sunset-vibes .lang-dropdown .dropdown-menu .dropdown-item:hover, body.theme-sunset-vibes .lang-dropdown .dropdown-menu .dropdown-item:focus, .sunset-vibes .lang-dropdown .dropdown-menu .dropdown-item:hover, .sunset-vibes .lang-dropdown .dropdown-menu .dropdown-item:focus {
+  background: rgba(123, 227, 247, 0.2) !important;
+  color: #fff3eb !important;
+}
+html[data-bs-theme=sunset-vibes] .stats-chart .stats-chart__bar-wrap, html[data-bs-theme=sunset-vibes] #stats-chart .stats-chart__bar-wrap, body.theme-sunset-vibes .stats-chart .stats-chart__bar-wrap, body.theme-sunset-vibes #stats-chart .stats-chart__bar-wrap, .sunset-vibes .stats-chart .stats-chart__bar-wrap, .sunset-vibes #stats-chart .stats-chart__bar-wrap {
+  background: transparent;
+}
+html[data-bs-theme=sunset-vibes] .stats-chart .stats-chart__bar-wrap .stats-chart__bar, html[data-bs-theme=sunset-vibes] #stats-chart .stats-chart__bar-wrap .stats-chart__bar, body.theme-sunset-vibes .stats-chart .stats-chart__bar-wrap .stats-chart__bar, body.theme-sunset-vibes #stats-chart .stats-chart__bar-wrap .stats-chart__bar, .sunset-vibes .stats-chart .stats-chart__bar-wrap .stats-chart__bar, .sunset-vibes #stats-chart .stats-chart__bar-wrap .stats-chart__bar {
+  background: linear-gradient(90deg, rgba(255, 122, 89, 0.9), rgba(155, 89, 255, 0.8));
+  border: 1px solid rgba(255, 209, 102, 0.45);
+}
+html[data-bs-theme=sunset-vibes] #provider-select, html[data-bs-theme=sunset-vibes] .provider-select,
+html[data-bs-theme=sunset-vibes] #sort-select, html[data-bs-theme=sunset-vibes] .sort-select,
+html[data-bs-theme=sunset-vibes] #page-size-select, html[data-bs-theme=sunset-vibes] .page-size-select, body.theme-sunset-vibes #provider-select, body.theme-sunset-vibes .provider-select,
+body.theme-sunset-vibes #sort-select, body.theme-sunset-vibes .sort-select,
+body.theme-sunset-vibes #page-size-select, body.theme-sunset-vibes .page-size-select, .sunset-vibes #provider-select, .sunset-vibes .provider-select,
+.sunset-vibes #sort-select, .sunset-vibes .sort-select,
+.sunset-vibes #page-size-select, .sunset-vibes .page-size-select {
+  background: linear-gradient(90deg, rgba(255, 122, 89, 0.9), rgba(155, 89, 255, 0.8)) !important;
+  border: 1px solid rgba(255, 209, 102, 0.45) !important;
+  color: #fff3eb !important;
+}
+html[data-bs-theme=sunset-vibes] #provider-select:focus, html[data-bs-theme=sunset-vibes] .provider-select:focus,
+html[data-bs-theme=sunset-vibes] #sort-select:focus, html[data-bs-theme=sunset-vibes] .sort-select:focus,
+html[data-bs-theme=sunset-vibes] #page-size-select:focus, html[data-bs-theme=sunset-vibes] .page-size-select:focus, body.theme-sunset-vibes #provider-select:focus, body.theme-sunset-vibes .provider-select:focus,
+body.theme-sunset-vibes #sort-select:focus, body.theme-sunset-vibes .sort-select:focus,
+body.theme-sunset-vibes #page-size-select:focus, body.theme-sunset-vibes .page-size-select:focus, .sunset-vibes #provider-select:focus, .sunset-vibes .provider-select:focus,
+.sunset-vibes #sort-select:focus, .sunset-vibes .sort-select:focus,
+.sunset-vibes #page-size-select:focus, .sunset-vibes .page-size-select:focus {
+  border-color: #7be3f7 !important;
+  box-shadow: 0 0 12px rgba(123, 227, 247, 0.5) !important;
+  color: #fff3eb !important;
+}
+html[data-bs-theme=sunset-vibes] .theme-select, html[data-bs-theme=sunset-vibes] #theme-select, body.theme-sunset-vibes .theme-select, body.theme-sunset-vibes #theme-select, .sunset-vibes .theme-select, .sunset-vibes #theme-select {
+  background: linear-gradient(90deg, rgba(255, 122, 89, 0.9), rgba(155, 89, 255, 0.8)) !important;
+  border: 1px solid rgba(255, 209, 102, 0.45) !important;
+  color: #fff3eb !important;
+}
+html[data-bs-theme=sunset-vibes] .theme-select option, html[data-bs-theme=sunset-vibes] #theme-select option, body.theme-sunset-vibes .theme-select option, body.theme-sunset-vibes #theme-select option, .sunset-vibes .theme-select option, .sunset-vibes #theme-select option {
+  color: #fff3eb !important;
+}
+html[data-bs-theme=sunset-vibes] .theme-select option:hover, html[data-bs-theme=sunset-vibes] .theme-select option:focus, html[data-bs-theme=sunset-vibes] #theme-select option:hover, html[data-bs-theme=sunset-vibes] #theme-select option:focus, body.theme-sunset-vibes .theme-select option:hover, body.theme-sunset-vibes .theme-select option:focus, body.theme-sunset-vibes #theme-select option:hover, body.theme-sunset-vibes #theme-select option:focus, .sunset-vibes .theme-select option:hover, .sunset-vibes .theme-select option:focus, .sunset-vibes #theme-select option:hover, .sunset-vibes #theme-select option:focus {
+  background: rgba(123, 227, 247, 0.2) !important;
+  color: #fff3eb !important;
+}
+html[data-bs-theme=sunset-vibes] .theme-select:focus, html[data-bs-theme=sunset-vibes] .theme-select:hover, html[data-bs-theme=sunset-vibes] #theme-select:focus, html[data-bs-theme=sunset-vibes] #theme-select:hover, body.theme-sunset-vibes .theme-select:focus, body.theme-sunset-vibes .theme-select:hover, body.theme-sunset-vibes #theme-select:focus, body.theme-sunset-vibes #theme-select:hover, .sunset-vibes .theme-select:focus, .sunset-vibes .theme-select:hover, .sunset-vibes #theme-select:focus, .sunset-vibes #theme-select:hover {
+  border-color: #7be3f7 !important;
+  box-shadow: 0 0 12px rgba(123, 227, 247, 0.5) !important;
+  color: #fff3eb !important;
+}
+html[data-bs-theme=sunset-vibes] .pagination-controls .page-link, html[data-bs-theme=sunset-vibes] .pagination-controls .page-link,
+html[data-bs-theme=sunset-vibes] .achievements-pagination-controls .page-link, html[data-bs-theme=sunset-vibes] .achievements-pagination-controls .page-link,
+html[data-bs-theme=sunset-vibes] .pagination .page-link, html[data-bs-theme=sunset-vibes] .pagination .page-link, body.theme-sunset-vibes .pagination-controls .page-link, body.theme-sunset-vibes .pagination-controls .page-link,
+body.theme-sunset-vibes .achievements-pagination-controls .page-link, body.theme-sunset-vibes .achievements-pagination-controls .page-link,
+body.theme-sunset-vibes .pagination .page-link, body.theme-sunset-vibes .pagination .page-link, .sunset-vibes .pagination-controls .page-link, .sunset-vibes .pagination-controls .page-link,
+.sunset-vibes .achievements-pagination-controls .page-link, .sunset-vibes .achievements-pagination-controls .page-link,
+.sunset-vibes .pagination .page-link, .sunset-vibes .pagination .page-link {
+  background: linear-gradient(90deg, rgba(255, 122, 89, 0.9), rgba(155, 89, 255, 0.8)) !important;
+  border: 1px solid rgba(255, 209, 102, 0.45) !important;
+  color: #fff3eb !important;
+}
+html[data-bs-theme=sunset-vibes] .pagination-controls .page-link:focus, html[data-bs-theme=sunset-vibes] .pagination-controls .page-link:focus,
+html[data-bs-theme=sunset-vibes] .achievements-pagination-controls .page-link:focus, html[data-bs-theme=sunset-vibes] .achievements-pagination-controls .page-link:focus,
+html[data-bs-theme=sunset-vibes] .pagination .page-link:focus, html[data-bs-theme=sunset-vibes] .pagination .page-link:focus, body.theme-sunset-vibes .pagination-controls .page-link:focus, body.theme-sunset-vibes .pagination-controls .page-link:focus,
+body.theme-sunset-vibes .achievements-pagination-controls .page-link:focus, body.theme-sunset-vibes .achievements-pagination-controls .page-link:focus,
+body.theme-sunset-vibes .pagination .page-link:focus, body.theme-sunset-vibes .pagination .page-link:focus, .sunset-vibes .pagination-controls .page-link:focus, .sunset-vibes .pagination-controls .page-link:focus,
+.sunset-vibes .achievements-pagination-controls .page-link:focus, .sunset-vibes .achievements-pagination-controls .page-link:focus,
+.sunset-vibes .pagination .page-link:focus, .sunset-vibes .pagination .page-link:focus {
   border-color: #7be3f7 !important;
   box-shadow: 0 0 12px rgba(123, 227, 247, 0.5) !important;
   color: #fff3eb !important;
@@ -2074,16 +2178,48 @@ html[data-bs-theme=sunset-vibes] .btn, body.theme-sunset-vibes .btn, .sunset-vib
   border-radius: 999px !important;
   color: #fff3eb;
 }
+html[data-bs-theme=sunset-vibes] .btn.btn-login, html[data-bs-theme=sunset-vibes] .btn.btn-logout, html[data-bs-theme=sunset-vibes] .btn.btn-register, html[data-bs-theme=sunset-vibes] .btn.btn-submit, html[data-bs-theme=sunset-vibes] .btn.btn-reset, html[data-bs-theme=sunset-vibes] .btn.btn-primary, html[data-bs-theme=sunset-vibes] .btn.btn-secondary, html[data-bs-theme=sunset-vibes] .btn.btn-success, html[data-bs-theme=sunset-vibes] .btn.btn-danger, html[data-bs-theme=sunset-vibes] .btn.btn-warning, html[data-bs-theme=sunset-vibes] .btn.btn-info, html[data-bs-theme=sunset-vibes] .btn.btn-light, html[data-bs-theme=sunset-vibes] .btn.btn-dark, html[data-bs-theme=sunset-vibes] .btn#btn-login, html[data-bs-theme=sunset-vibes] .btn#btn-logout, html[data-bs-theme=sunset-vibes] .btn#btn-register, body.theme-sunset-vibes .btn.btn-login, body.theme-sunset-vibes .btn.btn-logout, body.theme-sunset-vibes .btn.btn-register, body.theme-sunset-vibes .btn.btn-submit, body.theme-sunset-vibes .btn.btn-reset, body.theme-sunset-vibes .btn.btn-primary, body.theme-sunset-vibes .btn.btn-secondary, body.theme-sunset-vibes .btn.btn-success, body.theme-sunset-vibes .btn.btn-danger, body.theme-sunset-vibes .btn.btn-warning, body.theme-sunset-vibes .btn.btn-info, body.theme-sunset-vibes .btn.btn-light, body.theme-sunset-vibes .btn.btn-dark, body.theme-sunset-vibes .btn#btn-login, body.theme-sunset-vibes .btn#btn-logout, body.theme-sunset-vibes .btn#btn-register, .sunset-vibes .btn.btn-login, .sunset-vibes .btn.btn-logout, .sunset-vibes .btn.btn-register, .sunset-vibes .btn.btn-submit, .sunset-vibes .btn.btn-reset, .sunset-vibes .btn.btn-primary, .sunset-vibes .btn.btn-secondary, .sunset-vibes .btn.btn-success, .sunset-vibes .btn.btn-danger, .sunset-vibes .btn.btn-warning, .sunset-vibes .btn.btn-info, .sunset-vibes .btn.btn-light, .sunset-vibes .btn.btn-dark, .sunset-vibes .btn#btn-login, .sunset-vibes .btn#btn-logout, .sunset-vibes .btn#btn-register {
+  background: linear-gradient(90deg, rgba(255, 122, 89, 0.9), rgba(155, 89, 255, 0.8)) !important;
+  border: 1px solid rgba(255, 209, 102, 0.45) !important;
+}
 html[data-bs-theme=sunset-vibes] .btn:hover, body.theme-sunset-vibes .btn:hover, .sunset-vibes .btn:hover {
   box-shadow: 0 0 18px rgba(255, 209, 102, 0.5);
 }
 html[data-bs-theme=sunset-vibes] .btn:active, body.theme-sunset-vibes .btn:active, .sunset-vibes .btn:active {
   box-shadow: inset 0 0 12px rgba(123, 227, 247, 0.4);
 }
+html[data-bs-theme=sunset-vibes] .btnsearchicogrp, body.theme-sunset-vibes .btnsearchicogrp, .sunset-vibes .btnsearchicogrp {
+  background: linear-gradient(90deg, rgba(255, 122, 89, 0.9), rgba(155, 89, 255, 0.8)) !important;
+  border: 1px solid rgba(255, 209, 102, 0.45) !important;
+  color: #fff3eb !important;
+}
+html[data-bs-theme=sunset-vibes] .btnsearchicogrp:hover, body.theme-sunset-vibes .btnsearchicogrp:hover, .sunset-vibes .btnsearchicogrp:hover {
+  box-shadow: 0 0 18px rgba(255, 209, 102, 0.5);
+}
+html[data-bs-theme=sunset-vibes] .btnsearchicogrp:active, body.theme-sunset-vibes .btnsearchicogrp:active, .sunset-vibes .btnsearchicogrp:active {
+  box-shadow: inset 0 0 12px rgba(123, 227, 247, 0.4);
+}
+html[data-bs-theme=sunset-vibes] .games-container, html[data-bs-theme=sunset-vibes] #games-container, body.theme-sunset-vibes .games-container, body.theme-sunset-vibes #games-container, .sunset-vibes .games-container, .sunset-vibes #games-container {
+  background: linear-gradient(90deg, rgba(255, 122, 89, 0.9), rgba(155, 89, 255, 0.8)) !important;
+  box-shadow: 0 0 18px rgba(255, 209, 102, 0.5) !important;
+  border-radius: 25px !important;
+  overflow: auto;
+}
+html[data-bs-theme=sunset-vibes] .table, body.theme-sunset-vibes .table, .sunset-vibes .table {
+  border-radius: inherit;
+  border-color: inherit;
+  margin: 0;
+  overflow: hidden;
+}
 html[data-bs-theme=sunset-vibes] .table th, html[data-bs-theme=sunset-vibes] .table td, body.theme-sunset-vibes .table th, body.theme-sunset-vibes .table td, .sunset-vibes .table th, .sunset-vibes .table td {
+  background: rgba(40, 12, 26, 0.72) !important;
+  border: 0;
+  color: #fff3eb !important;
+}
+html[data-bs-theme=sunset-vibes] .table th:focus, html[data-bs-theme=sunset-vibes] .table td:focus, body.theme-sunset-vibes .table th:focus, body.theme-sunset-vibes .table td:focus, .sunset-vibes .table th:focus, .sunset-vibes .table td:focus {
   border-color: rgba(255, 209, 102, 0.28) !important;
-  background: transparent;
-  color: #fff3eb;
+  box-shadow: 0 0 12px rgba(123, 227, 247, 0.5) !important;
+  color: #fff3eb !important;
 }
 html[data-bs-theme=sunset-vibes] #view-grid, html[data-bs-theme=sunset-vibes] #view-list, html[data-bs-theme=sunset-vibes] #view-table, body.theme-sunset-vibes #view-grid, body.theme-sunset-vibes #view-list, body.theme-sunset-vibes #view-table, .sunset-vibes #view-grid, .sunset-vibes #view-list, .sunset-vibes #view-table {
   background: rgba(45, 16, 38, 0.64);
