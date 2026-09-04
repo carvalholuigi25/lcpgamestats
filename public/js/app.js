@@ -844,6 +844,7 @@ import { fetchTranslations, getVideoStuff } from './functions.js';
     if (actualScoreText === null) {
       els.modalScore.textContent = '';
       scoreBox?.classList.remove('stat-box--score');
+      scoreBox?.classList.remove('stat-box--silver', 'stat-box--bronze');
       scoreBox?.style.removeProperty('--score-hue');
       scoreBox?.classList.add('d-none');
       els.modalScoreContainer.classList.add('d-none');
@@ -852,6 +853,8 @@ import { fetchTranslations, getVideoStuff } from './functions.js';
       const scoreHue = actualScoreValue >= 90 ? 45 : Math.floor(actualScoreValue / 10) * 12;
       scoreBox?.style.setProperty('--score-hue', String(scoreHue));
       scoreBox?.classList.add('stat-box--score');
+      scoreBox?.classList.toggle('stat-box--silver', actualScoreValue >= 70 && actualScoreValue < 80);
+      scoreBox?.classList.toggle('stat-box--bronze', actualScoreValue >= 50 && actualScoreValue < 70);
       scoreBox?.classList.remove('d-none');
       els.modalScoreContainer.classList.remove('d-none');
     }

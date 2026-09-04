@@ -289,6 +289,12 @@ select option, .form-select option {
   background: linear-gradient(135deg, hsl(var(--score-hue), 72%, 34%), hsl(var(--score-hue), 78%, 24%)) !important;
   border-color: hsl(var(--score-hue), 80%, 58%) !important;
 }
+.stat-box--silver {
+  background-color: silver !important;
+}
+.stat-box--bronze {
+  background-color: #cd7f32 !important;
+}
 .stat-box:hover {
   transform: translateY(-2px);
   border-color: rgba(102, 192, 244, 0.4) !important;
