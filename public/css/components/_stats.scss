@@ -18,9 +18,18 @@
   border-radius: $card-radius;
   transition: transform $transition-fast, border-color $transition-fast;
 
+  &--score {
+    background: linear-gradient(
+      135deg,
+      hsl(var(--score-hue), 72%, 34%),
+      hsl(var(--score-hue), 78%, 24%)
+    ) !important;
+    border-color: hsl(var(--score-hue), 80%, 58%) !important;
+  }
+
   &:hover {
     transform: translateY(-2px);
-    border-color: rgba($steam-accent, 0.4);
+    border-color: rgba($steam-accent, 0.4) !important;
   }
 }
 

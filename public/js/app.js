@@ -797,7 +797,7 @@ import { fetchTranslations, getVideoStuff } from './functions.js';
 
   function formatActualScore(value) {
     const score = Number(value);
-    if (!Number.isFinite(score) || score <= 0) return null;
+    if (!Number.isFinite(score) || score < 0 || score > 100) return null;
     const rounded = score % 1 === 0 ? score.toFixed(0) : score.toFixed(1);
     return `${rounded}%`;
   }
@@ -822,8 +822,9 @@ import { fetchTranslations, getVideoStuff } from './functions.js';
 
   function getActualScoreValue(game = {}) {
     const rawValue = game.actualScore ?? getGameActualScore(game);
+    if (rawValue === null || rawValue === undefined || rawValue === '') return null;
     const score = Number(rawValue);
-    if (!Number.isFinite(score) || score <= 0) return null;
+    if (!Number.isFinite(score) || score < 0 || score > 100) return null;
     return score;
   }
 
@@ -839,13 +840,19 @@ import { fetchTranslations, getVideoStuff } from './functions.js';
 
     const actualScoreValue = getActualScoreValue(game);
     const actualScoreText = actualScoreValue === null ? null : formatActualScore(actualScoreValue);
+    const scoreBox = els.modalScore.closest('.stat-box');
     if (actualScoreText === null) {
       els.modalScore.textContent = '';
-      els.modalScore.closest('.stat-box')?.classList.add('d-none');
+      scoreBox?.classList.remove('stat-box--score');
+      scoreBox?.style.removeProperty('--score-hue');
+      scoreBox?.classList.add('d-none');
       els.modalScoreContainer.classList.add('d-none');
     } else {
       els.modalScore.textContent = actualScoreText;
-      els.modalScore.closest('.stat-box')?.classList.remove('d-none');
+      const scoreHue = actualScoreValue >= 90 ? 45 : Math.floor(actualScoreValue / 10) * 12;
+      scoreBox?.style.setProperty('--score-hue', String(scoreHue));
+      scoreBox?.classList.add('stat-box--score');
+      scoreBox?.classList.remove('d-none');
       els.modalScoreContainer.classList.remove('d-none');
     }
     const achievementId = getGameId(game);
