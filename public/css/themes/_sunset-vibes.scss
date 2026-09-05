@@ -162,7 +162,8 @@ html[data-bs-theme="sunset-vibes"], body.theme-sunset-vibes, .sunset-vibes {
 
   #provider-select, .provider-select,
   #sort-select, .sort-select, 
-  #page-size-select, .page-size-select {
+  #page-size-select, .page-size-select,
+  #export-select, .export-select {
     $btn-bg: linear-gradient(90deg, rgba($sunset-orange, 0.9), rgba($sunset-purple, 0.8));
     $btn-border: 1px solid rgba($sunset-gold, 0.45);
 
@@ -339,5 +340,14 @@ html[data-bs-theme="sunset-vibes"], body.theme-sunset-vibes, .sunset-vibes {
 
   #page-info, #provider-info-text {
     color: $sunset-text !important;
+  }
+}
+
+@media all and (max-width: 768px) {
+  html[data-bs-theme="sunset-vibes"], body.theme-sunset-vibes, .sunset-vibes {
+    .export-select, #export-select {
+      width: auto !important;
+      margin: 0 auto;
+    }
   }
 }

@@ -56,6 +56,12 @@
       text-align: center !important;
     }
   }
+
+  #export-info-text, #page-size-label, #page-info, #page-size-select {
+    text-align: center !important;
+    margin: auto;
+    width: 100%;
+  }
 }
 
 @media all and (max-width: 992px) {
@@ -69,12 +75,6 @@
 
   #page-size-select {
     width: auto !important;
-  }
-
-  #export-info-text, #page-size-label, #page-info, #page-size-select {
-    text-align: center !important;
-    margin: auto;
-    width: 100%;
   }
 
   #provider-info-text {

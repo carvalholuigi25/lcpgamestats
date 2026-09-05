@@ -100,6 +100,11 @@
 // ==========================================================================
 #games-container {
   justify-content: center;
+  padding-inline: 0.75rem;
+}
+
+#games-container:not(.list-view):not(.table-view) .game-card-col {
+  padding: 0.75rem;
 }
 
 #games-container.list-view {

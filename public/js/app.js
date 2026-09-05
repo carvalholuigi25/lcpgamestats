@@ -61,8 +61,7 @@ import { fetchTranslations, getVideoStuff } from './functions.js';
     panelChart: document.querySelectorAll('.mchartstats')[0],
     chartContainer: document.getElementById('stats-chart'),
     showChartBtn: document.querySelectorAll('.btnshowstats')[0],
-    exportJsonBtn: document.getElementById('export-json'),
-    exportXmlBtn: document.getElementById('export-xml'),
+    exportSelect: document.getElementById('export-select'),
     modalAchievementsTitle: document.getElementById('modalAchievementsTitle'),
     modalAchievementsStatus: document.getElementById('modalAchievementsStatus'),
     modalAchievements: document.getElementById('modalAchievements'),
@@ -1214,8 +1213,14 @@ import { fetchTranslations, getVideoStuff } from './functions.js';
     if (els.viewTableBtn) els.viewTableBtn.title = t.viewTableTitle || 'View table';
 
     // Export controls
-    if (els.exportJsonBtn) els.exportJsonBtn.textContent = t.exportJson || 'Export JSON';
-    if (els.exportXmlBtn) els.exportXmlBtn.textContent = t.exportXml || 'Export XML';
+    if (els.exportSelect) {
+      els.exportSelect.title = t.exportFormat || 'Export format';
+      els.exportSelect.setAttribute('aria-label', t.exportFormat || 'Export format');
+      const exportJsonOption = document.getElementById('export-opt-json');
+      const exportXmlOption = document.getElementById('export-opt-xml');
+      if (exportJsonOption) exportJsonOption.textContent = t.exportJson || 'Export JSON';
+      if (exportXmlOption) exportXmlOption.textContent = t.exportXml || 'Export XML';
+    }
     if (els.exportInfoText) els.exportInfoText.textContent = t.exportInfo || 'Export the current filtered game report for reuse.';
 
     // Pagination / page size
@@ -1539,8 +1544,10 @@ import { fetchTranslations, getVideoStuff } from './functions.js';
         }
       });
     }
-    els.exportJsonBtn.addEventListener('click', () => downloadExport('json'));
-    els.exportXmlBtn.addEventListener('click', () => downloadExport('xml'));
+    els.exportSelect.addEventListener('change', (event) => {
+      if (event.target.value) downloadExport(event.target.value);
+      event.target.value = '';
+    });
     els.viewGridBtn.addEventListener('click', () => setView('grid'));
     els.viewListBtn.addEventListener('click', () => setView('list'));
     if (els.viewTableBtn) els.viewTableBtn.addEventListener('click', () => setView('table'));

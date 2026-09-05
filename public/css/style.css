@@ -56,6 +56,10 @@ select option, .form-select option {
   border-radius: 24px !important;
 }
 
+.form-select {
+  --bs-form-select-bg-img: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23343a40' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m2 5 6 6 6-6'/%3e%3c/svg%3e");
+  background-image: var(--bs-form-select-bg-img) !important;
+}
 .form-select select {
   padding: 0.5rem 1.5rem;
 }
@@ -65,6 +69,15 @@ select option, .form-select option {
   background-color: var(--bs-body-bg);
   border-color: var(--bs-border-color);
   padding: 0.5rem 1rem;
+}
+
+.modal .btn-close {
+  --bs-btn-close-bg: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath fill='none' width='16' height='16' style='width: 16px; height: 16px;' stroke='%23fff' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M2 2l12 12M14 2L2 14'/%3E%3C/svg%3E");
+  background: var(--bs-btn-close-bg);
+  font-size: 1.3rem;
+  padding: 0;
+  line-height: inherit;
+  filter: drop-shadow(0 0 8px rgba(255, 209, 102, 0.8)) drop-shadow(0 0 4px rgba(255, 209, 102, 0.5));
 }
 
 .btn-login, .btn-logout, .btn-register,
@@ -576,6 +589,11 @@ body.lang-name-hidden #lang-select-btn .lang-select-label {
 
 #games-container {
   justify-content: center;
+  padding-inline: 0.75rem;
+}
+
+#games-container:not(.list-view):not(.table-view) .game-card-col {
+  padding: 0.75rem;
 }
 
 #games-container.list-view {
@@ -978,6 +996,11 @@ main, .app-footer {
     align-items: center !important;
     text-align: center !important;
   }
+  #export-info-text, #page-size-label, #page-info, #page-size-select {
+    text-align: center !important;
+    margin: auto;
+    width: 100%;
+  }
 }
 @media all and (max-width: 992px) {
   .mthemesel {
@@ -988,11 +1011,6 @@ main, .app-footer {
   }
   #page-size-select {
     width: auto !important;
-  }
-  #export-info-text, #page-size-label, #page-info, #page-size-select {
-    text-align: center !important;
-    margin: auto;
-    width: 100%;
   }
   #provider-info-text {
     text-align: center !important;
@@ -2071,22 +2089,28 @@ html[data-bs-theme=sunset-vibes] .stats-chart .stats-chart__bar-wrap .stats-char
 }
 html[data-bs-theme=sunset-vibes] #provider-select, html[data-bs-theme=sunset-vibes] .provider-select,
 html[data-bs-theme=sunset-vibes] #sort-select, html[data-bs-theme=sunset-vibes] .sort-select,
-html[data-bs-theme=sunset-vibes] #page-size-select, html[data-bs-theme=sunset-vibes] .page-size-select, body.theme-sunset-vibes #provider-select, body.theme-sunset-vibes .provider-select,
+html[data-bs-theme=sunset-vibes] #page-size-select, html[data-bs-theme=sunset-vibes] .page-size-select,
+html[data-bs-theme=sunset-vibes] #export-select, html[data-bs-theme=sunset-vibes] .export-select, body.theme-sunset-vibes #provider-select, body.theme-sunset-vibes .provider-select,
 body.theme-sunset-vibes #sort-select, body.theme-sunset-vibes .sort-select,
-body.theme-sunset-vibes #page-size-select, body.theme-sunset-vibes .page-size-select, .sunset-vibes #provider-select, .sunset-vibes .provider-select,
+body.theme-sunset-vibes #page-size-select, body.theme-sunset-vibes .page-size-select,
+body.theme-sunset-vibes #export-select, body.theme-sunset-vibes .export-select, .sunset-vibes #provider-select, .sunset-vibes .provider-select,
 .sunset-vibes #sort-select, .sunset-vibes .sort-select,
-.sunset-vibes #page-size-select, .sunset-vibes .page-size-select {
+.sunset-vibes #page-size-select, .sunset-vibes .page-size-select,
+.sunset-vibes #export-select, .sunset-vibes .export-select {
   background: linear-gradient(90deg, rgba(255, 122, 89, 0.9), rgba(155, 89, 255, 0.8)) !important;
   border: 1px solid rgba(255, 209, 102, 0.45) !important;
   color: #fff3eb !important;
 }
 html[data-bs-theme=sunset-vibes] #provider-select:focus, html[data-bs-theme=sunset-vibes] .provider-select:focus,
 html[data-bs-theme=sunset-vibes] #sort-select:focus, html[data-bs-theme=sunset-vibes] .sort-select:focus,
-html[data-bs-theme=sunset-vibes] #page-size-select:focus, html[data-bs-theme=sunset-vibes] .page-size-select:focus, body.theme-sunset-vibes #provider-select:focus, body.theme-sunset-vibes .provider-select:focus,
+html[data-bs-theme=sunset-vibes] #page-size-select:focus, html[data-bs-theme=sunset-vibes] .page-size-select:focus,
+html[data-bs-theme=sunset-vibes] #export-select:focus, html[data-bs-theme=sunset-vibes] .export-select:focus, body.theme-sunset-vibes #provider-select:focus, body.theme-sunset-vibes .provider-select:focus,
 body.theme-sunset-vibes #sort-select:focus, body.theme-sunset-vibes .sort-select:focus,
-body.theme-sunset-vibes #page-size-select:focus, body.theme-sunset-vibes .page-size-select:focus, .sunset-vibes #provider-select:focus, .sunset-vibes .provider-select:focus,
+body.theme-sunset-vibes #page-size-select:focus, body.theme-sunset-vibes .page-size-select:focus,
+body.theme-sunset-vibes #export-select:focus, body.theme-sunset-vibes .export-select:focus, .sunset-vibes #provider-select:focus, .sunset-vibes .provider-select:focus,
 .sunset-vibes #sort-select:focus, .sunset-vibes .sort-select:focus,
-.sunset-vibes #page-size-select:focus, .sunset-vibes .page-size-select:focus {
+.sunset-vibes #page-size-select:focus, .sunset-vibes .page-size-select:focus,
+.sunset-vibes #export-select:focus, .sunset-vibes .export-select:focus {
   border-color: #7be3f7 !important;
   box-shadow: 0 0 12px rgba(123, 227, 247, 0.5) !important;
   color: #fff3eb !important;
@@ -2250,6 +2274,12 @@ html[data-bs-theme=sunset-vibes] #page-info, html[data-bs-theme=sunset-vibes] #p
   color: #fff3eb !important;
 }
 
+@media all and (max-width: 768px) {
+  html[data-bs-theme=sunset-vibes] .export-select, html[data-bs-theme=sunset-vibes] #export-select, body.theme-sunset-vibes .export-select, body.theme-sunset-vibes #export-select, .sunset-vibes .export-select, .sunset-vibes #export-select {
+    width: auto !important;
+    margin: 0 auto;
+  }
+}
 /* -------------------------------------------------------------------------- */
 /* Global styles for the host document, outside of the Shadow DOM             */
 /* -------------------------------------------------------------------------- */
